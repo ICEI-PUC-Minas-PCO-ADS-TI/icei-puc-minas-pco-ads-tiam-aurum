@@ -39,8 +39,14 @@ O grupo de trabalho pode fazer uso de questionários, entrevistas e dados estat�
 
 ## Público-alvo
 
-Descreva quem serão as pessoas que usarão a sua aplicação indicando os diferentes perfis. O objetivo aqui não é definir quem serão os clientes ou quais serão os papéis dos usuários na aplicação. A ideia é, dentro do possível, conhecer um pouco mais sobre o perfil dos usuários: conhecimentos prévios, relação com a tecnologia, relações
-hierárquicas, etc.
+### Pequenos e Médios Empresários:
+ * Características: Proprietários de pequenas e médias empresas que precisam gerenciar vendas, pendências e entregas de produtos. 
+ * Necessidades: Ferramentas simples e eficientes para gerenciar suas operações diárias, relatórios de vendas, e agendamento de entregas. 
+ 
+### Gerentes de Vendas: 
+
+  * Características: Supervisores e gerentes responsáveis por equipes de vendas.
+  * Necessidades: Ferramentas para monitorar o desempenho da equipe, definir metas, e analisar relatórios de vendas.
 
 Adicione informações sobre o público-alvo por meio de uma descrição textual, diagramas de personas e mapa de stakeholders.
 
