@@ -39,19 +39,12 @@ O grupo de trabalho pode fazer uso de questionários, entrevistas e dados estat�
 
 ## Público-alvo
 
-### Pequenos e Médios Empresários:
+#### Pequenos e Médios Empresários:
  * Características: Proprietários de pequenas e médias empresas que precisam gerenciar vendas, pendências e entregas de produtos. 
  * Necessidades: Ferramentas simples e eficientes para gerenciar suas operações diárias, relatórios de vendas, e agendamento de entregas. 
  
-### Gerentes de Vendas: 
+#### Gerentes de Vendas: 
 
   * Características: Supervisores e gerentes responsáveis por equipes de vendas.
   * Necessidades: Ferramentas para monitorar o desempenho da equipe, definir metas, e analisar relatórios de vendas.
 
-Adicione informações sobre o público-alvo por meio de uma descrição textual, diagramas de personas e mapa de stakeholders.
-
-> **Links úteis**:
-> - [Público-alvo](https://blog.hotmart.com/pt-br/publico-alvo/)
-> - [Como definir o público-alvo](https://exame.com/pme/5-dicas-essenciais-para-definir-o-publico-alvo-do-seu-negocio/)
-> - [Público-alvo: o que é, tipos, como definir seu público e exemplos](https://klickpages.com.br/blog/publico-alvo-o-que-e/)
-> - [Qual a diferença entre público-alvo e persona?](https://rockcontent.com/blog/diferenca-publico-alvo-e-persona/)
