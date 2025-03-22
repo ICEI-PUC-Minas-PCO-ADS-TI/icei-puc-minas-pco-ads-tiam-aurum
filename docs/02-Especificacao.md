@@ -84,8 +84,10 @@ O projeto está restrito aos itens apresentados na tabela a seguir.
 
 |ID| Restrição                                             |
 |--|-------------------------------------------------------|
-|001| O projeto deverá ser entregue até o final do semestre |
-|002| O custo total do projeto não deve exceder o orçamento definido       |
+|RE-01 | O aplicativo deve ser compatível com as versões mais recentes de Android e iOS.  |
+|RE-02| O aplicativo deve ser desenvolvido utilizando tecnologias que possibilitem a manutenção e atualização simultânea nas versões Android e iOS, preferencialmente utilizando plataformas como Flutter ou React Native.        |
+|RE-03| O aplicativo precisa ser desenvolvido dentro de um prazo de 6 meses.  |
+|RE-04| O cliente será responsável pelos custos de manutenção e renovação do aplicativo nas lojas (Google Play e App Store). |
 
 ## Diagrama de casos de uso
 
