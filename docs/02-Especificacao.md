@@ -29,7 +29,7 @@ Com base na análise das personas, foram identificadas as seguintes histórias d
 
 ## Requisitos
 
-As tabelas a seguir apresentam os requisitos funcionais e não funcionais que detalham o escopo do projeto. Para determinar a prioridade dos requisitos, aplique uma técnica de priorização e detalhe como essa técnica foi aplicada.
+Os requisitos funcionais e não funcionais foram priorizados com base na técnica MoSCoW, sendo avaliados a partir das entrevistas realizadas com o cliente. Os requisitos classificados como prioridade ALTA (Must Have - Deve Ter) foram definidos com base nos principais gargalos identificados nos processos atuais do cliente. Já os requisitos de prioridade MÉDIA (Should Have - Deveria Ter) foram considerados funcionalidades que poderiam agregar um valor considerável ao negócio do cliente. Por fim, os requisitos de prioridade BAIXA (Could Have - Poderia Ter) foram identificados como funcionalidades que embora não impactem diretamente os processos atuais de forma crítica, oferecem benefícios ao cliente, porém com menor urgência e importância em comparação com os outros requisitos.
 
 ### Requisitos funcionais
 
