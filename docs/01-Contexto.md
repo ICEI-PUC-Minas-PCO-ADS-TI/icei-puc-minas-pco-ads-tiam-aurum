@@ -38,12 +38,9 @@ Desenvolver um aplicativo para a gestão de vendas de joias, voltado para profis
   
 ## Justificativa
 
-Descreva a importância ou a motivação para trabalhar com esta aplicação que você escolheu. Indique as razões pelas quais você escolheu seus objetivos específicos ou as razões para aprofundar em certos aspectos do software.
+Após realizar pesquisas com o público-alvo, foram identificadas dificuldades como o uso de processos antigos de gestão, a dificuldade no aprendizado de novas tecnologias e a necessidade de adaptação ao mundo moderno. Portanto, desenvolvemos um aplicativo móvel de gestão de vendas e finanças que beneficiará o cliente, otimizando processos de venda, organização de pagamentos e geração de relatórios financeiros. 
 
-O grupo de trabalho pode fazer uso de questionários, entrevistas e dados estatísticos, que podem ser apresentados, com o objetivo de esclarecer detalhes do problema que será abordado pelo grupo.
-
-> **Links úteis**:
-> - [Como montar a justificativa](https://guiadamonografia.com.br/como-montar-justificativa-do-tcc/)
+O aplicativo contará com uma interface intuitiva e de fácil acesso para pessoas com dificuldades no uso de tecnologia, além de diversas funcionalidades destinadas a organizar o dia a dia e facilitar os processos de venda. 
 
 ## Público-alvo
 
