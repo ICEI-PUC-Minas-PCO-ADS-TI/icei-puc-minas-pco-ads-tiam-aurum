@@ -1,21 +1,20 @@
-# Nome do projeto
+# Aurum 
 
 `CURSO: Análise e Desenvolvimento de Sistemas`
 
 `DISCIPLINA: Trabalho Interdisciplinar Aplicação Móvel`
 
-`Xº semestre/ANO`
+`4º semestre/2025`
 
 Escreva um ou dois parágrafos resumindo o objetivo do seu projeto.
 
 ## Integrantes
 
-* Rafael Brandão Silva
 * Guilherme Augusto Lopes Campos
-* Nome completo do aluno 3
-* Nome completo do aluno 4
-* Nome completo do aluno 5
-* Nome completo do aluno 6
+* Luiza Sampaio
+* Rafael Brandão Silva
+* Rhillary Carvalho
+
 
 ## Professor
 
