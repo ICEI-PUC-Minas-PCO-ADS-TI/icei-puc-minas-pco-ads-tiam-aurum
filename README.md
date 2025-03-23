@@ -6,7 +6,9 @@
 
 `4º semestre/2025`
 
-Escreva um ou dois parágrafos resumindo o objetivo do seu projeto.
+O setor de comércio e indústria é maioria entre os segmentos em atividade representando cerca de 92% do total, diante dessa crescente demanda nosso trabalho visa desenvolver um aplicativo móvel direcionado para a organização das vendas de microempreendedores individuais (MEIs), tendo como foco principal a organização das rotinas de pagamento e principais processos de venda tendo como foco automatizar e facilitar a organização das finanças e dos principais processos de venda de pequenos empreendedores autônomos.
+
+Tal ideia, teve como foco principal solucionar as dificuldades enfrentadas pela nossa cliente, que atua no ramo de venda de joias de forma autônoma e através de uma entrevista nos detalhou um pouco mais de sua rotina e suas maiores dificuldades, nos processos que vão desde a organização dos recebimentos dos clientes até coisas mais simples como consultar quem encomendou qual peça, que são justamente os problemas que buscamos solucionar com o “Aurum” trazendo uma plataforma simples e intuitiva que busca automatizar os processos e otimizar o fluxo de trabalho e organização de profissionais deste ramo.  
 
 ## Integrantes
 
