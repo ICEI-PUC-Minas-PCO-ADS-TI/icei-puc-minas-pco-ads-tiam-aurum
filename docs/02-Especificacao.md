@@ -35,8 +35,14 @@ As tabelas a seguir apresentam os requisitos funcionais e não funcionais que de
 
 |ID    | Descrição do Requisito  | Prioridade |
 |------|-----------------------------------------|----|
-|RF-001| Permitir que o usuário cadastre tarefas | ALTA | 
-|RF-002| Emitir um relatório de tarefas no mês   | MÉDIA |
+|RF-001| Permitir fazer login no sistema | ALTA | 
+|RF-002| Gerenciar cadastro de joias (CRUD)   | ALTA |
+|RF-003| Gerenciar cadastro de clientes (CRUD)   | ALTA |
+|RF-004| Exibir lista de pagamentos pendentes   | ALTA |
+|RF-005| Exibir dashboard com os recebimentos do mês   | MÉDIA |
+|RF-006| Permitir gerar relatórios de vendas   | MÉDIA |
+|RF-007| Registrar pedidos de clientes   | BAIXA |
+|RF-008| Registrar devoluções ou trocas de peças  | BAIXA |
 
 ### Requisitos não funcionais
 
