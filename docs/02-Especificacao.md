@@ -8,19 +8,9 @@ Apresente uma visão geral do que será abordado nesta parte do documento, enume
 
 ## Personas
 
-Exemplo: _Pedro Paulo tem 26 anos, é arquiteto recém-formado e autônomo. Pensa em se desenvolver profissionalmente por meio de um mestrado fora do país, pois adora viajar, é solteiro e sempre quis fazer um intercâmbio. Está buscando uma agência que o ajude a encontrar universidades na Europa que aceitem alunos estrangeiros._
-
-Enumere e detalhe as personas da sua solução. Para tanto, baseie-se tanto nos documentos disponibilizados na disciplina e/ou nos seguintes links:
-
-> **Links úteis**:
-> - [Rock content](https://rockcontent.com/blog/personas/)
-> - [Hotmart](https://blog.hotmart.com/pt-br/como-criar-persona-negocio/)
-> - [O que é persona?](https://resultadosdigitais.com.br/blog/persona-o-que-e/)
-> - [Persona x público-alvo](https://flammo.com.br/blog/persona-e-publico-alvo-qual-a-diferenca/)
-> - [Mapa de empatia](https://resultadosdigitais.com.br/blog/mapa-da-empatia/)
-> - [Mapa de stalkeholders](https://www.racecomunicacao.com.br/blog/como-fazer-o-mapeamento-de-stakeholders/)
->
-Lembre-se que você deve ser enumerar e descrever precisamente e personalizada todos os clientes ideais que sua solução almeja.
+1. Beatriz Rocha tem 27 anos e é uma artesã empreendedora que começou recentemente a criar e vender suas próprias joias. Talentosa na produção de peças únicas, ela já conquistou alguns clientes, mas ainda enfrenta desafios na organização do seu pequeno negócio. Beatriz divulga seus produtos nas redes sociais e anota pedidos no bloco de notas do celular, mas muitas vezes se perde no controle de estoque, na precificação correta das peças e no acompanhamento de pagamentos. Ela busca uma ferramenta que a ajude a registrar pedidos, organizar seus clientes e visualizar suas vendas, permitindo que ela foque no que mais ama que é criar suas joias.
+2. Maria Silva tem 42 anos e trabalha como revendedora de joias há mais de 10 anos. Construiu uma boa carteira de clientes e mantém um bom relacionamento com eles. Seu dia a dia é corrido e consiste em visitar clientes, apresenta as peças e anotar pedidos, sempre carregando sua agenda e algumas notas promissórias na bolsa. Para lembrar de pagamentos e encomendas, usa o WhatsApp e tira fotos dos comprovantes, mas nem sempre consegue encontrar as informações quando precisa. Maria às vezes esquece quais clientes ainda têm pendências para receber e quem já pediu uma peça específica que não havia em seu estoque no momento. Ela gostaria de uma solução prática para centralizar as informações de seus clientes e vendas, sem precisar depender de anotações espalhadas e fotos na galeria. Assim, poderia vender com mais tranquilidade e focar no que faz de melhor que é atender bem suas clientes e aumentar suas vendas.
+3. Ana Paula tem 30 anos e começou a revender joias recentemente para complementar a renda. Por ser uma pessoa que sempre gostou de acessórios, viu na revenda uma oportunidade de ter mais independência financeira. Já conquistou alguns clientes, mas ainda está aprendendo a lidar com a parte administrativa do negócio. Para se organizar, anota as vendas em um caderno e tenta lembrar das parcelas que precisa receber, mas devido a outras reponsabilidades de sua rotina, como seu outro emprego, acaba se perdendo nos prazos. Já aconteceu de esquecer um pagamento, perder o contato de uma cliente ou não lembrar exatamente as peças que havia em seu estoque. Além disso, ela precisa controlar as devoluções ou trocas de peças, o que tem sido um desafio, já que nem sempre lembra de registrar essas ocorrências. Ana Paula precisa de uma ferramenta simples e fácil de usar, que a ajude a registrar suas vendas, acompanhar pagamentos, e organizar as devoluções ou trocas de peças, para que ela possa focar em crescer no seu novo negócio com mais confiança. 
 
 ## Histórias de usuários
 
