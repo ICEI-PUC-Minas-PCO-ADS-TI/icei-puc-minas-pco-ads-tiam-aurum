@@ -1,6 +1,10 @@
 # Introdução
 
-Texto descritivo com a visão geral do projeto abordado. Inclui o contexto, o problema, os objetivos, a justificativa e o público-alvo do projeto. Visando contextualizar melhor o projeto e destacar sua importância para a disciplina, que é **extensionista**, acrescente todas as informações relevantes que julgar necessárias.
+Segundo pesquisa realizada pelo Sebrae e a FGV em outubro de 2024 estima-se que até fevereiro deste ano, 90% dos 11,5 milhões dos Microempreendedores Individuais (MEIs) ativos no Brasil estavam em atividade, sendo esse o percentual mais alto já registrado até então. De acordo com o próprio Sebrae e outros órgãos de pesquisa governamental, os pequenos negócios são importantes para a economia brasileira pois, geram empregos e contribuem para o PIB e a massa salarial brasileira. Além de permitir que trabalhadores autônomos, que tem o empreendedorismo como uma forma de complementação de renda, ou até mesmo renda principal, possam se beneficiar de direitos que antes eram reservados somente a empresas de maior porte e trabalhadores CLT provendo assim inclusão econômica e previdenciária de milhões de brasileiros. 
+
+O setor de comércio e indústria é maioria entre os segmentos em atividade representando cerca de 92% do total. Diante dessa crescente demanda nosso trabalho visa desenvolver um aplicativo móvel direcionado para a organização das vendas de microempreendedores individuais (MEIs), tendo como foco principal a organização das rotinas de pagamento e principais processos de venda tendo como foco automatizar e facilitar a organização das finanças e dos principais processos de venda de pequenos empreendedores autônomos.  
+
+Através de nossa aplicação, vendedores autônomos podem criar uma agenda automatizando os principais processos do seu fluxo de trabalho e assim organizar e otimizar suas vendas e finanças. Tal ideia, teve como foco principal solucionar as dificuldades enfrentadas pela nossa cliente, que atua no ramo de venda de joias de forma autônoma e através de uma entrevista nos detalhou um pouco mais de sua rotina e suas maiores dificuldades, nos processos que vão desde a organização dos recebimentos dos clientes até coisas mais simples como consultar quem encomendou qual peça, que são justamente os problemas que buscamos solucionar com o “Aurum” trazendo uma plataforma simples que busca automatizar os processos e otimizar o fluxo de trabalho e organização de profissionais deste ramo.  
 
 ## Cliente 
 Nesta seção, devem ser apresentadas informações essenciais sobre o cliente (parceiro) para garantir um entendimento mais preciso do projeto como uma iniciativa extensionista.  
@@ -21,13 +25,17 @@ O grupo pode optar por fazer uso de ferramentas como Design Thinking, que permit
 
 ## Objetivos
 
-Aqui, você deve descrever os objetivos do trabalho, indicando que o objetivo geral é desenvolver um software para solucionar o problema apresentado acima.
+Desenvolver um aplicativo para a gestão de vendas de joias, voltado para profissionais MEI autônomos, que facilite o controle de estoque, clientes, pedidos e finanças, promovendo maior organização. 
 
-Além disso, apresente alguns (pelo menos 3) objetivos específicos, dependendo de onde você pretende concentrar sua prática investigativa ou como deseja aprofundar seu trabalho.
- 
-> **Links úteis**:
-> - [Objetivo geral e objetivo específico: como fazer e quais verbos utilizar](https://blog.mettzer.com/diferenca-entre-objetivo-geral-e-objetivo-especifico/)
+> Objetivos específicos 
+* Facilitar o gerenciamento de estoque – Criar funcionalidades para cadastro, controle e atualização de produtos disponíveis, permitindo o monitoramento. 
 
+* Otimizar o registro de vendas – Implementar um sistema simples e eficiente para registrar e acompanhar as vendas realizadas, incluindo parcelamentos e recebimentos futuros. 
+
+* Criar um sistema de notificações e lembretes – Implementar alertas para pagamentos pendentes, etc  
+
+* Garantir acessibilidade e usabilidade – Desenvolver uma interface amigável e responsiva, garantindo uma boa experiência para usuários sem conhecimento técnico avançado.
+  
 ## Justificativa
 
 Descreva a importância ou a motivação para trabalhar com esta aplicação que você escolheu. Indique as razões pelas quais você escolheu seus objetivos específicos ou as razões para aprofundar em certos aspectos do software.
