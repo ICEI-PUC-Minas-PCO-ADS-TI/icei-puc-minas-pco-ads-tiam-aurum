@@ -6,9 +6,7 @@
 
 `4º semestre/2025`
 
-O setor de comércio e indústria é maioria entre os segmentos em atividade representando cerca de 92% do total, diante dessa crescente demanda nosso trabalho visa desenvolver um aplicativo móvel direcionado para a organização das vendas de microempreendedores individuais (MEIs), tendo como foco principal a organização das rotinas de pagamento e principais processos de venda tendo como foco automatizar e facilitar a organização das finanças e dos principais processos de venda de pequenos empreendedores autônomos.
-
-Tal ideia, teve como foco principal solucionar as dificuldades enfrentadas pela nossa cliente, que atua no ramo de venda de joias de forma autônoma e através de uma entrevista nos detalhou um pouco mais de sua rotina e suas maiores dificuldades, nos processos que vão desde a organização dos recebimentos dos clientes até coisas mais simples como consultar quem encomendou qual peça, que são justamente os problemas que buscamos solucionar com o “Aurum” trazendo uma plataforma simples e intuitiva que busca automatizar os processos e otimizar o fluxo de trabalho e organização de profissionais deste ramo.  
+Este projeto visa desenvolver um aplicativo móvel voltado para a organização das vendas e gestão financeira de microempreendedores individuais (MEIs), com foco principal na automatização e simplificação dos processos que envolvem as vendas de joias. O aplicativo será uma ferramenta intuitiva, projetada para ajudar pequenos empreendedores autônomos a organizar suas finanças, controlar o estoque, registrar vendas, acompanhar pendências de pagamentos e gerenciar informações de seus clientes de forma eficiente e simples. A solução visa proporcionar mais autonomia, controle e segurança financeira para os autônomos, para que possam gerir com mais facilidade seus negócios, sem se perder na complexidade administrativa.  
 
 ## Integrantes
 
