@@ -13,16 +13,8 @@ A cliente parceira é uma vendedora autônoma de artigos de joalheria que inicio
 Atualmente, suas principais mercadorias incluem ouro, prata, relógios, folheados a ouro, aço cirúrgico, entre outros. Trabalha na área há mais de 20 anos e possui uma clientela fiel e consolidada. A maioria de seus compradores está localizada em Contagem, Belo Horizonte e Betim, e ela busca expandir suas vendas utilizando o status do WhatsApp. Seu principal objetivo no momento é modernizar-se e adequar-se às novas tecnologias, pois ainda utiliza métodos tradicionais de organização, como agendas, fichários e notas promissórias.
 
 ## Problema
-Aqui, a equipe deve fornecer uma descrição detalhada do problema a ser resolvido. Não é o momento adequado para abordar questões técnicas relacionadas ao desenvolvimento da aplicação. O objetivo é compreender e comunicar de maneira precisa qual é o desafio ou necessidade que motiva a criação da aplicação.
 
-Descreva também o contexto em que essa aplicação será usada, se  houver: empresa, tecnologias, etc. Novamente, descreva apenas o que de fato existir, pois ainda não é a hora de apresentar requisitos detalhados ou projetos.
-
-O grupo pode optar por fazer uso de ferramentas como Design Thinking, que permite uma visão completa do problema.
-
-> **Links úteis**:
-> - [Objetivos, problema de pesquisa e justificativa](https://medium.com/@versioparole/objetivos-problema-de-pesquisa-e-justificativa-c98c8233b9c3)
-> - [Matriz certezas, suposições e dúvidas](https://medium.com/educa%C3%A7%C3%A3o-fora-da-caixa/matriz-certezas-suposi%C3%A7%C3%B5es-e-d%C3%BAvidas-fa2263633655)
-> - [Brainstorming](https://www.euax.com.br/2018/09/brainstorming/)
+O principal problema identificado após análises foi a ausência de uma solução tecnologica que integrasse todas as funcionalidades necessárias para a organização de vendas em uma plataforma alinhada com as demandas atuais. Suas principais dificuldades estão na gestão e organização das vendas, na falta de um sistema centralizado para o controle de vendas e na ausência de ferramentas que possam otimizar seu tempo. Apesar da existência de diversas aplicações para gestão de negócios, a cliente enfrenta dificuldades com a tecnologia e sente a necessidade de uma solução simples e intuitiva que atenda a todas as demandas do seu negócio.
 
 ## Objetivos
 
