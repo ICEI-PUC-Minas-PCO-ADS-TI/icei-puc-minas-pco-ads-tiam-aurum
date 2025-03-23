@@ -18,17 +18,14 @@ Com base na análise das personas, foram identificadas as seguintes histórias d
 
 |EU COMO... `PERSONA`| QUERO/PRECISO ... `FUNCIONALIDADE` |PARA ... `MOTIVO/VALOR`                 |
 |--------------------|------------------------------------|----------------------------------------|
-|Usuário do sistema  | Registrar minhas tarefas           | Não esquecer de fazê-las               |
-|Administrador       | Alterar permissões                 | Permitir que possam administrar contas |
-
-Apresente aqui as histórias de usuários que são relevantes para o projeto da sua solução. As histórias de usuários consistem em uma ferramenta poderosa para a compreensão e elicitação dos requisitos funcionais e não funcionais da sua aplicação. Se possível, agrupe as histórias de usuários por contexto, para facilitar consultas recorrentes a esta parte do documento.
-
-> **Links úteis**:
-> - [Histórias de usuários com exemplos e template](https://www.atlassian.com/br/agile/project-management/user-stories)
-> - [Como escrever boas histórias de usuário (user stories)](https://medium.com/vertice/como-escrever-boas-users-stories-hist%C3%B3rias-de-usu%C3%A1rios-b29c75043fac)
-> - [User stories: requisitos que humanos entendem](https://www.luiztools.com.br/post/user-stories-descricao-de-requisitos-que-humanos-entendem/)
-> - [Histórias de usuários: mais exemplos](https://www.reqview.com/doc/user-stories-example.html)
-> - [9 common user story mistakes](https://airfocus.com/blog/user-story-mistakes/)
+|Vendedora           |Acessar o sistema com meu login e senha|Gerenciar minhas vendas e clientes com segurança|
+|Vendedora           |Preciso cadastrar, editar e excluir joias no sistema|Manter meu estoque sempre atualizado|
+|Vendedora           |Preciso cadastrar e editar informações dos meus clientes|Acompanhar suas compras e pagamentos|
+|Vendedora           |Visualizar os pagamentos pendentes|Lembrar quais clientes ainda precisam me pagar|
+|Vendedora           |Visualizar um resumo dos meus recebimentos do mês|Acompanhar minha renda e planejar melhor minhas finanças|
+|Vendedora           |Gerar um relatório de vendas com detalhes dos clientes, produtos vendidos e formas de pagamento|Entender melhor o desempenho do meu negócio|
+|Vendedora           |Registrar pedidos de clientes|Garantir que eu não esqueça de solicitar ou entregar as peças que eles pediram|
+|Vendedora           |Registrar devoluções ou trocas de produtos|Manter um controle correto do meu estoque e evitar erros em futuras vendas|
 
 ## Requisitos
 
