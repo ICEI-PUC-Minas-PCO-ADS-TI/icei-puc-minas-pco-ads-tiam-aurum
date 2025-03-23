@@ -27,7 +27,7 @@ O grupo pode optar por fazer uso de ferramentas como Design Thinking, que permit
 
 Desenvolver um aplicativo para a gestão de vendas de joias, voltado para profissionais MEI autônomos, que facilite o controle de estoque, clientes, pedidos e finanças, promovendo maior organização. 
 
-> Objetivos específicos 
+### Objetivos específicos 
 * Facilitar o gerenciamento de estoque – Criar funcionalidades para cadastro, controle e atualização de produtos disponíveis, permitindo o monitoramento. 
 
 * Otimizar o registro de vendas – Implementar um sistema simples e eficiente para registrar e acompanhar as vendas realizadas, incluindo parcelamentos e recebimentos futuros. 
