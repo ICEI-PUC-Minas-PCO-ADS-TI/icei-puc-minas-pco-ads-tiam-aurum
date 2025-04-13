@@ -42,7 +42,7 @@ No entanto, mesmo com essas limitações, a solução proposta está alinhada ao
 
 [PROCESSO 1 - Registro de Venda](./processes/processo-1-nome-do-processo.md "Detalhamento do processo 1.")
 
-[PROCESSO 2 - Nome do processo](./processes/processo-2-nome-do-processo.md "Detalhamento do processo 2.")
+[PROCESSO 2 - Cadastro de Clientes](./processes/processo-2-nome-do-processo.md "Detalhamento do processo 2.")
 
 
 ## Indicadores de desempenho
