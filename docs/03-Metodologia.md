@@ -40,16 +40,16 @@ Discuta como a configuração do projeto foi feita na ferramenta de versionament
 > Apresente a divisão de papéis entre os membros do grupo em cada Sprint. O desejável é que, em cada Sprint, o aluno assuma papéis diferentes na equipe. Siga o modelo do exemplo abaixo:
 
 #### Sprint 1
-- _Scrum master_: AlunaX
-- Protótipos: AlunoY
-- Testes: AlunoK
-- Documentação: AlunaZ
+- Documentação: Rhillary Carvalho
+- Documentação: Rafael Brandão
+- Documentação: Luiza Sampaio
+- Documentação: Guilherme Campos
 
 #### Sprint 2
-- _Scrum master_: AlunaY
-- Desenvolvedor _front-end_: AlunoX
-- Desenvolvedor _back-end_: AlunoK
-- Testes: AlunaZ
+- Documentação: Rhillary Carvalho
+- Documentação: Rafael Brandão
+- Documentação: Luiza Sampaio
+- Documentação: Guilherme Campos
 
 ###  Quadro de tarefas
 
@@ -57,25 +57,25 @@ Discuta como a configuração do projeto foi feita na ferramenta de versionament
 
 #### Sprint 1
 
-Atualizado em: 21/04/2024
+Atualizado em: 13/04/2025
 
 | Responsável   | Tarefa/Requisito | Iniciado em    | Prazo      | Status | Terminado em    |
 | :----         |    :----         |      :----:    | :----:     | :----: | :----:          |
-| AlunaX        | Introdução | 01/02/2024     | 07/02/2024 | ✔️    | 05/02/2024      |
-| AlunaZ        | Objetivos    | 03/02/2024     | 10/02/2024 | 📝    |                 |
-| AlunoY        | Histórias de usuário  | 01/01/2024     | 07/01/2005 | ⌛     |                 |
-| AlunoK        | Personas 1  |    01/01/2024        | 12/02/2005 | ❌    |       |
+| Rhillary Carvalho | Entrevista, Introdução, Objetivos gerais e Específicos, Slide |     | 19/03/2025 | ✔️ | 19/03/2025 |
+| Rafael Brandão | Entrevista, Público-alvo, Participantes do processo de negócio, Slide   |  | 19/03/2025 | ✔️ |  19/03/2025 |
+| Luiza Sampaio | Entrevista, Custos e Pessoal do Projeto, Planejamento de Cronograma, Slide  |  | 19/03/2025 | ✔️ | 19/03/2025 |
+| Guilherme Campos | Entrevista, RF e RNF, Personas, Histórias de Usuários, Restrições, Slide  |  | 19/03/2025 | ✔️ | 19/03/2025 |
 
 #### Sprint 2
 
-Atualizado em: 21/04/2024
+Atualizado em: 13/04/2025
 
 | Responsável   | Tarefa/Requisito | Iniciado em    | Prazo      | Status | Terminado em    |
 | :----         |    :----         |      :----:    | :----:     | :----: | :----:          |
-| AlunaX        | Página inicial   | 01/02/2024     | 07/03/2024 | ✔️    | 05/02/2024      |
-| AlunaZ        | CSS unificado    | 03/02/2024     | 10/03/2024 | 📝    |                 |
-| AlunoY        | Página de login  | 01/02/2024     | 07/03/2024 | ⌛     |                 |
-| AlunoK        | Script de login  |  01/01/2024    | 12/03/2024 | ❌    |       |
+| Rhillary Carvalho | Diagramas As Is, To Be e texto Processo de Registrar Venda, Slide, texto Processo de Cadastrar Cliente |  | 07/03/2024 | ✔️ | 13/04/2025 |
+| Rafael Brandão | Diagramas As Is, To Be e texto Processo de Registrar Venda, Slide |  | 13/04/2025 | ✔️ | 13/04/2025 |
+| Luiza Sampaio | Diagrama As Is, To Be e texto  Processo de Estoque, Slide |  | 13/04/2025 | ✔️ | 13/04/2025 |
+| Guilherme Campos | Diagramas As Is, To Be e texto Processo de Cadastrar Cliente, Slide |  | 13/04/2025 | ✔️ | 13/04/2025 |
 
 
 Legenda:
