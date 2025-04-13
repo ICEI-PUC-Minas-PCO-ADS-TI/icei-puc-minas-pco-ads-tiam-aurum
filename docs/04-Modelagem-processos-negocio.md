@@ -44,6 +44,7 @@ No entanto, mesmo com essas limitações, a solução proposta está alinhada ao
 
 [PROCESSO 2 - Cadastro de Clientes](./processes/processo-2-nome-do-processo.md "Detalhamento do processo 2.")
 
+[PROCESSO 3 - Processo de Estoque](./processes/processo-3-Estoque.md "Detalhamento do processo 3.")
 
 ## Indicadores de desempenho
 
