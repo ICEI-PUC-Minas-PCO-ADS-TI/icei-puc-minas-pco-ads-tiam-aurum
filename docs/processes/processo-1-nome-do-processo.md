@@ -1,11 +1,9 @@
 ### 3.3.1 Processo 1 – Registro de venda
-
-_Apresente aqui o nome e as oportunidades de melhoria para o processo 1. 
-Em seguida, apresente o modelo do processo 1, descrito no padrão BPMN._
- 
+_
+ #### As is
 ![Modelo BPMN do PROCESSO 1 As Is](../images/diagrama_as_is_registro_venda.png "Modelo BPMN do Processo 1.")
 
-
+#### To Be
 ![Modelo BPMN do PROCESSO 1 To Be](../images/diagrama_to_be_registro_venda.png "Modelo BPMN do Processo 1.")
 
 #### Detalhamento das atividades
