@@ -32,7 +32,7 @@ Apresente o modelo de dados por meio de um modelo relacional que contemple todos
 O Esquema Relacional corresponde à representação dos dados em tabelas juntamente com as restrições de integridade e chave primária.
  
 
-![Modelo relacional Aurum](images/pedegalinha.jpg)
+![Modelo relacional Aurum](images/pedegalinha1.jpg)
 
 
 ```sql
