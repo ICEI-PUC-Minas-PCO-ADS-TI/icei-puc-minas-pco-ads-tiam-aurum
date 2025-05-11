@@ -149,9 +149,9 @@ Apresente também uma figura explicando como as tecnologias estão relacionadas 
 
 | **Dimensão**   | **Tecnologia**  |
 | ---            | ---             |
-| Front-end      | HTML + CSS + JS + React |
-| Back-end       | Node.js         |
-| SGBD           | MySQL           |
+| Front-end      |  React-Native + Typescript |
+| Back-end       | C#     |
+| SGBD           | PostGreSql          |
 | Deploy         | Vercel          |
 
 
