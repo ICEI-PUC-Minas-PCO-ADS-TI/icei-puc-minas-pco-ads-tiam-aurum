@@ -58,15 +58,19 @@ Descrição da tela principal do sistema.
 > Insira aqui a tela principal do sistema
 
 
-###  Telas do processo 1
+###  Telas do processo de Gerenciar cadastro de joias
 
-Descrição da tela relativa à atividade 1 do processo 1.
+Tela do estoque de joias. Através dela é possível visualizar, adicionar, editar e excluir joias.
 
-> Insira aqui a tela da atividade 1
+![Tela do estoque de joias](images/tela-estoque-joias.png)
 
-Descrição da tela relativa à atividade 2 do processo 1.
+Tela do cadastro de novas joias. Através dela é possível preencher os dados da nova joia e inserir no estoque.
 
-> Insira aqui a tela da atividade 2
+![Tela do cadastro de novas joias](images/tela-cadastro-joias.png)
+
+Tela da edição de joia. Através dela é possível alterar as informações de uma joia existente e atualizar no estoque.
+
+![Tela da atualização de uma joia existente](images/tela-atualizar-joia.png)
 
 
 ### Telas do processo 2
