@@ -136,6 +136,7 @@ CREATE TABLE pagamentos (
 	CONSTRAINT fk_pedido FOREIGN KEY (pedidoId) REFERENCES pedidos(id),
 	CONSTRAINT fk_cliente FOREIGN KEY (clienteId) REFERENCES clientes(id)
 );
+
 ```
 Esse script deverá ser incluído em um arquivo .sql na pasta [de scripts SQL](../src/db).
 
