@@ -27,22 +27,21 @@ Visão geral da interação do usuário por meio das telas do sistema. Apresente
 ### Telas de cadastros e login
 Tela de Login ao sistema.
 
-![Tela do estoque de joias](images/login.png)
+![Tela de login](images/Aurumlogin.jpg)
 
 Tela de cadatro usuario
 
-![Tela do estoque de joias](images/cadastro_usuario.png)
+![Tela de cadastro de usuário](images/AurumCadastro)
 
 Tela cadastro cliente
 
-![Tela do estoque de joias](images/cadastro_cliente.png)
+![Tela de cadastro de clientes](images/CadCliente.jpg)
 
 
 ### Tela principal do sistema
 
-Descrição da tela principal do sistema.
+![Tela principal](images/homeAurum.jpg)
 
-> Insira aqui a tela principal do sistema
 
 
 ###  Telas do processo de Gerenciar cadastro de joias
