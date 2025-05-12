@@ -27,11 +27,11 @@ Visão geral da interação do usuário por meio das telas do sistema. Apresente
 ### Telas de cadastros e login
 Tela de Login ao sistema.
 
-![Tela de login](images/AurumLogin.jpg)
+![Tela de Login](images/AurumLogin.jpg)
 
 Tela de cadatro usuario
 
-![Tela de cadastro de usuário](images/AurumCadastro.jpg)
+![Tela de Cadastro de Usuário](images/AurumCadastro.jpg)
 
 Tela cadastro cliente
 
