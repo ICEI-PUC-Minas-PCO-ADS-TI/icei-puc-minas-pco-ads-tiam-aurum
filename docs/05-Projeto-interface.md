@@ -27,11 +27,11 @@ Visão geral da interação do usuário por meio das telas do sistema. Apresente
 ### Telas de cadastros e login
 Tela de Login ao sistema.
 
-![Tela de login](images/Aurumlogin.jpg)
+![Tela de login](images/AurumLogin.jpg)
 
 Tela de cadatro usuario
 
-![Tela de cadastro de usuário](images/AurumCadastro)
+![Tela de cadastro de usuário](images/AurumCadastro.jpg)
 
 Tela cadastro cliente
 
@@ -59,12 +59,16 @@ Tela da edição de joia. Através dela é possível alterar as informações de
 ![Tela da atualização de uma joia existente](images/tela-atualizar-joia.png)
 
 
-### Telas do processo 2
+### Telas de Calendário e Clientes
 
-Descrição da tela relativa à atividade 1 do processo 2.
+Tela de edição do cliente
 
-> Insira aqui a tela da atividade 1
+![Tela edição cadastro do cliente](images/editarCliente.jpg)
 
-Descrição da tela relativa à atividade 2 do processo 2.
+Tela com a lista de Clientes
 
-> Insira aqui a tela da atividade 2
+![Tela de cleintes cadastrados](images/clientes.jpg)
+
+Tela de Calendário e Lembretes
+
+![Calendario e lembretes](images/calendario.jpg)
