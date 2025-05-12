@@ -31,7 +31,7 @@ Tela de Login ao sistema.
 
 Tela de cadatro usuario
 
-![Tela de Cadastro de Usuário](images/AurumCadastro.jpg)
+![Tela de Cadasro de Usuário](images/AurumCadastro.jpg)
 
 Tela cadastro cliente
 
