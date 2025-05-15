@@ -43,6 +43,8 @@ Os requisitos funcionais e não funcionais foram priorizados com base na técnic
 |RF-006| Permitir gerar relatórios de vendas   | MÉDIA |
 |RF-007| Registrar pedidos de clientes   | BAIXA |
 |RF-008| Registrar devoluções ou trocas de peças  | BAIXA |
+|RF-009| Registrar venda do produto  | ALTA |
+
 
 ### Requisitos não funcionais
 
