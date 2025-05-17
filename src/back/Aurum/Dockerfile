@@ -4,8 +4,8 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 # Define o diretório de trabalho dentro do contêiner
 WORKDIR /app
 
-# Copia o arquivo .csproj e restaura as dependências
-COPY *.csproj ./  # Copia o .csproj da pasta atual onde o Dockerfile está
+# Copia o arquivo .csproj com o novo nome e restaura as dependências
+COPY Aurum_config.csproj ./  # Agora copiamos o novo nome do .csproj
 RUN dotnet restore  # Restaura as dependências do projeto
 
 # Copia todos os arquivos do projeto para dentro do contêiner
