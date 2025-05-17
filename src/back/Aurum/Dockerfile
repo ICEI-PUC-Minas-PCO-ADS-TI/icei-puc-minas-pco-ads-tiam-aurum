@@ -5,14 +5,14 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /app
 
 # Copia o arquivo .csproj e restaura as dependências
-COPY *.csproj ./
-RUN dotnet restore
+COPY src/back/Aurum/*.csproj ./  # Copia o .csproj da pasta correta
+RUN dotnet restore  # Restaura as dependências do projeto
 
 # Copia todos os arquivos do projeto para dentro do contêiner
-COPY . ./
+COPY src/back/Aurum/. ./  # Copia o restante dos arquivos do projeto
 
 # Publica o aplicativo no modo Release
-RUN dotnet publish -c Release -o out
+RUN dotnet publish -c Release -o out  # Compila e publica a aplicação
 
 # Etapa 2: Usando a imagem base do ASP.NET (runtime)
 FROM mcr.microsoft.com/dotnet/aspnet:6.0
@@ -23,8 +23,8 @@ WORKDIR /app
 # Copia os arquivos publicados da etapa anterior
 COPY --from=build /app/out .
 
-# Expõe a porta que a aplicação vai usar
+# Expõe a porta 80 (padrão para APIs ASP.NET)
 EXPOSE 80
 
 # Comando para iniciar a aplicação no contêiner
-ENTRYPOINT ["dotnet", "Aurum.dll"]
+ENTRYPOINT ["dotnet", "Aurum.dll"]  # Certifique-se de que "Aurum.dll" é o nome correto
