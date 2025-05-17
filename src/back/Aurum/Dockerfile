@@ -4,12 +4,12 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 # Define o diretório de trabalho dentro do contêiner
 WORKDIR /app
 
-# Copia o arquivo .csproj com o novo nome e restaura as dependências
-COPY Aurum_config.csproj ./  # Agora copiamos o novo nome do .csproj
+# Copia o arquivo .csproj e restaura as dependências
+COPY src/back/Aurum/Aurum_config.csproj ./  # Caminho correto para o arquivo .csproj
 RUN dotnet restore  # Restaura as dependências do projeto
 
 # Copia todos os arquivos do projeto para dentro do contêiner
-COPY . ./  # Copia todos os arquivos da pasta atual para o contêiner
+COPY src/back/Aurum/. ./  # Caminho correto para copiar o restante dos arquivos
 
 # Publica o aplicativo no modo Release
 RUN dotnet publish -c Release -o out  # Compila e publica a aplicação
