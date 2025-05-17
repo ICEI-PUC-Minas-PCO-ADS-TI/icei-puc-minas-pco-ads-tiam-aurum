@@ -5,11 +5,11 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /app
 
 # Copia o arquivo .csproj e restaura as dependências
-COPY src/back/Aurum/*.csproj ./  # Copia o .csproj da pasta correta
+COPY *.csproj ./  # Copia o .csproj da pasta atual onde o Dockerfile está
 RUN dotnet restore  # Restaura as dependências do projeto
 
 # Copia todos os arquivos do projeto para dentro do contêiner
-COPY src/back/Aurum/. ./  # Copia o restante dos arquivos do projeto
+COPY . ./  # Copia todos os arquivos da pasta atual para o contêiner
 
 # Publica o aplicativo no modo Release
 RUN dotnet publish -c Release -o out  # Compila e publica a aplicação
