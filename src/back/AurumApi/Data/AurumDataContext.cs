@@ -15,6 +15,7 @@ namespace AurumApi.Data
         public DbSet<Pedido> Pedidos { get; set; }
         public DbSet<JoiaPedido> JoiasPedidos { get; set; }
         public DbSet<Pagamento> Pagamentos { get; set; }
+        public DbSet<EnderecoCliente> EnderecosClientes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
