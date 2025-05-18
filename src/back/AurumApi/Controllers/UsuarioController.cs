@@ -8,7 +8,7 @@ namespace AurumApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class UsuarioController : ControllerBase
     {
         private readonly AurumDataContext _aurumDataContext;
