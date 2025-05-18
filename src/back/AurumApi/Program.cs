@@ -1,5 +1,7 @@
 
 using AurumApi.Data;
+using AurumApi.Service.Interface;
+using AurumApi.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -18,6 +20,8 @@ namespace AurumApi
             ConfigureSwagger(builder);
             ConfigureDatabase(builder);
             ConfigureMvc(builder);
+
+            builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 
             var app = builder.Build();
 

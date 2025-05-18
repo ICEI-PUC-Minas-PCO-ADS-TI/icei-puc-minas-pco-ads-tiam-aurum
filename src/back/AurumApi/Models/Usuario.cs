@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using AurumApi.DTO;
 
 namespace AurumApi.Models
 {
@@ -16,6 +17,16 @@ namespace AurumApi.Models
         [Column("documento")]
         public string? Documento { get; set; }
 
+
+        public UsuarioDTO toDTO()
+        {
+            UsuarioDTO dto = new UsuarioDTO();
+            dto.id = Id;
+            dto.Email = Email;
+            dto.Nome = Nome;
+            dto.Documento = Documento;
+            return dto;
+        }
 
 
 
