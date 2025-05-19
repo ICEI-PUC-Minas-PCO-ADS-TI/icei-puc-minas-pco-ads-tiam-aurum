@@ -12,8 +12,12 @@ namespace AurumApi.Models
         [Column("valortotal")]
         public decimal ValorTotal { get; set; }
         [Column("usuarioid")]
+        public int UsuarioId { get; set; }
         public Usuario? Usuario { get; set; }
         [Column("clienteid")]
-        public Cliente? Cliente { get; set; }   
+        public int ClienteId { get; set; }
+        public Cliente? Cliente { get; set; }
+        public ICollection<Pagamento> Pagamentos { get; set; } = new List<Pagamento>();
+        public ICollection<JoiaPedido> JoiasPedidos { get; set; } = new List<JoiaPedido>();
     }
 }

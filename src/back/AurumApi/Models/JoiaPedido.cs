@@ -14,10 +14,10 @@ namespace AurumApi.Models
         [Column("subtotal")]
         public decimal Subtotal { get; set; }
         [Column("pedidoid")]
+        public int PedidoId { get; set; }
         public Pedido? Pedido { get; set; }
         [Column("joiaid")]
+        public int JoiaId { get; set; }
         public Joia? Joia { get; set; }
-
-
     }
 }

@@ -12,20 +12,24 @@ namespace AurumApi.Models
         [Column("valorparcela")]
         public decimal ValorParcela { get; set; }
         [Column("datapagamento")]
-        public DateTime DataPagamento { get; set; }
+        public DateTime? DataPagamento { get; set; }
         [Column("datavencimento")]
         public DateTime DataVencimento { get; set; }
         [Column("status")]
         public string? Status { get; set; }
         [Column("formapagamento")]
         public string? FormaPagamento { get; set; }
-        [Column("usuarioid")]
-        public Usuario? Usuario { get; set; }
-        [Column("pedidoid")]
-        public Pedido? Pedido { get; set; }
-        [Column("clienteid")]
-        public Cliente? Cliente { get; set; }
         [Column("numeroparcela")]
         public int NumeroParcela { get; set; }
+
+        [Column("usuarioid")]
+        public int UsuarioId { get; set; }
+        public Usuario? Usuario { get; set; }
+        [Column("pedidoid")]
+        public int PedidoId { get; set; }
+        public Pedido? Pedido { get; set; }
+        [Column("clienteid")]
+        public int ClienteId { get; set; }
+        public Cliente? Cliente { get; set; }
     }
 }

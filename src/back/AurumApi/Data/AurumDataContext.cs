@@ -21,6 +21,59 @@ namespace AurumApi.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Usuario>()
+                .HasMany(u => u.Clientes)
+                .WithOne(c => c.Usuario)
+                .HasForeignKey(c => c.UsuarioId);
+
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(u => u.Joias)
+                .WithOne(j => j.Usuario)
+                .HasForeignKey(j => j.UsuarioId);
+
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(u => u.Pedidos)
+                .WithOne(p => p.Usuario)
+                .HasForeignKey(p => p.UsuarioId);
+
+            modelBuilder.Entity<Cliente>()
+                .HasMany(c => c.Enderecos)
+                .WithOne(e => e.Cliente)
+                .HasForeignKey(e => e.ClienteId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Cliente>()
+                .HasMany(c => c.Pedidos)
+                .WithOne(p => p.Cliente)
+                .HasForeignKey(p => p.ClienteId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Cliente>()
+                .HasMany(c => c.Pagamentos)
+                .WithOne(pg => pg.Cliente)
+                .HasForeignKey(pg => pg.ClienteId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
+            modelBuilder.Entity<Pedido>()
+                .HasMany(p => p.Pagamentos)
+                .WithOne(pg => pg.Pedido)
+                .HasForeignKey(pg => pg.PedidoId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Pedido>()
+                .HasMany(p => p.JoiasPedidos)
+                .WithOne(jp => jp.Pedido)
+                .HasForeignKey(jp => jp.PedidoId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Joia>()
+                .HasMany(j => j.JoiasPedidos)
+                .WithOne(jp => jp.Joia)
+                .HasForeignKey(jp => jp.JoiaId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

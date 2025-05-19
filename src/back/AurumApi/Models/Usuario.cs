@@ -13,10 +13,13 @@ namespace AurumApi.Models
         [Column("nome")]
         public string? Nome { get; set; }
         [Column("senhacriptografada")]
-        public string? senha { get; set; }
+        public string? Senha { get; set; }
         [Column("documento")]
         public string? Documento { get; set; }
 
+        public ICollection<Joia> Joias { get; set; } = new List<Joia>();
+        public ICollection<Cliente> Clientes { get; set; } = new List<Cliente>();
+        public ICollection<Pedido> Pedidos { get; set; } = new List<Pedido>();
 
         public UsuarioDTO toDTO()
         {

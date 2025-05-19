@@ -13,7 +13,10 @@ namespace AurumApi.Models
         public decimal Preco { get; set; }
         [Column("quantidade")]
         public int Quantidade { get; set; }
+
         [Column("usuarioid")]
+        public int UsuarioId { get; set; }
         public Usuario? Usuario { get; set; }
+        public ICollection<JoiaPedido> JoiasPedidos { get; set; } = new List<JoiaPedido>();
     }
 }

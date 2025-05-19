@@ -13,12 +13,15 @@ namespace AurumApi.Models
         public string? Documento { get; set; }
         [Column("telefone")]
         public string? Telefone { get; set; }
-
         [Column("datacadastro")]
         public DateTime DataCadastro { get; set; }
 
         [Column("usuarioid")]
-        public Usuario? Usuario { get; set; }
+        public int UsuarioId { get; set; }
+        public Usuario Usuario { get; set; }
+        public ICollection<EnderecoCliente> Enderecos { get; set; } = new List<EnderecoCliente>();
+        public ICollection<Pedido> Pedidos { get; set; } = new List<Pedido>();
+        public ICollection<Pagamento> Pagamentos { get; set; } = new List<Pagamento>();
     }
 
 }
