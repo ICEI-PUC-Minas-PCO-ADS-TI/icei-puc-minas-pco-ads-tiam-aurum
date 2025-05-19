@@ -1,0 +1,35 @@
+{
+  "expo": {
+    "name": "Aurum",
+    "slug": "Aurum",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./image/aurum.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./image/aurum.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./image/aurum.png",
+        "backgroundColor": "#ffffff"
+      },
+      "edgeToEdgeEnabled": true,
+      "package": "com.brands452.Aurum"
+    },
+    "web": {
+      "favicon": "./image/aurum.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "514d176c-7b37-454a-9696-8211e3555b55"
+      }
+    }
+  }
+}
