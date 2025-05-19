@@ -20,6 +20,8 @@ namespace AurumApi
             ConfigureSwagger(builder);
             ConfigureDatabase(builder);
             ConfigureMvc(builder);
+            // Configura o CORS
+            ConfigureCors(builder);
 
             builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 
@@ -105,6 +107,18 @@ namespace AurumApi
             });
         }
 
+        static void ConfigureCors(WebApplicationBuilder builder)
+        {
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAnyOrigin", builder =>
+                    builder.AllowAnyOrigin()  // Permite acesso de qualquer origem
+                           .AllowAnyHeader()  // Permite qualquer cabeçalho
+                           .AllowAnyMethod()); // Permite qualquer método (GET, POST, etc.)
+            });
+        }
+
+
         static void ConfigureMvc(WebApplicationBuilder builder)
         {
             builder.Services.AddControllers();
@@ -116,7 +130,7 @@ namespace AurumApi
             app.UseSwagger();
             app.UseSwaggerUI();
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseAuthentication();
             app.UseAuthorization();
