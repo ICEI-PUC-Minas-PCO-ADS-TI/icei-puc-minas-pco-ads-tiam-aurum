@@ -60,8 +60,10 @@ namespace AurumApi.Service
         private bool existeUsuario(UsuarioDTO usuarioDTO)
         {
             var usuarioValido = _aurumDataContext.Usuarios
-                .FirstOrDefault(u => u.Documento == usuarioDTO.Documento);
-            return usuarioValido != null;
+                .FirstOrDefault(u => u.Documento == usuarioDTO.Documento || u.Email == usuarioDTO.Email);
+
+
+            return usuarioValido != null ? true : false;
         }
     }
 }
