@@ -31,5 +31,7 @@ namespace AurumApi.Models
         [Column("clienteid")]
         public int ClienteId { get; set; }
         public Cliente? Cliente { get; set; }
+        [Column("valorpagamento")]
+        public Decimal ValorPagamento { get; set; }
     }
 }

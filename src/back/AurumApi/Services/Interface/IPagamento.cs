@@ -1,6 +1,10 @@
-﻿namespace AurumApi.Services.Interface
+﻿using AurumApi.DTO;
+using AurumApi.DTO.Response;
+
+namespace AurumApi.Services.Interface
 {
     public interface IPagamento
     {
+        Task<PagamentoResponse> GerarRelatorioPagamentos(FiltroDashboardPagamentoDTO filtro);
     }
 }

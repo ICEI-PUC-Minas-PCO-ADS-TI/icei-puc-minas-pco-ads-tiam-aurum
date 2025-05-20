@@ -14,6 +14,7 @@
         public UsuarioDTO? Usuario { get; set; }
         public PedidoDTO? Pedido { get; set; }
         public ClienteDTO? Cliente { get; set; }
+        public Decimal ValorPagamento { get; set; }
 
     
 
