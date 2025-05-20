@@ -23,6 +23,8 @@ namespace AurumApi
             // Configura o CORS
             ConfigureCors(builder);
 
+
+            builder.Services.AddScoped<IPagamento, PagamentoService>();
             builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 
             var app = builder.Build();
