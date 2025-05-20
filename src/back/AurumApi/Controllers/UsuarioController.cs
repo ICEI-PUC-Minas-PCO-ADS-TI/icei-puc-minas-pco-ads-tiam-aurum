@@ -1,10 +1,6 @@
-﻿using AurumApi.Data;
-using AurumApi.DTO;
-using AurumApi.Service;
-using AurumApi.Service.Interface;
-using Microsoft.AspNetCore.Authorization;
+﻿using AurumApi.DTO;
+using AurumApi.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 
 namespace AurumApi.Controllers
@@ -43,6 +39,24 @@ namespace AurumApi.Controllers
             {
                 return StatusCode(500, "Erro interno no servidor: " + ex.Message);
 
+            }
+        }
+
+        [HttpPut("atualizar")]
+        public async Task<IActionResult> AtualizarUsuario([FromBody] UsuarioDTO usuarioDTO)
+        {
+            try
+            {
+                var response = await _usuarioService.AtualizarAsync(usuarioDTO);
+                return Ok(response);
+            }
+            catch (ArgumentException e)
+            {
+                return BadRequest(e.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Erro interno no servidor: " + ex.Message);
             }
         }
     }

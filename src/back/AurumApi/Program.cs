@@ -1,12 +1,12 @@
 
 using AurumApi.Data;
-using AurumApi.Service.Interface;
-using AurumApi.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using AurumApi.Services.Interface;
+using AurumApi.Services;
 
 namespace AurumApi
 {

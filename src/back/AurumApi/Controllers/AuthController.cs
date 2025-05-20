@@ -56,7 +56,7 @@ namespace AurumApi.Controllers
         private bool validarUsuario(Usuario usuario)
         {
             var usuarioValido = _aurumDataContext.Usuarios
-                .FirstOrDefault(u => u.Documento == usuario.Documento && u.senha == usuario.senha);
+                .FirstOrDefault(u => u.Documento == usuario.Documento && u.Senha == usuario.Senha);
             return usuarioValido != null;   
         }
     }

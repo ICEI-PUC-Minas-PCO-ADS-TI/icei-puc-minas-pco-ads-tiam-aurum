@@ -1,10 +1,11 @@
 ﻿using AurumApi.Data;
 using AurumApi.DTO;
+using AurumApi.DTO.Response;
 using AurumApi.Models;
-using AurumApi.Service.Interface;
+using AurumApi.Services.Interface;
 using Microsoft.EntityFrameworkCore;
 
-namespace AurumApi.Service
+namespace AurumApi.Services
 {
     public class UsuarioService : IUsuarioService
     {
@@ -65,5 +66,36 @@ namespace AurumApi.Service
 
             return usuarioValido != null ? true : false;
         }
+
+        public async Task<Response<UsuarioDTO>> AtualizarAsync(UsuarioDTO usuarioDTO)
+        {
+            var usuario = await _aurumDataContext.Usuarios.FindAsync(usuarioDTO.id);
+
+            if (usuario == null)
+            {
+                return new Response<UsuarioDTO>
+                {
+                    Success = false,
+                    Message = "Usuário não encontrado",
+                    Data = null
+                };
+            }
+
+            usuario.Nome = usuarioDTO.Nome;
+            usuario.Email = usuarioDTO.Email;
+            usuario.Senha = usuarioDTO.Senha;
+
+            _aurumDataContext.Usuarios.Update(usuario);
+            await _aurumDataContext.SaveChangesAsync();
+
+            return new Response<UsuarioDTO>
+            {
+                Success = true,
+                Message = "Usuário atualizado com sucesso",
+                Data = usuario.toDTO()
+            };
+        }
+
+
     }
 }
