@@ -9,5 +9,6 @@ namespace AurumApi.Services.Interface
         Task<Usuario> CadastrarUsuarioAsync(UsuarioDTO usuarioDTO);
         Task<List<UsuarioDTO>> GetUsuarios();
         Task<Response<UsuarioDTO>> AtualizarAsync(UsuarioDTO usuarioDTO);
+        Task<UsuarioDTO> GetUsuarioByIdAsync(int id);
     }
 }

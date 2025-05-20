@@ -96,6 +96,14 @@ namespace AurumApi.Services
             };
         }
 
-
+        public async Task<UsuarioDTO> GetUsuarioByIdAsync(int id)
+        {
+            var usuario = await _aurumDataContext.Usuarios.FindAsync(id);
+            if (usuario == null)
+            {
+                throw new ArgumentException("Usuário não encontrado");
+            }
+            return usuario.toDTO();
+        }
     }
 }
