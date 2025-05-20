@@ -105,5 +105,16 @@ namespace AurumApi.Services
             }
             return usuario.toDTO();
         }
+
+        public async Task<List<UsuarioDTO>> GetUsuarioByNomeAsync(string nome)
+        {
+            nome = nome.ToLower();
+            List<Usuario> listUsuario = await _aurumDataContext.Usuarios
+                .Where(u => u.Nome.ToLower().Contains(nome.ToLower()))
+                .ToListAsync();
+
+            List<UsuarioDTO> listUsuarioDTO = listUsuario.Select(u => u.toDTO()).ToList();
+            return listUsuarioDTO;
+        }
     }
 }

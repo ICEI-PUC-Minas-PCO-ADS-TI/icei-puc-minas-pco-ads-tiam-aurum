@@ -73,5 +73,18 @@ namespace AurumApi.Controllers
                 return StatusCode(500, "Erro interno no servidor: " + ex.Message);
             }
         }
+        [HttpPost("buscar")]
+        public async Task<IActionResult> BuscarUsuario(string nome)
+        {
+            try
+            {
+                var usuario = await _usuarioService.GetUsuarioByNomeAsync(nome);
+                return Ok(usuario);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Erro interno no servidor: " + ex.Message);
+            }
+        }
     }
 }

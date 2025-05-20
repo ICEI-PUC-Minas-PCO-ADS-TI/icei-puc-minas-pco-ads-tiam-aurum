@@ -10,5 +10,6 @@ namespace AurumApi.Services.Interface
         Task<List<UsuarioDTO>> GetUsuarios();
         Task<Response<UsuarioDTO>> AtualizarAsync(UsuarioDTO usuarioDTO);
         Task<UsuarioDTO> GetUsuarioByIdAsync(int id);
+        Task<List<UsuarioDTO>> GetUsuarioByNomeAsync(string nome);
     }
 }
