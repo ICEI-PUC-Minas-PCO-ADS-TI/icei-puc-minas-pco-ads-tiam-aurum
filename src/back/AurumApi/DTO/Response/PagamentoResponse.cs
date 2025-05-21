@@ -5,6 +5,7 @@
         public decimal ValorTotal { get; set; }
         public DateTime MesPagamento { get; set; }
         public string Status { get; set; }
+        public long quantidadePagamentos { get; set; }
 
     }
 }

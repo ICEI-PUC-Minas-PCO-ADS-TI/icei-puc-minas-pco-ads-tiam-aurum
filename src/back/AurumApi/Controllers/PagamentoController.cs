@@ -16,7 +16,7 @@ namespace AurumApi.Controllers
             _pagamentoService = pagamentoService;
         }
 
-        [HttpPost("Dashboard")]
+        [HttpPost("pagamentosMes")]
         public async Task<IActionResult> GetRelatorioPagamentos([FromBody] FiltroDashboardPagamentoDTO filtro)
         {
             try
