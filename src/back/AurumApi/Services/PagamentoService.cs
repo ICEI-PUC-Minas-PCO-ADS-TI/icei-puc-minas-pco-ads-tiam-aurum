@@ -37,6 +37,8 @@ namespace AurumApi.Services
         private PagamentoResponse montarRelatorioPagamentos(List<Pagamento> listPagamentos)
         {
             PagamentoResponse pagamentoResponse = new PagamentoResponse();
+            pagamentoResponse.ValorTotal = 0;
+
             for (int i = 0;  i < listPagamentos.Count; i++)
             {
                 pagamentoResponse.ValorTotal+= listPagamentos[i].ValorPagamento;
