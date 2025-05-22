@@ -20,7 +20,9 @@ interface LoginProps {
 }
 
 const Login = ({ navigation }: any) => {
-  const [viewNotication, setViewNotification] = useState<boolean>(false);
+  const [viewNoticationSucces, setViewNotificationSucces] = useState<boolean>(false);
+  const [viewNoticationError, setViewNotificationError] = useState<boolean>(false);
+  const [mensagemNotification, setMensagemNotification] = useState<string>("");
   const handleCadastro = () => {
     navigation.navigate('Tabs');
   }
@@ -31,27 +33,23 @@ const Login = ({ navigation }: any) => {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.log("Erro na requisição:", error.response?.data);
+        if (error.response?.status === 401) {
+          setViewNotificationError(true);
+          setMensagemNotification("Usuário ou senha inválidos");
+          setTimeout(() => {
+            setViewNotificationError(false);
+          }, 4000);
+        }
       } else {
         console.log("Erro desconhecido:", error);
       }
     }
-
-
-
-    // console.log(values);
-    // setViewNotification(true);
-    // console.log(viewNotication);
-    // setTimeout(() => {
-    //   setViewNotification(false);
-    //   console.log(viewNotication);
-
-    // }, 4000);
-
   }
 
   return (
     <View style={styles.container}>
-      <Alert viewMode={viewNotication} />
+      <Alert text2={mensagemNotification} type='success' text1={"Notificação de Sucesso!"} viewMode={viewNoticationSucces} />
+      <Alert text2={mensagemNotification} type='info' text1={"Informação!"} viewMode={viewNoticationError} />
       <Formik
         validationSchema={validationSchema}
         initialValues={{ cpf: '', senha: '' }}

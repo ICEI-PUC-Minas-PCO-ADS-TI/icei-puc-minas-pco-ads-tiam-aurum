@@ -4,9 +4,12 @@ import Toast from 'react-native-toast-message';
 
 interface AlertProps {
   viewMode: boolean;
+  type: string;
+  text1: string;
+  text2: string;
 }
 
-const Alert = ({ viewMode }: AlertProps) => {
+const Alert = ({ viewMode, type, text1, text2 }: AlertProps) => {
   const showToast = () => {
     Toast.show({
       type: 'success',
