@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { Formik } from 'formik';
 import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
@@ -5,6 +6,7 @@ import { MaskedTextInput } from 'react-native-mask-text';
 import * as Yup from 'yup';
 import Alert from '../components/Alert';
 import { DefaultButton } from '../components/DefautlBotton';
+import api from '../services/api';
 import { Colors } from '../styles/constants';
 
 const validationSchema = Yup.object().shape({
@@ -22,15 +24,28 @@ const Login = ({ navigation }: any) => {
   const handleCadastro = () => {
     navigation.navigate('Tabs');
   }
-  const handleLogin = (values: LoginProps) => {
-    console.log(values);
-    setViewNotification(true);
-    console.log(viewNotication);
-    setTimeout(() => {
-      setViewNotification(false);
-      console.log(viewNotication);
+  const handleLogin = async (values: LoginProps) => {
+    try {
+      const response = await api.post("Auth/login", { documento: values.cpf, senha: values.senha });
+      console.log(response.data);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log("Erro na requisição:", error.response?.data);
+      } else {
+        console.log("Erro desconhecido:", error);
+      }
+    }
 
-    }, 4000);
+
+
+    // console.log(values);
+    // setViewNotification(true);
+    // console.log(viewNotication);
+    // setTimeout(() => {
+    //   setViewNotification(false);
+    //   console.log(viewNotication);
+
+    // }, 4000);
 
   }
 
