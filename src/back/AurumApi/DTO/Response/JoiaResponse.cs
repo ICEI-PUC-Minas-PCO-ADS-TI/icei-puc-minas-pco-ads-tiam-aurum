@@ -8,6 +8,5 @@
         public decimal Preco { get; set; }
         public int Quantidade { get; set; }
         public string? UrlImagem { get; set; }
-        public DateTime CriadoEm { get; set; }
     }
 }

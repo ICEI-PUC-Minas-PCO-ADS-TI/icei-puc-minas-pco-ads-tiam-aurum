@@ -1,7 +1,5 @@
 ﻿using AurumApi.DTO;
 using AurumApi.DTO.Response;
-using AurumApi.Models;
-using AurumApi.Services;
 using AurumApi.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +14,35 @@ namespace AurumApi.Controllers
         {
             _service = service;
         }
-        [HttpPost("api/joia/{usuarioId}/")]
+
+        [HttpGet("api/joia/{id:int}")]
+        public async Task<IActionResult> GetAsync([FromRoute] int id)
+        {
+            try
+            {
+                var joia = await _service.GetJoiaById(id);
+
+                if (joia == null)
+                    return NotFound($"Joia com ID {id} não encontrada.");
+
+                var response = new JoiaResponse
+                {
+                    Id = joia.Id,
+                    Nome = joia.Nome,
+                    Descricao = joia.Descricao,
+                    Preco = joia.Preco,
+                    Quantidade = joia.Quantidade,
+                    UrlImagem = joia.Imagem
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Erro interno no servidor.");
+            }
+        }
+
+        [HttpPost("api/joia/{usuarioId:int}/")]
         public async Task<IActionResult> PostAsync(int usuarioId, [FromForm] JoiaDTO joiaDto, IFormFile? imagem)
         {
             if (!ModelState.IsValid)

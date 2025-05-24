@@ -18,12 +18,16 @@ namespace AurumApi.Services
             _cloudinary = cloudinary ?? throw new ArgumentNullException(nameof(cloudinary)); ;
         }
 
-        public Task<JoiaDTO> GetJoiaById(int id)
+        public Task<Joia> GetJoiaById(int id)
         {
-            throw new NotImplementedException();
+            var joia = _aurumDataContext.Joias
+                .Include(j => j.Usuario)
+                .FirstOrDefaultAsync(j => j.Id == id);
+
+            return joia;
         }
 
-        public Task<List<JoiaDTO>> GetJoiasByUsuarioId(int usuarioId)
+        public Task<IEnumerable<JoiaDTO>> GetJoiasByUsuarioId(int usuarioId)
         {
             throw new NotImplementedException();
         }
@@ -34,8 +38,8 @@ namespace AurumApi.Services
 
             Joia joia = new Joia
             {
-                Nome = joiaDto.Nome,
-                Descricao = joiaDto.Descricao,
+                Nome = joiaDto.Nome.Trim(),
+                Descricao = joiaDto.Descricao.Trim(),
                 Preco = joiaDto.Preco,
                 Quantidade = joiaDto.Quantidade,
                 Imagem = urlImagem,
