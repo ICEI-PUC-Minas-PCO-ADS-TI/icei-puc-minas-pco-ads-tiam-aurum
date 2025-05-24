@@ -38,7 +38,7 @@ namespace AurumApi.Services
                 Descricao = joia.Descricao,
                 Preco = joia.Preco,
                 Quantidade = joia.Quantidade,
-                UrlImagem = joia.Imagem
+                UrlImagem = joia.ImagemUrl
             };
         }
 
@@ -57,7 +57,7 @@ namespace AurumApi.Services
                 Descricao = j.Descricao,
                 Preco = j.Preco,
                 Quantidade = j.Quantidade,
-                UrlImagem = j.Imagem
+                UrlImagem = j.ImagemUrl
             });
         }
 
@@ -71,7 +71,7 @@ namespace AurumApi.Services
 
         public async Task<JoiaResponse> CreateJoiaAsync(JoiaCreateDTO joiaDto, int usuarioId, IFormFile? imagem)
         {
-            string? urlImagem = await UploadImagemAsync(imagem);
+            var (urlImagem, publicId) = await UploadImagemAsync(imagem);
 
             Joia joia = new Joia
             {
@@ -79,7 +79,8 @@ namespace AurumApi.Services
                 Descricao = joiaDto.Descricao.Trim(),
                 Preco = joiaDto.Preco,
                 Quantidade = joiaDto.Quantidade,
-                Imagem = urlImagem,
+                ImagemUrl = urlImagem,
+                ImagemPublicId = publicId,
                 UsuarioId = usuarioId
             };
 
@@ -93,7 +94,7 @@ namespace AurumApi.Services
                 Descricao = joia.Descricao,
                 Preco = joia.Preco,
                 Quantidade = joia.Quantidade,
-                UrlImagem = joia.Imagem
+                UrlImagem = joia.ImagemUrl
             };
         }
         public async Task<bool> UpdateJoia(int id, JoiaUpdateDTO joiaDto, IFormFile? imagem)
@@ -106,13 +107,22 @@ namespace AurumApi.Services
             if (joia == null)
                 throw new InvalidOperationException($"Joia com ID {id} não encontrada.");
 
-            string? urlImagem = await UploadImagemAsync(imagem);
+            if (imagem != null)
+            {
+                if (!string.IsNullOrEmpty(joia.ImagemPublicId))
+                {
+                    await _cloudinary.DestroyAsync(new DeletionParams(joia.ImagemPublicId));
+                }
+
+                var (urlImagem, publicId) = await UploadImagemAsync(imagem);
+                joia.ImagemUrl = urlImagem ?? joia.ImagemUrl;
+                joia.ImagemPublicId = publicId ?? joia.ImagemPublicId;
+            }
 
             joia.Nome = string.IsNullOrWhiteSpace(joiaDto.Nome) ? joia.Nome : joiaDto.Nome.Trim();
             joia.Descricao = string.IsNullOrWhiteSpace(joiaDto.Descricao) ? joia.Descricao : joiaDto.Descricao.Trim();
             joia.Preco = joiaDto.Preco ?? joia.Preco;
             joia.Quantidade = joiaDto.Quantidade ?? joia.Quantidade;
-            joia.Imagem = urlImagem ?? joia.Imagem;
 
             await _aurumDataContext.SaveChangesAsync();
             return true;
@@ -127,22 +137,22 @@ namespace AurumApi.Services
             if (joia == null)
                 throw new InvalidOperationException($"Joia com ID {id} não encontrada.");
 
-            _aurumDataContext.Joias.Remove(joia);
-            if (joia.Imagem != null)
+            if (!string.IsNullOrEmpty(joia.ImagemPublicId))
             {
-                var deleteParams = new DeletionParams(joia.Imagem);
-                var result = await _cloudinary.DestroyAsync(deleteParams);
+                var result = await _cloudinary.DestroyAsync(new DeletionParams(joia.ImagemPublicId));
                 if (result.Error != null)
                     throw new Exception($"Erro ao excluir imagem do Cloudinary: {result.Error.Message}");
             }
+
+            _aurumDataContext.Joias.Remove(joia);
             await _aurumDataContext.SaveChangesAsync();
             return true;
         }
 
-        public async Task<string> UploadImagemAsync(IFormFile imagem)
+        public async Task<(string Url, string PublicId)> UploadImagemAsync(IFormFile imagem)
         {
             if (imagem == null || imagem.Length == 0)
-                return null;
+                return (null, null);
 
             using var stream = imagem.OpenReadStream();
             var uploadParams = new ImageUploadParams
@@ -158,7 +168,7 @@ namespace AurumApi.Services
                 throw new Exception($"Falha ao enviar imagem para o Cloudinary: {errorMessage}");
             }
 
-            return result.SecureUrl.ToString();
+            return (result.SecureUrl.ToString(), result.PublicId);
         }
     }
 }

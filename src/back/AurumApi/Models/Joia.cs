@@ -15,8 +15,10 @@ namespace AurumApi.Models
         public decimal Preco { get; set; }
         [Column("quantidade")]
         public int Quantidade { get; set; }
-        [Column("imagem")]
-        public string? Imagem { get; set; }
+        [Column("imagemurl")]
+        public string? ImagemUrl { get; set; }
+        [Column("imagempublicid")]
+        public string? ImagemPublicId { get; set; }
 
         [Column("usuarioid")]
         public int UsuarioId { get; set; }
