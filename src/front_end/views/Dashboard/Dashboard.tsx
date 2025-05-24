@@ -40,6 +40,7 @@ const Dashboard = () => {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.log("Erro na requisição:", error.response?.data);
+        setPagamentoResponse(undefined)
         if (error.response?.status === 400) {
           console.log(error.response.data)
         }
@@ -56,7 +57,7 @@ const Dashboard = () => {
       <Text>Dashboard</Text>
       {pagamentoResponse != undefined && (
         <Card
-          title={`Pagamentos`}
+          title={`Pagamentos de ${pagamentoResponse.mesPagamento}`}
           quantidade={pagamentoResponse.quantidadePagamentos}
           status={pagamentoResponse.status}
           valorTotal={`R$${pagamentoResponse.valorTotal}`}

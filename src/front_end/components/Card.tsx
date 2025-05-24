@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   },
   caracterTitle: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
     color: Colors.defaultText
   }
