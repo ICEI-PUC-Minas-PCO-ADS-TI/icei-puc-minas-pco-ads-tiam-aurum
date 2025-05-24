@@ -40,7 +40,9 @@ namespace AurumApi.Services
 
             if (!listPagamentos.Any())
             {
-                throw new ArgumentException("Nenhum pagamento encontrado com os critérios fornecidos.");
+                int mes = filtro.MesPagamento.Value.Month;
+                string nomeMes = filtro.MesPagamento.Value.ToString("MMMM", new System.Globalization.CultureInfo("pt-BR"));
+                throw new ArgumentException($"Nenhum pagamento encontrado, pela data: {nomeMes}");
             }
 
             return MontarRelatorioPagamentos(listPagamentos);
@@ -56,6 +58,8 @@ namespace AurumApi.Services
             for (int i = 0;  i < listPagamentos.Count; i++)
             {
                 pagamentoResponse.ValorTotal+= listPagamentos[i].ValorPagamento;
+                pagamentoResponse.quantidadePagamentos++;
+                if (i < 1) pagamentoResponse.Status = listPagamentos[i].Status;
             }
             return pagamentoResponse;
         }
