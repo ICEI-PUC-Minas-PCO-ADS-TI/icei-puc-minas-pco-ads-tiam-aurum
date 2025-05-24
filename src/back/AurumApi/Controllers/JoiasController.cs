@@ -76,8 +76,7 @@ namespace AurumApi.Controllers
             try
             {
                 var result = await _service.UpdateJoia(idJoia, joiaDto, imagem);
-                if (!result)
-                    return NotFound($"Joia com ID {idJoia} não encontrada.");
+
                 return NoContent();
             }
             catch (ArgumentException ex)
@@ -95,6 +94,33 @@ namespace AurumApi.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, "Erro interno no servidor.");
+            }
+        }
+
+        [HttpDelete("api/joia/{idJoia:int}")]
+        public async Task<IActionResult> DeleteAsync(int idJoia)
+        {
+            try
+            {
+                var result = await _service.DeleteJoia(idJoia);
+
+                return NoContent();
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, "Joia inválida.");
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(404, "Joia não encontrada.");
+            }
+            catch (DbUpdateException ex)
+            {
+                return StatusCode(500, "Erro ao excluir a joia no banco de dados.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro interno no servidor:\n{ex.Message}");
             }
         }
     }

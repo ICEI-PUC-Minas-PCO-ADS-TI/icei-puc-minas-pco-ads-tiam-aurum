@@ -115,12 +115,25 @@ namespace AurumApi.Services
             return true;
         }
 
-        public Task<bool> DeleteJoia(int id)
+        public async Task<bool> DeleteJoia(int id)
         {
-            //_aurumDataContext.Remove(joia);
-            //await _context.SaveChangesAsync();
-            //return true;
-            throw new NotImplementedException();
+            if (id <= 0)
+                throw new ArgumentException("Joia inválida.");
+
+            var joia = await GetJoiaForUpdate(id);
+            if (joia == null)
+                throw new InvalidOperationException($"Joia com ID {id} não encontrada.");
+
+            _aurumDataContext.Joias.Remove(joia);
+            if (joia.Imagem != null)
+            {
+                var deleteParams = new DeletionParams(joia.Imagem);
+                var result = await _cloudinary.DestroyAsync(deleteParams);
+                if (result.Error != null)
+                    throw new Exception($"Erro ao excluir imagem do Cloudinary: {result.Error.Message}");
+            }
+            await _aurumDataContext.SaveChangesAsync();
+            return true;
         }
 
         public async Task<string> UploadImagemAsync(IFormFile imagem)
