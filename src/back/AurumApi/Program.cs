@@ -1,12 +1,14 @@
 
 using AurumApi.Data;
-using AurumApi.Service.Interface;
-using AurumApi.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using AurumApi.Services.Interface;
+using AurumApi.Services;
+using Microsoft.Extensions.Options;
+using AurumApi.Models;
 
 namespace AurumApi
 {
@@ -19,11 +21,15 @@ namespace AurumApi
             ConfigureAuthentication(builder);
             ConfigureSwagger(builder);
             ConfigureDatabase(builder);
+            ConfigureCloudinary(builder);
             ConfigureMvc(builder);
             // Configura o CORS
             ConfigureCors(builder);
 
+
+            builder.Services.AddScoped<IPagamento, PagamentoService>();
             builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+            builder.Services.AddScoped<IJoiasService, JoiasService>();
 
             var app = builder.Build();
 
@@ -136,6 +142,16 @@ namespace AurumApi
             app.UseAuthorization();
 
             app.MapControllers();
+        }
+        static void ConfigureCloudinary(WebApplicationBuilder builder)
+        {
+            builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
+            builder.Services.AddSingleton(sp =>
+            {
+                var settings = sp.GetRequiredService<IOptions<CloudinarySettings>>().Value;
+                var account = new CloudinaryDotNet.Account(settings.CloudName, settings.ApiKey, settings.ApiSecret);
+                return new CloudinaryDotNet.Cloudinary(account);
+            });
         }
     }
 }

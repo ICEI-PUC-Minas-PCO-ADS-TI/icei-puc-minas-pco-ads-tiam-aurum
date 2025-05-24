@@ -17,7 +17,7 @@ namespace AurumApi.DTO
             entity.Nome = Nome;
             entity.Documento = Documento;
             entity.Email = Email;
-            entity.senha = Senha;
+            entity.Senha = Senha;
 
             return entity;
         }

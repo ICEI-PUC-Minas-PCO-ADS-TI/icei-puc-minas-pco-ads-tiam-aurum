@@ -1,6 +1,9 @@
 ﻿using AurumApi.Data;
+using AurumApi.DTO;
+using AurumApi.DTO.Response;
 using AurumApi.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -22,43 +25,49 @@ namespace AurumApi.Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] Usuario login)
+        public async Task<IActionResult> Login([FromBody] UsuarioDTO login)
         {
-            
-            if (validarUsuario(login))
+            UsuarioDTO usuario = await ValidarCredenciaisAsync(login?.Documento, login?.Senha);
+            if (usuario != null)
             {
                 var claims = new[]
                 {
                     new Claim(ClaimTypes.Name, login.Documento),
-                    new Claim(ClaimTypes.Role, "Admin")  
+                    new Claim(ClaimTypes.Role, "Admin")
                 };
 
                 var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_jwtKey));
                 var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
                 var token = new JwtSecurityToken(
-                    issuer: "your-app",  
-                    audience: "your-audience",  
+                    issuer: "your-app",
+                    audience: "your-audience",
                     claims: claims,
-                    expires: DateTime.Now.AddMinutes(30),  
+                    expires: DateTime.Now.AddMinutes(30),
                     signingCredentials: creds
                 );
 
-                return Ok(new
+                return Ok(new LoginResponse
                 {
-                    Token = new JwtSecurityTokenHandler().WriteToken(token)  
+                    token = new JwtSecurityTokenHandler().WriteToken(token),
+                    usuario = usuario,
+                    mensagem = "Login realizado com sucesso"
                 });
             }
 
             return Unauthorized();
         }
 
-        private bool validarUsuario(Usuario usuario)
+        private async Task<UsuarioDTO> ValidarCredenciaisAsync(string documento, string senha)
         {
-            var usuarioValido = _aurumDataContext.Usuarios
-                .FirstOrDefault(u => u.Documento == usuario.Documento && u.senha == usuario.senha);
-            return usuarioValido != null;   
+            if (string.IsNullOrWhiteSpace(documento) || string.IsNullOrWhiteSpace(senha))
+                return null;
+
+            var usuario = await _aurumDataContext.Usuarios
+                .FirstOrDefaultAsync(u => u.Documento == documento && u.Senha == senha);
+
+            return usuario?.toDTO();
         }
-    }
+     }
 }
     
