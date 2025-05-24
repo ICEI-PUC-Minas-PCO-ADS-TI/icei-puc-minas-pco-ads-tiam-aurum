@@ -12,10 +12,11 @@ interface AlertProps {
 const Alert = ({ viewMode, type, text1, text2 }: AlertProps) => {
   const showToast = () => {
     Toast.show({
-      type: 'success',
-      text1: 'Notificação de Sucesso!',
-      text2: 'A operação foi concluída com sucesso.',
+      type: type,
+      text1: text1,
+      text2: text2,
       position: 'top',
+      swipeable: true
     });
   };
   useEffect(() => {

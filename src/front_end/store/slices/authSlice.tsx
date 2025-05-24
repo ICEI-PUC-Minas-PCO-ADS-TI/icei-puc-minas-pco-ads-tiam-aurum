@@ -5,11 +5,11 @@ interface AuthState {
   usuario: UsuarioState | null;
 }
 
-interface UsuarioState {
+export interface UsuarioState {
   id: number | null;
-  nome: string | null;
-  email: string | null;
-  documento: string | null;
+  nome?: string | null;
+  email?: string | null;
+  documento?: string | null;
 }
 
 const initialState: AuthState = {
@@ -20,7 +20,7 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setToken: (state: AuthState, action: PayloadAction<AuthState | null>) => {
+    setAuthentication: (state: AuthState, action: PayloadAction<AuthState | null>) => {
       state.token = action.payload?.token || null;
       state.usuario = action.payload?.usuario || null;
     },
@@ -30,5 +30,5 @@ const authSlice = createSlice({
   },
 })
 
-export const { setToken, clearToken } = authSlice.actions;
+export const { setAuthentication, clearToken } = authSlice.actions;
 export default authSlice.reducer;
