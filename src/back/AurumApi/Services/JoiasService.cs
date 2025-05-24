@@ -21,12 +21,15 @@ namespace AurumApi.Services
 
         public async Task<JoiaResponse> GetJoiaById(int id)
         {
+            if (id <= 0)
+                throw new ArgumentException("Joia inválida.");
+
             var joia = await _aurumDataContext.Joias
                 .AsNoTracking()
                 .FirstOrDefaultAsync(j => j.Id == id);
 
             if (joia == null)
-                return null;
+                throw new InvalidOperationException($"Joia com ID {id} não encontrada.");
 
             return new JoiaResponse
             {

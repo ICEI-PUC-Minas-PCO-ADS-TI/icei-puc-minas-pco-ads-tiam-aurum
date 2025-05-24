@@ -26,9 +26,17 @@ namespace AurumApi.Controllers
 
                 return Ok(joia);
             }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, "Joia inválida.");
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(404, "Joia não encontrada.");
+            }
             catch (Exception ex)
             {
-                return StatusCode(500, "Erro interno no servidor.");
+                return StatusCode(500, $"Erro interno no servidor:{ex.Message}");
             }
         }
 
@@ -42,7 +50,7 @@ namespace AurumApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "Erro interno no servidor.");
+                return StatusCode(500, $"Erro interno no servidor:{ex.Message}");
             }
         }
 
@@ -64,7 +72,7 @@ namespace AurumApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "Erro interno no servidor.");
+                return StatusCode(500, $"Erro interno no servidor:{ex.Message}");
             }
         }
 
@@ -93,7 +101,7 @@ namespace AurumApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "Erro interno no servidor.");
+                return StatusCode(500, $"Erro interno no servidor:{ex.Message}");
             }
         }
 
@@ -120,7 +128,7 @@ namespace AurumApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Erro interno no servidor:\n{ex.Message}");
+                return StatusCode(500, $"Erro interno no servidor:{ex.Message}");
             }
         }
     }
