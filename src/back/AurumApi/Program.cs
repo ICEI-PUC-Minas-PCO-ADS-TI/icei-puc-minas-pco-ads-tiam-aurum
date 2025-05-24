@@ -7,6 +7,8 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using AurumApi.Services.Interface;
 using AurumApi.Services;
+using Microsoft.Extensions.Options;
+using AurumApi.Models;
 
 namespace AurumApi
 {
@@ -19,6 +21,7 @@ namespace AurumApi
             ConfigureAuthentication(builder);
             ConfigureSwagger(builder);
             ConfigureDatabase(builder);
+            ConfigureCloudinary(builder);
             ConfigureMvc(builder);
             // Configura o CORS
             ConfigureCors(builder);
@@ -138,6 +141,16 @@ namespace AurumApi
             app.UseAuthorization();
 
             app.MapControllers();
+        }
+        static void ConfigureCloudinary(WebApplicationBuilder builder)
+        {
+            builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
+            builder.Services.AddSingleton(sp =>
+            {
+                var settings = sp.GetRequiredService<IOptions<CloudinarySettings>>().Value;
+                var account = new CloudinaryDotNet.Account(settings.CloudName, settings.ApiKey, settings.ApiSecret);
+                return new CloudinaryDotNet.Cloudinary(account);
+            });
         }
     }
 }
