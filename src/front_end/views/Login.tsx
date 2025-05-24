@@ -3,11 +3,14 @@ import { Formik } from 'formik';
 import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { MaskedTextInput } from 'react-native-mask-text';
+import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import Alert from '../components/Alert';
 import { DefaultButton } from '../components/DefautlBotton';
 import api from '../services/api';
+import { setAuthentication, UsuarioState } from '../store/slices/authSlice';
 import { Colors } from '../styles/constants';
+
 
 const validationSchema = Yup.object().shape({
   cpf: Yup.string().required('Campo obrigatório'),
@@ -19,37 +22,71 @@ interface LoginProps {
   senha: string;
 }
 
+interface LoginResponse {
+  usuario: UsuarioState;
+  token: string;
+}
+
 const Login = ({ navigation }: any) => {
   const [viewNoticationSucces, setViewNotificationSucces] = useState<boolean>(false);
   const [viewNoticationError, setViewNotificationError] = useState<boolean>(false);
   const [mensagemNotification, setMensagemNotification] = useState<string>("");
+  const dispatch = useDispatch();
+
+
   const handleCadastro = () => {
-    navigation.navigate('Tabs');
+    navigation.navigate('Tabs', { showWelcomeMessage: true });
   }
   const handleLogin = async (values: LoginProps) => {
     try {
       const response = await api.post("Auth/login", { documento: values.cpf, senha: values.senha });
-      console.log(response.data);
+      statusResponse(response.status);
+      setAuthUsuario(response.data);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.log("Erro na requisição:", error.response?.data);
         if (error.response?.status === 401) {
-          setViewNotificationError(true);
-          setMensagemNotification("Usuário ou senha inválidos");
-          setTimeout(() => {
-            setViewNotificationError(false);
-          }, 4000);
+          statusResponse(error.response.status);
         }
       } else {
         console.log("Erro desconhecido:", error);
       }
     }
   }
+  const statusResponse = (response: number) => {
+    if (response === 200) {
+      handleNotification(true);
+    } else {
+      handleNotification(false);
+    }
+  }
+
+
+  const handleNotification = (succes: boolean) => {
+    if (succes) {
+      setViewNotificationSucces(true);
+      setMensagemNotification("Você sera direcionado a tela inicial, aguarde!");
+      setTimeout(() => {
+        setViewNotificationSucces(false);
+        navigation.navigate('Tabs');
+      }, 6000);
+    } else {
+      setViewNotificationError(true);
+      setMensagemNotification("CPF ou senha inválidos");
+      setTimeout(() => {
+        setViewNotificationError(false);
+      }, 4000);
+    }
+  }
+
+  const setAuthUsuario = (response: LoginResponse) => {
+    dispatch(setAuthentication(response));
+  }
 
   return (
     <View style={styles.container}>
-      <Alert text2={mensagemNotification} type='success' text1={"Notificação de Sucesso!"} viewMode={viewNoticationSucces} />
-      <Alert text2={mensagemNotification} type='info' text1={"Informação!"} viewMode={viewNoticationError} />
+      <Alert text2={mensagemNotification} type='success' text1={"Login realizado com sucesso!"} viewMode={viewNoticationSucces} />
+      <Alert text2={mensagemNotification} type='error' text1={"Informação!"} viewMode={viewNoticationError} />
       <Formik
         validationSchema={validationSchema}
         initialValues={{ cpf: '', senha: '' }}
