@@ -58,7 +58,15 @@ namespace AurumApi.Services
             });
         }
 
-        public async Task<JoiaResponse> CreateJoiaAsync(JoiaDTO joiaDto, int usuarioId, IFormFile? imagem)
+        public async Task<Joia> GetJoiaForUpdate(int id)
+        {
+            var joia = await _aurumDataContext.Joias
+                .FirstOrDefaultAsync(j => j.Id == id);
+
+            return joia;
+        }
+
+        public async Task<JoiaResponse> CreateJoiaAsync(JoiaCreateDTO joiaDto, int usuarioId, IFormFile? imagem)
         {
             string? urlImagem = await UploadImagemAsync(imagem);
 
@@ -85,13 +93,33 @@ namespace AurumApi.Services
                 UrlImagem = joia.Imagem
             };
         }
-        public Task<bool> UpdateJoia(JoiaDTO joiaDto)
+        public async Task<bool> UpdateJoia(int id, JoiaUpdateDTO joiaDto, IFormFile? imagem)
         {
-            throw new NotImplementedException();
+            if (id <= 0)
+                throw new ArgumentException("Joia inválida.");
+
+            var joia = await GetJoiaForUpdate(id);
+
+            if (joia == null)
+                throw new InvalidOperationException($"Joia com ID {id} não encontrada.");
+
+            string? urlImagem = await UploadImagemAsync(imagem);
+
+            joia.Nome = string.IsNullOrWhiteSpace(joiaDto.Nome) ? joia.Nome : joiaDto.Nome.Trim();
+            joia.Descricao = string.IsNullOrWhiteSpace(joiaDto.Descricao) ? joia.Descricao : joiaDto.Descricao.Trim();
+            joia.Preco = joiaDto.Preco ?? joia.Preco;
+            joia.Quantidade = joiaDto.Quantidade ?? joia.Quantidade;
+            joia.Imagem = urlImagem ?? joia.Imagem;
+
+            await _aurumDataContext.SaveChangesAsync();
+            return true;
         }
 
         public Task<bool> DeleteJoia(int id)
         {
+            //_aurumDataContext.Remove(joia);
+            //await _context.SaveChangesAsync();
+            //return true;
             throw new NotImplementedException();
         }
 

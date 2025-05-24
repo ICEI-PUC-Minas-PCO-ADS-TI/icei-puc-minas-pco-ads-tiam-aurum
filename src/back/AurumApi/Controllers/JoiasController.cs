@@ -47,7 +47,7 @@ namespace AurumApi.Controllers
         }
 
         [HttpPost("api/joia/{usuarioId:int}")]
-        public async Task<IActionResult> PostAsync(int usuarioId, [FromForm] JoiaDTO joiaDto, IFormFile? imagem)
+        public async Task<IActionResult> PostAsync(int usuarioId, [FromForm] JoiaCreateDTO joiaDto, IFormFile? imagem)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -61,6 +61,36 @@ namespace AurumApi.Controllers
             {
                 return StatusCode(500, "Erro ao salvar a joia no banco de dados.");
                 
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Erro interno no servidor.");
+            }
+        }
+
+        [HttpPut("api/joia/{idJoia:int}")]
+        public async Task<IActionResult> PutAsync(int idJoia, [FromForm] JoiaUpdateDTO joiaDto, IFormFile? imagem)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            try
+            {
+                var result = await _service.UpdateJoia(idJoia, joiaDto, imagem);
+                if (!result)
+                    return NotFound($"Joia com ID {idJoia} não encontrada.");
+                return NoContent();
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, "Joia inválida.");
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(404, "Joia não encontrada.");
+            }
+            catch (DbUpdateException ex)
+            {
+                return StatusCode(500, "Erro ao atualizar a joia no banco de dados.");
             }
             catch (Exception ex)
             {
