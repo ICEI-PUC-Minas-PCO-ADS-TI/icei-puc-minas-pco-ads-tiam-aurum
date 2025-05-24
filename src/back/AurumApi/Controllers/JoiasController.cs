@@ -1,5 +1,4 @@
 ﻿using AurumApi.DTO;
-using AurumApi.DTO.Response;
 using AurumApi.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,26 +14,17 @@ namespace AurumApi.Controllers
             _service = service;
         }
 
-        [HttpGet("api/joia/{id:int}")]
-        public async Task<IActionResult> GetAsync([FromRoute] int id)
+        [HttpGet("api/joia/{idJoia:int}")]
+        public async Task<IActionResult> GetByIdAsync(int idJoia)
         {
             try
             {
-                var joia = await _service.GetJoiaById(id);
+                var joia = await _service.GetJoiaById(idJoia);
 
                 if (joia == null)
-                    return NotFound($"Joia com ID {id} não encontrada.");
+                    return NotFound($"Joia com ID {idJoia} não encontrada.");
 
-                var response = new JoiaResponse
-                {
-                    Id = joia.Id,
-                    Nome = joia.Nome,
-                    Descricao = joia.Descricao,
-                    Preco = joia.Preco,
-                    Quantidade = joia.Quantidade,
-                    UrlImagem = joia.Imagem
-                };
-                return Ok(response);
+                return Ok(joia);
             }
             catch (Exception ex)
             {
@@ -42,7 +32,21 @@ namespace AurumApi.Controllers
             }
         }
 
-        [HttpPost("api/joia/{usuarioId:int}/")]
+        [HttpGet("api/joia/usuario/{usuarioId:int}")]
+        public async Task<IActionResult> GetAllAsync(int usuarioId)
+        {
+            try
+            {
+                var joias = await _service.GetJoiasByUsuarioId(usuarioId);
+                return Ok(joias);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Erro interno no servidor.");
+            }
+        }
+
+        [HttpPost("api/joia/{usuarioId:int}")]
         public async Task<IActionResult> PostAsync(int usuarioId, [FromForm] JoiaDTO joiaDto, IFormFile? imagem)
         {
             if (!ModelState.IsValid)
@@ -50,17 +54,8 @@ namespace AurumApi.Controllers
 
             try
             {
-                var joia = await _service.CreateJoiaAsync(joiaDto, usuarioId, imagem);
-                var response = new JoiaResponse
-                {
-                    Id = joia.Id,
-                    Nome = joia.Nome,
-                    Descricao = joia.Descricao,
-                    Preco = joia.Preco,
-                    Quantidade = joia.Quantidade,
-                    UrlImagem = joia.Imagem
-                };
-                return Created($"/api/joia/{usuarioId}", response);
+                var joiaResponse = await _service.CreateJoiaAsync(joiaDto, usuarioId, imagem);
+                return Created($"/api/joia/{usuarioId}/{joiaResponse.Id}", joiaResponse);
             }
             catch(DbUpdateException ex)
             {

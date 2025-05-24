@@ -5,6 +5,7 @@ using AurumApi.Services.Interface;
 using CloudinaryDotNet.Actions;
 using CloudinaryDotNet;
 using Microsoft.EntityFrameworkCore;
+using AurumApi.DTO.Response;
 
 namespace AurumApi.Services
 {
@@ -18,21 +19,46 @@ namespace AurumApi.Services
             _cloudinary = cloudinary ?? throw new ArgumentNullException(nameof(cloudinary)); ;
         }
 
-        public Task<Joia> GetJoiaById(int id)
+        public async Task<JoiaResponse> GetJoiaById(int id)
         {
-            var joia = _aurumDataContext.Joias
-                .Include(j => j.Usuario)
+            var joia = await _aurumDataContext.Joias
+                .AsNoTracking()
                 .FirstOrDefaultAsync(j => j.Id == id);
 
-            return joia;
+            if (joia == null)
+                return null;
+
+            return new JoiaResponse
+            {
+                Id = joia.Id,
+                Nome = joia.Nome,
+                Descricao = joia.Descricao,
+                Preco = joia.Preco,
+                Quantidade = joia.Quantidade,
+                UrlImagem = joia.Imagem
+            };
         }
 
-        public Task<IEnumerable<JoiaDTO>> GetJoiasByUsuarioId(int usuarioId)
+        public async Task<IEnumerable<JoiaResponse>> GetJoiasByUsuarioId(int usuarioId)
         {
-            throw new NotImplementedException();
+            var joias = await _aurumDataContext.Joias
+                .AsNoTracking()
+                .Where(j => j.UsuarioId == usuarioId)
+                .OrderBy(j => j.Nome)
+                .ToListAsync();
+
+            return joias.Select(j => new JoiaResponse
+            {
+                Id = j.Id,
+                Nome = j.Nome,
+                Descricao = j.Descricao,
+                Preco = j.Preco,
+                Quantidade = j.Quantidade,
+                UrlImagem = j.Imagem
+            });
         }
 
-        public async Task<Joia> CreateJoiaAsync(JoiaDTO joiaDto, int usuarioId, IFormFile? imagem)
+        public async Task<JoiaResponse> CreateJoiaAsync(JoiaDTO joiaDto, int usuarioId, IFormFile? imagem)
         {
             string? urlImagem = await UploadImagemAsync(imagem);
 
@@ -48,7 +74,16 @@ namespace AurumApi.Services
 
             await _aurumDataContext.Joias.AddAsync(joia);
             await _aurumDataContext.SaveChangesAsync();
-            return joia;
+
+            return new JoiaResponse
+            {
+                Id = joia.Id,
+                Nome = joia.Nome,
+                Descricao = joia.Descricao,
+                Preco = joia.Preco,
+                Quantidade = joia.Quantidade,
+                UrlImagem = joia.Imagem
+            };
         }
         public Task<bool> UpdateJoia(JoiaDTO joiaDto)
         {
