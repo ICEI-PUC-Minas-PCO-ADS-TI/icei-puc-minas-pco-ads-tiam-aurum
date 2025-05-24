@@ -1,7 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\src",
+    "\\src\\back",
+    "\\src\\back\\AurumApi",
+    "\\src\\back\\AurumApi\\Properties"
   ],
-  "SelectedNode": "\\AurumApi.sln",
   "PreviewInSolutionExplorer": false
 }
