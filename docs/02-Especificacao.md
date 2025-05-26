@@ -33,17 +33,17 @@ Os requisitos funcionais e não funcionais foram priorizados com base na técnic
 
 ### Requisitos funcionais
 
-|ID    | Descrição do Requisito  | Prioridade |
-|------|-----------------------------------------|----|
-|RF-001| Permitir fazer login no sistema | ALTA | 
-|RF-002| Gerenciar cadastro de joias (CRUD)   | ALTA |
-|RF-003| Gerenciar cadastro de clientes (CRUD)   | ALTA |
-|RF-004| Exibir lista de pagamentos pendentes   | ALTA |
-|RF-005| Exibir dashboard com os recebimentos do mês   | MÉDIA |
-|RF-006| Permitir gerar relatórios de vendas   | BAIXA |
-|RF-007| Registrar pedidos de clientes   | BAIXA |
-|RF-008| Registrar devoluções ou trocas de peças  | BAIXA |
-|RF-009| Registrar venda do produto  | ALTA |
+|ID    | Descrição do Requisito  | Prioridade |Responsavel|
+|------|-----------------------------------------|----|----|
+|RF-001| Permitir fazer login no sistema | ALTA | Rafael |
+|RF-002| Gerenciar cadastro de joias (CRUD)   | ALTA | Guilherme  |
+|RF-003| Gerenciar cadastro de clientes (CRUD)   | ALTA |Rhillary|
+|RF-004| Exibir lista de pagamentos pendentes   | ALTA | Luisa|
+|RF-005| Exibir dashboard com os recebimentos do mês   | MÉDIA |Rafael|
+|RF-006| Permitir gerar relatórios de vendas   | BAIXA | |
+|RF-007| Registrar pedidos de clientes   | BAIXA |Rhillary| 
+|RF-008| Registrar devoluções ou trocas de peças  | BAIXA | Luisa |
+|RF-009| Registrar venda do produto  | ALTA | Guilherme|
 
 
 ### Requisitos não funcionais
