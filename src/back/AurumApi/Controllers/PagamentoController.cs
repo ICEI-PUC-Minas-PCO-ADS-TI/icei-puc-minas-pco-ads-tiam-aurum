@@ -34,5 +34,23 @@ namespace AurumApi.Controllers
             }
         }
 
+        [HttpPost("dashboard")]
+        public async Task<IActionResult> GetDashboardPagamentos([FromBody] FiltroDashboardPagamentoDTO filtro)
+        {
+            try
+            {
+                var dashboard = await _pagamentoService.GerarDashboard(filtro);
+                return Ok(dashboard);
+            }
+            catch (ArgumentException e)
+            {
+                return BadRequest(e.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Erro interno no servidor: " + ex.Message);
+            }
+        }
+
     }
 }
