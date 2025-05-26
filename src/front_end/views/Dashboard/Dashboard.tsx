@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Card from "../../components/Card";
+import GraficoEmpilhado from "../../components/Grafico";
 import { StatusPagamento } from "../../enums/StatusPagamento";
 import { PagamentoResponse } from "../../interfaces/interfaces";
 import api from "../../services/api";
@@ -63,6 +64,7 @@ const Dashboard = () => {
           valorTotal={`R$${pagamentoResponse.valorTotal}`}
         ></Card>
       )}
+      <GraficoEmpilhado></GraficoEmpilhado>
     </View>
   )
 }
