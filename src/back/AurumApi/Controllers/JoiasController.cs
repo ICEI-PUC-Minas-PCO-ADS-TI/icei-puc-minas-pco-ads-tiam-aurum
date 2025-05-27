@@ -54,8 +54,8 @@ namespace AurumApi.Controllers
             }
         }
 
-        [HttpPost("api/joia/{usuarioId:int}")]
-        public async Task<IActionResult> PostAsync(int usuarioId, [FromForm] JoiaCreateDTO joiaDto, IFormFile? imagem)
+        [HttpPost("api/joia")]
+        public async Task<IActionResult> PostAsync([FromQuery] int usuarioId, [FromForm] JoiaCreateDTO joiaDto, IFormFile? imagem)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -63,7 +63,7 @@ namespace AurumApi.Controllers
             try
             {
                 var joiaResponse = await _service.CreateJoiaAsync(joiaDto, usuarioId, imagem);
-                return Created($"/api/joia/{usuarioId}/{joiaResponse.Id}", joiaResponse);
+                return Created($"/api/joia/{joiaResponse.Id}", joiaResponse);
             }
             catch(DbUpdateException ex)
             {
