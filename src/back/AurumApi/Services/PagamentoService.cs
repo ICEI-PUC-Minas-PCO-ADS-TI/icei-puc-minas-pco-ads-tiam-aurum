@@ -1,6 +1,7 @@
 ﻿using AurumApi.Data;
 using AurumApi.DTO;
 using AurumApi.DTO.Response;
+using AurumApi.Enum;
 using AurumApi.Models;
 using AurumApi.Services.Interface;
 using Microsoft.EntityFrameworkCore;
@@ -36,7 +37,7 @@ namespace AurumApi.Services
 
             List<Pagamento> listPagamentos = await _aurumDataContext.Pagamentos
                 .Where(p => p.DataPagamento >= filtro.MesPagamento && p.Status == filtro.Status && p.UsuarioId == filtro.Usuario.id)
-                .ToListAsync(); 
+                .ToListAsync();
 
             if (!listPagamentos.Any())
             {
@@ -55,9 +56,9 @@ namespace AurumApi.Services
             PagamentoResponse pagamentoResponse = new PagamentoResponse();
             pagamentoResponse.ValorTotal = 0;
 
-            for (int i = 0;  i < listPagamentos.Count; i++)
+            for (int i = 0; i < listPagamentos.Count; i++)
             {
-                pagamentoResponse.ValorTotal+= listPagamentos[i].ValorPagamento;
+                pagamentoResponse.ValorTotal += listPagamentos[i].ValorPagamento;
                 pagamentoResponse.quantidadePagamentos++;
                 if (i < 1) pagamentoResponse.Status = listPagamentos[i].Status;
             }
@@ -81,7 +82,15 @@ namespace AurumApi.Services
             return listaPagamentos;
         }
 
+        public async Task<List<Pagamento>> GetTipoPagamento(FiltroDashboardPagamentoDTO filtro)
+        {
+            List<Pagamento> pagamentos = await _aurumDataContext.Pagamentos
+                .Where(p => p.Status.Equals(filtro.TipoPagamento) &&
+                            p.DataPagamento >= filtro.PeriodoPagamentos &&
+                            p.UsuarioId == filtro.Usuario.id)
+                .ToListAsync();
+            return pagamentos;
 
-
+        }
     }
 }

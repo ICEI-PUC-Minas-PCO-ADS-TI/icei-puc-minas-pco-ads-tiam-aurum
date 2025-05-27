@@ -1,4 +1,6 @@
-﻿namespace AurumApi.DTO
+﻿using AurumApi.Enum;
+
+namespace AurumApi.DTO
 {
     public class FiltroDashboardPagamentoDTO
     {
@@ -8,6 +10,8 @@
         public UsuarioDTO? Usuario { get; set; }
 
         public DateTime? PeriodoPagamentos { get; set; }
+
+        public StatusPagamento? TipoPagamento { get; set; }
 
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AurumApi.DTO;
+using AurumApi.Enum;
 using AurumApi.Services;
 using AurumApi.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +10,7 @@ namespace AurumApi.Controllers
     [ApiController]
     public class PagamentoController : ControllerBase
     {
-         private readonly IPagamento _pagamentoService;
+        private readonly IPagamento _pagamentoService;
 
         public PagamentoController(IPagamento pagamentoService)
         {
@@ -41,6 +42,24 @@ namespace AurumApi.Controllers
             {
                 var dashboard = await _pagamentoService.GerarDashboard(filtro);
                 return Ok(dashboard);
+            }
+            catch (ArgumentException e)
+            {
+                return BadRequest(e.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Erro interno no servidor: " + ex.Message);
+            }
+        }
+
+        [HttpGet("pagamentos/{tipoPagamento:StatusPagamento}")]
+        public async Task<IActionResult> GetTipoPagamento(FiltroDashboardPagamentoDTO filtro)
+        {
+            try
+            {
+                var pagamentos = await _pagamentoService.GetTipoPagamento(filtro);
+                return Ok(pagamentos);
             }
             catch (ArgumentException e)
             {
