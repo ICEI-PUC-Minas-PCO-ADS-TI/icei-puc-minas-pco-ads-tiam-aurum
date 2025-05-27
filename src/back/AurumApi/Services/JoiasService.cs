@@ -1,11 +1,11 @@
 ﻿using AurumApi.Data;
 using AurumApi.DTO;
+using AurumApi.DTO.Response;
 using AurumApi.Models;
 using AurumApi.Services.Interface;
-using CloudinaryDotNet.Actions;
 using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
 using Microsoft.EntityFrameworkCore;
-using AurumApi.DTO.Response;
 
 namespace AurumApi.Services
 {
@@ -69,7 +69,7 @@ namespace AurumApi.Services
             return joia;
         }
 
-        public async Task<JoiaResponse> CreateJoiaAsync(JoiaCreateDTO joiaDto, int usuarioId, IFormFile? imagem)
+        public async Task<JoiaResponse> CreateJoia(JoiaCreateDTO joiaDto, int usuarioId, IFormFile? imagem)
         {
             var (urlImagem, publicId) = await UploadImagemAsync(imagem);
 
@@ -124,8 +124,7 @@ namespace AurumApi.Services
             joia.Preco = joiaDto.Preco ?? joia.Preco;
             joia.Quantidade = joiaDto.Quantidade ?? joia.Quantidade;
 
-            await _aurumDataContext.SaveChangesAsync();
-            return true;
+            return await _aurumDataContext.SaveChangesAsync() > 0;
         }
 
         public async Task<bool> DeleteJoia(int id)
@@ -145,8 +144,8 @@ namespace AurumApi.Services
             }
 
             _aurumDataContext.Joias.Remove(joia);
-            await _aurumDataContext.SaveChangesAsync();
-            return true;
+
+            return await _aurumDataContext.SaveChangesAsync() > 0;
         }
 
         public async Task<(string Url, string PublicId)> UploadImagemAsync(IFormFile imagem)
