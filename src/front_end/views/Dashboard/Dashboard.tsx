@@ -6,8 +6,10 @@ import GraficoEmpilhado from "../../components/Grafico";
 import { StatusPagamento } from "../../enums/StatusPagamento";
 import { PagamentoResponse } from "../../interfaces/interfaces";
 import api from "../../services/api";
+import store from "../../store";
 import { UsuarioState } from "../../store/slices/authSlice";
 import { Colors } from "../../styles/constants";
+import GraficoGastos from "../../components/Grafico";
 
 export interface FiltroDashboardPagamento {
   mesPagamento: string;
@@ -20,14 +22,16 @@ export interface FiltroDashboardPagamento {
 const Dashboard = () => {
   const mesPagamento: Date = new Date();
   const [pagamentoResponse, setPagamentoResponse] = useState<PagamentoResponse>();
+  const [listaPagamentosResponse, setListaPagamentosResponse] = useState<PagamentoResponse[]>();
 
   const pagamentosMes = async () => {
+    const usuario = store.getState().auth.usuario;
 
     const filtro: FiltroDashboardPagamento = {
       mesPagamento: new Date(mesPagamento.getFullYear(), mesPagamento.getMonth(), 1).toISOString(),
       status: StatusPagamento.PAGO,
       usuario: {
-        id: 1
+        id: usuario?.id || null,
       }
     }
     try {
@@ -35,8 +39,6 @@ const Dashboard = () => {
       const data = new Date(response.data.mesPagamento)
       const mes: string = data.toLocaleString('pt-BR', { month: 'long' });
       response.data.mesPagamento = mes.charAt(0).toUpperCase() + mes.slice(1)
-      console.log(response.data);
-
       setPagamentoResponse(response.data)
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -48,8 +50,33 @@ const Dashboard = () => {
       }
     }
   }
+
+  const dashboard = async () => {
+    const filtro: FiltroDashboardPagamento = {
+      mesPagamento: new Date(mesPagamento.getFullYear(), mesPagamento.getMonth(), 1).toISOString(),
+      status: StatusPagamento.PAGO,
+      usuario: {
+        id: store.getState().auth.usuario?.id || null
+      }
+    }
+
+    try {
+      const response = await api.post('Pagamento/dashboard', filtro);
+      console.log("Dashboard response:", response.data);
+      setListaPagamentosResponse(response.data);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log("Erro na requisição:", error.response?.data);
+        if (error.response?.status === 400) {
+          console.log(error.response.data)
+        }
+      }
+    }
+  }
+
   useEffect(() => {
     pagamentosMes()
+    dashboard()
   }, []);
 
   return (
@@ -64,7 +91,11 @@ const Dashboard = () => {
           valorTotal={`R$${pagamentoResponse.valorTotal}`}
         ></Card>
       )}
-      <GraficoEmpilhado></GraficoEmpilhado>
+      {listaPagamentosResponse != null && listaPagamentosResponse?.length > 0 && (
+        <GraficoGastos
+          pagamentos={listaPagamentosResponse}
+        />
+      )}
     </View>
   )
 }

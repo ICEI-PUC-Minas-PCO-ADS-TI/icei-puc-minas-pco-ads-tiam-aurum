@@ -1,22 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import { BarChart } from 'react-native-chart-kit';
 import { ChartConfig } from 'react-native-chart-kit/dist/HelperTypes';
+import { PagamentoResponse } from '../interfaces/interfaces';
 import { Colors } from '../styles/constants';
 
 const screenWidth = Dimensions.get('window').width;
-
-// Dados do gráfico (seu código original)
-const dadosDoGrafico = {
-  labels: ["Alimentação", "Transporte", "Moradia", "Lazer", "Outros"],
-  datasets: [
-    {
-      data: [1250, 550, 2100, 480, 300],
-    },
-  ],
-};
-
-// Configurações visuais (seu código original)
 const configDoGrafico: ChartConfig = {
   backgroundColor: '#1e2923',
   backgroundGradientFrom: Colors.fundo,
@@ -30,27 +19,56 @@ const configDoGrafico: ChartConfig = {
   barPercentage: 0.8,
 };
 
+interface GraficoGastosProps {
+  pagamentos?: PagamentoResponse[]; // Use a interrogação para tornar a prop opcional
+}
 
-const GraficoGastos = () => {
+
+const GraficoGastos: React.FC<GraficoGastosProps> = ({ pagamentos = [] }) => {
+  const [labels, setLabels] = useState<string[]>([]);
+  const [data, setData] = useState<number[]>([]);
+
+  useEffect(() => {
+    // A verificação `pagamentos && pagamentos.length > 0` é uma boa prática
+    if (pagamentos && pagamentos.length > 0) {
+      const novosLabels = pagamentos.map((pagamento) => {
+        const dataPagamento = new Date(pagamento.mesPagamento);
+        const mes = dataPagamento.toLocaleDateString('pt-BR', { month: 'long' })
+        return mes.charAt(0).toUpperCase() + mes.slice(1);
+      });
+      const novosData = pagamentos.map((pagamento) => pagamento.valorTotal);
+
+      setLabels(novosLabels);
+      setData(novosData);
+    } else {
+      // Limpa os dados se a prop pagamentos ficar vazia ou indefinida
+      setLabels([]);
+      setData([]);
+    }
+  }, [pagamentos]);
+
+  const dadosDoGrafico = {
+    labels: labels,
+    datasets: [
+      {
+        data: data.length > 0 ? data : [0],
+      },
+    ],
+  };
+
   return (
     <View style={styles.container}>
-      {/* O título pode ficar aqui fora do card */}
       <Text style={styles.titulo}>Resumo de Gastos Mensais</Text>
-
-      {/* <-- MUDANÇA 1: Adicionamos a View "envelope" --> */}
       <View style={styles.graficoContainer}>
         <BarChart
           data={dadosDoGrafico}
-          // <-- MUDANÇA 2: Reduzimos a largura e a altura -->
-          width={screenWidth * 0.95} // Usando 80% da largura da tela
+          width={screenWidth * 0.95}
           height={180}
           chartConfig={configDoGrafico}
           yAxisLabel="R$ "
           fromZero={true}
           showValuesOnTopOfBars={true}
-          verticalLabelRotation={0} // Ajustado para melhor visualização
-          // <-- MUDANÇA 3: Removemos a prop 'style' daqui -->
-          // As outras props que você usava podem continuar aqui
+          verticalLabelRotation={0}
           yAxisSuffix=''
           yAxisInterval={1}
         />

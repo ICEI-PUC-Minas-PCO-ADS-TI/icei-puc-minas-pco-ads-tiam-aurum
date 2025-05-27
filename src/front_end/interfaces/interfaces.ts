@@ -5,5 +5,4 @@ export interface PagamentoResponse {
   mesPagamento: string;
   status: StatusPagamento;
   quantidadePagamentos: number;
-
 }
