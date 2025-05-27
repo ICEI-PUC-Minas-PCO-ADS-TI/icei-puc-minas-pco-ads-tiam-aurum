@@ -14,6 +14,14 @@ namespace AurumApi.Controllers
             _service = service;
         }
 
+        /// <summary>
+        /// Obter todas os pedidos de um usuário
+        /// </summary>
+        /// <param name="usuarioId">Identificador do usuário</param>
+        /// <returns>Coleção de pedidos</returns>
+        /// <response code="200">Sucesso</response>
+        /// <response code="404">Não encontrado</response>
+        /// <response code="500">Falha no servidor</response>
         [HttpGet("api/pedido/usuario/{usuarioId:int}")]
         public async Task<IActionResult> GetAllAsync(int usuarioId)
         {
@@ -32,6 +40,14 @@ namespace AurumApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Obter todos os pedidos de um cliente específico
+        /// </summary>
+        /// <param name="clienteId">Identificador do cliente</param>
+        /// <returns>Coleção de pedidos</returns>
+        /// <response code="200">Sucesso</response>
+        /// <response code="404">Não encontrado</response>
+        /// <response code="500">Falha no servidor</response>
         [HttpGet("api/pedido/cliente/{clienteId:int}")]
         public async Task<IActionResult> GetPedidosByClientAsync(int clienteId)
         {
@@ -50,6 +66,15 @@ namespace AurumApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Obter um pedido específico por ID
+        /// </summary>
+        /// <param name="pedidoId">Identificador do pedido</param>
+        /// <returns>Dados do pedido</returns>
+        /// <response code="200">Sucesso</response>
+        /// <response code="400">Identificador inválido</response>
+        /// <response code="404">Pedido não encontrado</response>
+        /// <response code="500">Falha no servidor</response>
         [HttpGet("api/pedido/{pedidoId:int}")]
         public async Task<IActionResult> GetByIdAsync(int pedidoId)
         {
@@ -76,6 +101,17 @@ namespace AurumApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Cadastrar um pedido.
+        /// </summary>
+        /// <param name="usuarioId">Identificador do usuário</param>
+        /// <param name="dto">Dados do pedido</param>
+        /// <returns>Pedido recém criado</returns>
+        /// <response code="201">Sucesso</response>
+        /// <response code="400">Pedido inválido</response>
+        /// <response code="404">Joia não encontrada</response>
+        /// <response code="500">Falha no servidor</response>
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [HttpPost("api/pedido")]
         public async Task<IActionResult> PostAsync([FromQuery] int usuarioId, [FromBody] PedidoCreateDTO dto)
         {
@@ -103,6 +139,15 @@ namespace AurumApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Remove um pedido
+        /// </summary>
+        /// <param name="id">Identificador do pedido</param>
+        /// <returns>No Content</returns>
+        /// <response code="204">Sucesso</response>
+        /// <response code="400">Identificador inválido</response>
+        /// <response code="404">Pedido não encontrado</response>
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpDelete("api/pedido/{id:int}")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
