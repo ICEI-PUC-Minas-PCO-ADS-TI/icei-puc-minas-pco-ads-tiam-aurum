@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace AurumApi.Models
 {
@@ -15,6 +16,7 @@ namespace AurumApi.Models
         public decimal Subtotal { get; set; }
         [Column("pedidoid")]
         public int PedidoId { get; set; }
+        [JsonIgnore]
         public Pedido? Pedido { get; set; }
         [Column("joiaid")]
         public int JoiaId { get; set; }
