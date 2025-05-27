@@ -62,7 +62,7 @@ namespace AurumApi.Controllers
 
             try
             {
-                var joiaResponse = await _service.CreateJoiaAsync(joiaDto, usuarioId, imagem);
+                var joiaResponse = await _service.CreateJoia(joiaDto, usuarioId, imagem);
                 return Created($"/api/joia/{joiaResponse.Id}", joiaResponse);
             }
             catch(DbUpdateException ex)
@@ -84,7 +84,8 @@ namespace AurumApi.Controllers
             try
             {
                 var result = await _service.UpdateJoia(idJoia, joiaDto, imagem);
-
+                if (!result)
+                    throw new Exception($"Não foi possível atualizar a joia.");
                 return NoContent();
             }
             catch (ArgumentException ex)
@@ -111,7 +112,8 @@ namespace AurumApi.Controllers
             try
             {
                 var result = await _service.DeleteJoia(idJoia);
-
+                if (!result)
+                    throw new Exception($"Não foi possível deletar a joia.");
                 return NoContent();
             }
             catch (ArgumentException ex)
@@ -128,7 +130,7 @@ namespace AurumApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Erro interno no servidor:{ex.Message}");
+                return StatusCode(500, $"Erro interno no servidor: {ex.Message}");
             }
         }
     }

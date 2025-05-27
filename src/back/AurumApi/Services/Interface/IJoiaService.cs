@@ -8,7 +8,7 @@ namespace AurumApi.Services.Interface
     {
         Task<IEnumerable<JoiaResponse>> GetJoiasByUsuarioId(int usuarioId);
         Task<JoiaResponse> GetJoiaById(int id);
-        Task<JoiaResponse> CreateJoiaAsync(JoiaCreateDTO joiaDto, int usuarioId, IFormFile? imagem);
+        Task<JoiaResponse> CreateJoia(JoiaCreateDTO joiaDto, int usuarioId, IFormFile? imagem);
         Task<bool> UpdateJoia(int id, JoiaUpdateDTO joiaDto, IFormFile? imagem);
         Task<bool> DeleteJoia(int id);
     }
