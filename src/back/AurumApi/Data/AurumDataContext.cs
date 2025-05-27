@@ -5,6 +5,8 @@ namespace AurumApi.Data
 {
     public class AurumDataContext : DbContext
     {
+        internal object JoiaPedidos;
+
         public AurumDataContext(DbContextOptions<AurumDataContext> options) : base(options)
         {
         }

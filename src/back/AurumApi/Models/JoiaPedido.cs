@@ -19,5 +19,6 @@ namespace AurumApi.Models
         [Column("joiaid")]
         public int JoiaId { get; set; }
         public Joia? Joia { get; set; }
+        public decimal PrecoUnitario { get; internal set; }
     }
 }
