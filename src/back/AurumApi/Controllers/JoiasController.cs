@@ -1,4 +1,5 @@
 ﻿using AurumApi.DTO;
+using AurumApi.DTO.Response;
 using AurumApi.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,15 @@ namespace AurumApi.Controllers
             _service = service;
         }
 
+        /// <summary>
+        /// Obter uma joia
+        /// </summary>
+        /// <param name="idJoia">Identificador da joia</param>
+        /// <returns>Dados da joia</returns>
+        /// <response code="200">Sucesso</response>
+        /// <response code="400">Identificador inválido</response>
+        /// <response code="404">Joia não encontrada</response>
+        /// <response code="500">Falha no servidor</response>
         [HttpGet("api/joia/{idJoia:int}")]
         public async Task<IActionResult> GetByIdAsync(int idJoia)
         {
@@ -24,7 +34,7 @@ namespace AurumApi.Controllers
                 if (joia == null)
                     return NotFound($"Joia com ID {idJoia} não encontrada.");
 
-                return Ok(joia);
+                return StatusCode(200, joia);
             }
             catch (ArgumentException ex)
             {
@@ -40,13 +50,20 @@ namespace AurumApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Obter todas as joias
+        /// </summary>
+        /// <param name="usuarioId">Identificador do usuário</param>
+        /// <returns>Coleção de joias</returns>
+        /// <response code="200">Sucesso</response>
+        /// <response code="500">Falha no servidor</response>
         [HttpGet("api/joia/usuario/{usuarioId:int}")]
         public async Task<IActionResult> GetAllAsync(int usuarioId)
         {
             try
             {
                 var joias = await _service.GetJoiasByUsuarioId(usuarioId);
-                return Ok(joias);
+                return StatusCode(200, joias);
             }
             catch (Exception ex)
             {
@@ -54,6 +71,15 @@ namespace AurumApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Cadastrar uma joia
+        /// </summary>
+        /// <param name="joiaDto">Dados da joia</param>
+        /// <returns>Joia recém criada</returns>
+        /// <response code="201">Sucesso</response>
+        /// <response code="400">Joia inválida</response>
+        /// <response code="500">Falha no servidor</response>
+        [ProducesResponseType(typeof(JoiaResponse), StatusCodes.Status201Created)]
         [HttpPost("api/joia")]
         public async Task<IActionResult> PostAsync([FromQuery] int usuarioId, [FromForm] JoiaCreateDTO joiaDto, IFormFile? imagem)
         {
@@ -76,6 +102,17 @@ namespace AurumApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Atualiza uma joia
+        /// </summary>
+        /// <param name="idJoia">Identificador da joia</param>
+        /// <param name="joiaDto">Dados da joia</param>
+        /// <returns>No Content</returns>
+        /// <response code="204">Sucesso</response>
+        /// <response code="400">Joia inválida</response>
+        /// <response code="404">Joia não encontrada</response>
+        /// <response code="500">Falha no servidor</response>
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpPut("api/joia/{idJoia:int}")]
         public async Task<IActionResult> PutAsync(int idJoia, [FromForm] JoiaUpdateDTO joiaDto, IFormFile? imagem)
         {
@@ -106,6 +143,16 @@ namespace AurumApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Remove uma joia
+        /// </summary>
+        /// <param name="idJoia">Identificador da joia</param>
+        /// <returns>No Content</returns>
+        /// <response code="204">Sucesso</response>
+        /// <response code="400">Identificador inválido</response>
+        /// <response code="404">Joia não encontrada</response>
+        /// <response code="500">Falha no servidor</response>
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpDelete("api/joia/{idJoia:int}")]
         public async Task<IActionResult> DeleteAsync(int idJoia)
         {
