@@ -10,7 +10,7 @@ namespace AurumApi.Models
         [Column("datapedido")]
         public DateTime DataPedido { get; set; }
         [Column("valortotal")]
-        public decimal ValorTotal { get; set; }
+        public decimal? ValorTotal { get; set; }
         [Column("usuarioid")]
         public int UsuarioId { get; set; }
         public Usuario? Usuario { get; set; }
