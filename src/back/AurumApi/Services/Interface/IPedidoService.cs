@@ -8,6 +8,7 @@ namespace AurumApi.Services.Interface
         Task<IEnumerable<PedidoResponse>> GetPedidosByUsuarioId(int usuarioId);
         Task<PedidoResponse> GetPedidoById(int id);
         Task<IEnumerable<PedidoResponse>> GetPedidosByClienteId(int clienteId);
-        Task<PedidoResponse> CreatePedidoAsync(int usuarioId, PedidoCreateDTO PedidoDto);
+        Task<PedidoResponse> CreatePedido(int usuarioId, PedidoCreateDTO PedidoDto);
+        Task<bool> DeletePedido(int id);
     }
 }

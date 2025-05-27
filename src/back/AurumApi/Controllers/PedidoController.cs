@@ -1,5 +1,4 @@
 ﻿using AurumApi.DTO;
-using AurumApi.Models;
 using AurumApi.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -82,7 +81,7 @@ namespace AurumApi.Controllers
         {
             try
             {
-                var pedido = await _service.CreatePedidoAsync(usuarioId, dto);
+                var pedido = await _service.CreatePedido(usuarioId, dto);
                 return Created($"/api/pedido/{pedido.Id}", pedido);
             }
             catch (ArgumentException ex)
@@ -101,6 +100,34 @@ namespace AurumApi.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, $"Erro interno no servidor:{ex.Message}");
+            }
+        }
+
+        [HttpDelete("api/pedido/{id:int}")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            try
+            {
+                var result = await _service.DeletePedido(id);
+                if (!result)
+                    throw new Exception($"Não foi possível deletar o pedido");
+                return NoContent();
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, $"Não foi possível deletar o pedido. {ex.Message}");
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(404, $"Pedido com ID {id} não encontrado.");
+            }
+            catch (DbUpdateException ex)
+            {
+                return StatusCode(500, "Erro ao excluir a pedido no banco de dados.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro interno no servidor: {ex.Message}");
             }
         }
     }

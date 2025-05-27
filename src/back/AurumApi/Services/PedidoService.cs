@@ -78,9 +78,9 @@ namespace AurumApi.Services
             });
         }
 
-        public async Task<PedidoResponse> CreatePedidoAsync(int usuarioId, PedidoCreateDTO dto)
+        public async Task<PedidoResponse> CreatePedido(int usuarioId, PedidoCreateDTO dto)
         {
-            if(dto.Itens == null || !dto.Itens.Any())
+            if (dto.Itens == null || !dto.Itens.Any())
                 throw new ArgumentException("Pedido deve conter pelo menos um item.");
 
             decimal valorTotal = 0;
@@ -96,11 +96,11 @@ namespace AurumApi.Services
             await _aurumDataContext.Pedidos.AddAsync(novoPedido);
             await _aurumDataContext.SaveChangesAsync();
 
-            foreach(var item in dto.Itens)
+            foreach (var item in dto.Itens)
             {
                 var joia = await _aurumDataContext.Joias.FirstOrDefaultAsync(j => j.Id == item.JoiaId && j.UsuarioId == usuarioId);
 
-                if(joia == null)
+                if (joia == null)
                     throw new InvalidOperationException($"Joia com ID {item.JoiaId} não encontrada.");
 
                 if (joia.Quantidade < item.Quantidade)
@@ -135,6 +135,42 @@ namespace AurumApi.Services
                 DataPedido = novoPedido.DataPedido,
                 ValorTotal = novoPedido.ValorTotal
             };
+        }
+
+        public async Task<bool> DeletePedido(int id)
+        {
+            if (id <= 0)
+                throw new ArgumentException("Pedido inválido.");
+
+            var pedido = await _aurumDataContext.Pedidos
+                .Include(p => p.JoiasPedidos)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (pedido == null)
+                throw new InvalidOperationException($"Pedido com ID {id} não encontrado.");
+
+            if(await PossuiPagamentos(id))
+                throw new ArgumentException($"Pedido com ID {id} não pode ser excluído, pois possui pagamentos associados.");
+
+            foreach(var item in pedido.JoiasPedidos)
+            {
+                var joia = await _aurumDataContext.Joias.FirstOrDefaultAsync(j => j.Id == item.JoiaId);
+                if (joia != null)
+                {
+                    joia.Quantidade += item.Quantidade;
+                    _aurumDataContext.Joias.Update(joia);
+                }
+            }
+
+            _aurumDataContext.JoiasPedidos.RemoveRange(pedido.JoiasPedidos);
+            _aurumDataContext.Pedidos.Remove(pedido);
+
+            return await _aurumDataContext.SaveChangesAsync() > 0;
+        }
+
+        private async Task<bool> PossuiPagamentos(int id)
+        {
+            return await _aurumDataContext.Pagamentos.AnyAsync(p => p.PedidoId == id);
         }
     }
 }
