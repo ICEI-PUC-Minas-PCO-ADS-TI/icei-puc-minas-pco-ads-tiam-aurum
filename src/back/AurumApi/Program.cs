@@ -30,6 +30,7 @@ namespace AurumApi
             builder.Services.AddScoped<IPagamento, PagamentoService>();
             builder.Services.AddScoped<IUsuarioService, UsuarioService>();
             builder.Services.AddScoped<IJoiasService, JoiasService>();
+            builder.Services.AddScoped<IClienteService, ClienteService>();
 
             var app = builder.Build();
 
