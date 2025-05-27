@@ -14,7 +14,71 @@ namespace AurumApi.Services
         {
             _aurumDataContext = aurumDataContext;
         }
-        public async Task<PedidoResponse> CriarPedidoAsync(int usuarioId, PedidoCreateDTO dto)
+        public async Task<IEnumerable<PedidoResponse>> GetPedidosByUsuarioId(int usuarioId)
+        {
+            var pedidos = await _aurumDataContext.Pedidos
+                .AsNoTracking()
+                .Where(j => j.UsuarioId == usuarioId)
+                .OrderByDescending(j => j.DataPedido)
+                .ToListAsync();
+
+            if (pedidos is null)
+                throw new InvalidOperationException($"Usuário com ID {usuarioId} não existe, ou não possui pedidos.");
+
+            return pedidos.Select(p => new PedidoResponse
+            {
+                Id = p.Id,
+                UsuarioId = p.UsuarioId,
+                ClienteId = p.ClienteId,
+                DataPedido = p.DataPedido,
+                ValorTotal = p.ValorTotal
+            });
+        }
+
+        public async Task<PedidoResponse> GetPedidoById(int id)
+        {
+            if (id <= 0)
+                throw new ArgumentException("Pedido inválido.");
+
+            var pedido = await _aurumDataContext.Pedidos
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (pedido == null)
+                throw new InvalidOperationException($"Pedido com ID {id} não encontrado.");
+
+            return new PedidoResponse
+            {
+                Id = pedido.Id,
+                UsuarioId = pedido.UsuarioId,
+                ClienteId = pedido.ClienteId,
+                DataPedido = pedido.DataPedido,
+                ValorTotal = pedido.ValorTotal
+            };
+        }
+
+        public async Task<IEnumerable<PedidoResponse>> GetPedidosByClienteId(int clienteId)
+        {
+            var pedidos = await _aurumDataContext.Pedidos
+                .AsNoTracking()
+                .Where(j => j.ClienteId == clienteId)
+                .OrderByDescending(j => j.DataPedido)
+                .ToListAsync();
+
+            if (pedidos is null)
+                throw new InvalidOperationException($"Usuário com ID {clienteId} não existe, ou não possui pedidos.");
+
+            return pedidos.Select(p => new PedidoResponse
+            {
+                Id = p.Id,
+                UsuarioId = p.UsuarioId,
+                ClienteId = p.ClienteId,
+                DataPedido = p.DataPedido,
+                ValorTotal = p.ValorTotal
+            });
+        }
+
+        public async Task<PedidoResponse> CreatePedidoAsync(int usuarioId, PedidoCreateDTO dto)
         {
             if(dto.Itens == null || !dto.Itens.Any())
                 throw new ArgumentException("Pedido deve conter pelo menos um item.");
@@ -65,6 +129,7 @@ namespace AurumApi.Services
 
             return new PedidoResponse
             {
+                Id = novoPedido.Id,
                 UsuarioId = novoPedido.UsuarioId,
                 ClienteId = novoPedido.ClienteId,
                 DataPedido = novoPedido.DataPedido,
