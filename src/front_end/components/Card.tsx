@@ -17,7 +17,7 @@ const Card: React.FC<CardProps> = (values: CardProps) => {
       <Text style={styles.sobTitle}>{values.title}</Text>
       <Text style={styles.title}>{values.valorTotal}</Text>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <Text style={styles.sobTitle}>Tipo de pagamento:</Text>
+        <Text style={styles.sobTitle}>Statust </Text>
         <Text style={styles.caracterTitle}>{values.status}</Text>
       </View>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 4,
     elevation: 3, // Android
+    width: '50%',
   },
   title: {
     fontSize: 20,

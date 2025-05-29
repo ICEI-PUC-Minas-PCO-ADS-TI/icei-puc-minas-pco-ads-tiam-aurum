@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Dimensions, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, StyleSheet, View } from 'react-native';
 import { BarChart } from 'react-native-chart-kit';
 import { ChartConfig } from 'react-native-chart-kit/dist/HelperTypes';
 import { PagamentoResponse } from '../interfaces/interfaces';
@@ -8,10 +8,10 @@ import { Colors } from '../styles/constants';
 const screenWidth = Dimensions.get('window').width;
 const configDoGrafico: ChartConfig = {
   backgroundColor: '#1e2923',
-  backgroundGradientFrom: Colors.fundo,
+  backgroundGradientFrom: Colors.defaultText,
   backgroundGradientTo: Colors.fundo,
   decimalPlaces: 0,
-  color: (opacity = 1) => `rgba(134, 209, 149, ${opacity})`,
+  color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
   labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
   style: {
     // O borderRadius será movido para o container
@@ -58,7 +58,6 @@ const GraficoGastos: React.FC<GraficoGastosProps> = ({ pagamentos = [] }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.titulo}>Resumo de Gastos Mensais</Text>
       <View style={styles.graficoContainer}>
         <BarChart
           data={dadosDoGrafico}
@@ -79,19 +78,11 @@ const GraficoGastos: React.FC<GraficoGastosProps> = ({ pagamentos = [] }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#f5f5f5',
-    padding: 16,
+    backgroundColor: Colors.fundo,
+    padding: 10,
   },
-  titulo: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    color: '#333',
-  },
-  // <-- MUDANÇA 4: Criamos o estilo para o "envelope" do gráfico -->
   graficoContainer: {
     // Estilos para criar o efeito de "card"
     borderRadius: 16,

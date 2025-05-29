@@ -34,7 +34,7 @@ export default function Tabs() {
         options={DashboardStyle}
       />
       <Tab.Screen
-        name="UserView"
+        name="Perfil"
         component={UserView}
         options={UserViewStyle}
       />

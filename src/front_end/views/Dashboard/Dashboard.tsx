@@ -2,14 +2,13 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Card from "../../components/Card";
-import GraficoEmpilhado from "../../components/Grafico";
+import GraficoGastos from "../../components/Grafico";
 import { StatusPagamento } from "../../enums/StatusPagamento";
 import { PagamentoResponse } from "../../interfaces/interfaces";
 import api from "../../services/api";
 import store from "../../store";
 import { UsuarioState } from "../../store/slices/authSlice";
 import { Colors } from "../../styles/constants";
-import GraficoGastos from "../../components/Grafico";
 
 export interface FiltroDashboardPagamento {
   mesPagamento: string;
@@ -23,6 +22,7 @@ const Dashboard = () => {
   const mesPagamento: Date = new Date();
   const [pagamentoResponse, setPagamentoResponse] = useState<PagamentoResponse>();
   const [listaPagamentosResponse, setListaPagamentosResponse] = useState<PagamentoResponse[]>();
+  const [usuario, setUsuario] = useState<UsuarioState | null>(store.getState().auth.usuario || null);
 
   const pagamentosMes = async () => {
     const usuario = store.getState().auth.usuario;
@@ -82,15 +82,25 @@ const Dashboard = () => {
   return (
 
     <View style={styles.container}>
-      <Text>Dashboard</Text>
-      {pagamentoResponse != undefined && (
-        <Card
-          title={`Pagamentos de ${pagamentoResponse.mesPagamento}`}
-          quantidade={pagamentoResponse.quantidadePagamentos}
-          status={pagamentoResponse.status}
-          valorTotal={`R$${pagamentoResponse.valorTotal}`}
-        ></Card>
-      )}
+      <Text style={{ color: Colors.fundoCard, fontSize: 20, width: "100%" }}>Bem vinda {usuario?.nome}</Text>
+      <View style={styles.cards}>
+        {pagamentoResponse != undefined && (
+          <Card
+            title={`Pagamentos de ${pagamentoResponse.mesPagamento}`}
+            quantidade={pagamentoResponse.quantidadePagamentos}
+            status={pagamentoResponse.status}
+            valorTotal={`R$${pagamentoResponse.valorTotal}`}
+          ></Card>
+        )}
+        {pagamentoResponse != undefined && (
+          <Card
+            title={`Pagamentos de ${pagamentoResponse.mesPagamento}`}
+            quantidade={pagamentoResponse.quantidadePagamentos}
+            status={pagamentoResponse.status}
+            valorTotal={`R$${pagamentoResponse.valorTotal}`}
+          ></Card>
+        )}
+      </View>
       {listaPagamentosResponse != null && listaPagamentosResponse?.length > 0 && (
         <GraficoGastos
           pagamentos={listaPagamentosResponse}
@@ -108,6 +118,11 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.fundo,
     width: '100%',
   },
+  cards: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    width: '100%'
+  }
 })
 
 
