@@ -1,16 +1,19 @@
+import axios from "axios";
 import { Formik } from "formik";
+import { useState } from "react";
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import { MaskedTextInput } from "react-native-mask-text";
 import * as Yup from "yup";
+import Alert from "../../components/Alert";
 import { DefaultButton } from "../../components/DefautlBotton";
-import { Colors } from "../../styles/constants";
-
+import api from "../../services/api";
+import { Colors } from "../../styles/constants"; // Certifique-se de ter esse arquivo
 
 
 const initialValues = {
   nome: "",
-  cpf: "",
+  documento: "",
   senha: "",
   confirmarSenha: "",
   email: "",
@@ -34,30 +37,83 @@ const validationSchema = Yup.object().shape({
   confirmarSenha: Yup.string()
     .oneOf([Yup.ref("senha"), null], "As senhas não coincidem")
     .required("Confirmação de senha é obrigatória"),
-  cpf: Yup.string()
+  documento: Yup.string()
     .required("CPF é obrigatório"),
 })
 
 interface UsuarioProps {
   nome: string;
-  cpf: string;
+  documento: string;
   senha: string;
   confirmarSenha: string;
   email: string;
   confirmaEmail: string;
 }
-const Cadastro = () => {
+const Cadastro = ({ navigation }: any) => {
+  const [viewNotications, setViewNotification] = useState<boolean>(false);
+  const [mensagemNotification, setMensagemNotification] = useState<string>("");
+  const [titleNotification, setTitleNotification] = useState<string>("");
+  const [typeNotification, setTypeNotification] = useState<boolean>(false);
+
+  const handleCadastro = async (values: UsuarioProps) => {
+    try {
+      const response = await api.post("Usuario/cadastrar", values)
+
+      if (response.status === 201) {
+        console.log("Cadastro realizado com sucesso!");
+        setViewNotification(true);
+        setMensagemNotification(`Usuário ${response.data.nome} cadastro com sucesso!`);
+        setTitleNotification("Cadastro realizado");
+        setTypeNotification(true);
+        setTimeout(() => {
+          setViewNotification(false);
+          setMensagemNotification("");
+          setTitleNotification("");
+          setTypeNotification(false);
+          navigation.navigate('Login');
+          return true;
+        }, 4000);
+      }
+
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log("Erro na requisição:", error.response?.data);
+        if (error.response?.status === 400) {
+          setViewNotification(true);
+          setMensagemNotification(error.response.data);
+          setTitleNotification("Erro no cadastro");
+          setTypeNotification(false);
+          setTimeout(() => {
+            setViewNotification(false);
+            setMensagemNotification("");
+            setTitleNotification("");
+            setTypeNotification(false);
+          }, 4000);
+          console.log(error.response.data);
+
+        }
+        return false;
+      } else {
+        console.log("Erro desconhecido:", error);
+        return false;
+      }
+    }
+  }
   return (
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <Alert text2={mensagemNotification} type={typeNotification ? "success" : "error"} text1={titleNotification} viewMode={viewNotications}></Alert>
         <Formik
           validationSchema={validationSchema}
           initialValues={initialValues}
-          onSubmit={(values) => {
-            console.log(values);
+          onSubmit={async (values, { resetForm }) => {
+            const foiSalvo: boolean | undefined = await handleCadastro(values);
+            if (foiSalvo !== undefined && foiSalvo) {
+              resetForm();
+            }
           }}
         >
           {({
@@ -88,11 +144,11 @@ const Cadastro = () => {
                   placeholder="CPF"
                   keyboardType="numeric"
                   onChangeText={(text, rawText) => {
-                    handleChange("cpf")(rawText); // Use o valor sem máscara no Formik
+                    handleChange("documento")(rawText); // Use o valor sem máscara no Formik
                   }}
-                  value={values.cpf}
+                  value={values.documento}
                 />
-                {touched.cpf && errors.cpf && <Text style={styles.error}>{errors.cpf}</Text>}
+                {touched.documento && errors.documento && <Text style={styles.error}>{errors.documento}</Text>}
                 <Text style={styles.labelContainer}>E-mail</Text>
                 <TextInput
                   style={styles.textInput}

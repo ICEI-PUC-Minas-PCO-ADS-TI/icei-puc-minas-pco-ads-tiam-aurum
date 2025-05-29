@@ -35,7 +35,7 @@ const Login = ({ navigation }: any) => {
 
 
   const handleCadastro = () => {
-    navigation.navigate('Tabs', { showWelcomeMessage: true });
+    navigation.navigate('Cadastro', { showWelcomeMessage: true });
   }
   const handleLogin = async (values: LoginProps) => {
     try {
