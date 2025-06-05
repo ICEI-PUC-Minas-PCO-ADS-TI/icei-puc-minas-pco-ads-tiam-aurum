@@ -149,10 +149,10 @@ namespace AurumApi.Services
             if (pedido == null)
                 throw new InvalidOperationException($"Pedido com ID {id} não encontrado.");
 
-            if(await PossuiPagamentos(id))
+            if (await PossuiPagamentos(id))
                 throw new ArgumentException($"Pedido com ID {id} não pode ser excluído, pois possui pagamentos associados.");
 
-            foreach(var item in pedido.JoiasPedidos)
+            foreach (var item in pedido.JoiasPedidos)
             {
                 var joia = await _aurumDataContext.Joias.FirstOrDefaultAsync(j => j.Id == item.JoiaId);
                 if (joia != null)
@@ -171,6 +171,27 @@ namespace AurumApi.Services
         private async Task<bool> PossuiPagamentos(int id)
         {
             return await _aurumDataContext.Pagamentos.AnyAsync(p => p.PedidoId == id);
+        }
+
+        public async Task<bool> RegistrarDevolucaoOuTroca(int joiaId, string tipo)
+        {
+            if (joiaId <= 0)
+                throw new ArgumentException("ID da joia inválido.");
+
+            var joia = await _aurumDataContext.Joias.FirstOrDefaultAsync(j => j.Id == joiaId);
+
+            if (joia == null)
+                throw new InvalidOperationException($"Joia com ID {joiaId} não encontrada.");
+
+            tipo = tipo.ToLower();
+
+            if (tipo != "devolucao" && tipo != "troca")
+                throw new ArgumentException("Tipo deve ser 'devolucao' ou 'troca'.");
+
+            joia.Status= tipo == "devolucao" ? "Devolução" : "Troca";
+
+            _aurumDataContext.Joias.Update(joia);
+            return await _aurumDataContext.SaveChangesAsync() > 0;
         }
     }
 }

@@ -36,7 +36,7 @@ namespace AurumApi.Services
 
             List<Pagamento> listPagamentos = await _aurumDataContext.Pagamentos
                 .Where(p => p.DataPagamento >= filtro.MesPagamento && p.Status == filtro.Status && p.UsuarioId == filtro.Usuario.id)
-                .ToListAsync(); 
+                .ToListAsync();
 
             if (!listPagamentos.Any())
             {
@@ -55,9 +55,9 @@ namespace AurumApi.Services
             PagamentoResponse pagamentoResponse = new PagamentoResponse();
             pagamentoResponse.ValorTotal = 0;
 
-            for (int i = 0;  i < listPagamentos.Count; i++)
+            for (int i = 0; i < listPagamentos.Count; i++)
             {
-                pagamentoResponse.ValorTotal+= listPagamentos[i].ValorPagamento;
+                pagamentoResponse.ValorTotal += listPagamentos[i].ValorPagamento;
                 pagamentoResponse.quantidadePagamentos++;
                 if (i < 1) pagamentoResponse.Status = listPagamentos[i].Status;
             }
@@ -84,4 +84,5 @@ namespace AurumApi.Services
 
 
     }
+    
 }

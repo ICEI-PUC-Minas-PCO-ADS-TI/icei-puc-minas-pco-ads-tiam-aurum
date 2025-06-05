@@ -175,5 +175,35 @@ namespace AurumApi.Controllers
                 return StatusCode(500, $"Erro interno no servidor: {ex.Message}");
             }
         }
+        /// <summary>
+        /// registrar devolução ou troca de uma peça
+        /// </summary>
+        /// <param name="joiaId">id da peça</param>
+        /// <param name="tipo">tipo: devolucao ou troca</param>
+        /// <returns>status da operação</returns>
+        [HttpPut("api/pedido/registro-status-peca")]
+        public async Task<IActionResult> RegistrarStatusPecaAsync([FromQuery] int joiaId, [FromQuery] string tipo)
+        {
+            try
+            {
+                var resultado = await _service.RegistrarDevolucaoOuTroca(joiaId, tipo);
+                if (!resultado)
+                    return StatusCode(500, "Não foi possível atualizar o status da joia.");
+                return Ok("Status da joia atualizado com sucesso.");
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro interno no servidor: {ex.Message}");
+            }
+        }
+
     }
 }
