@@ -6,10 +6,11 @@ interface AuthState {
 }
 
 export interface UsuarioState {
-  id: number | null;
+  id?: number | null;
   nome?: string | null;
   email?: string | null;
   documento?: string | null;
+  telefone?: string | null;
 }
 
 const initialState: AuthState = {
