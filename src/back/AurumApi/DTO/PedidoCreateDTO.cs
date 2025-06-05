@@ -4,5 +4,6 @@
     {
         public int ClienteId { get; set; }
         public List<ItemCarrinhoDTO> Itens { get; set; }
+        public PagamentoCreateDTO Pagamento { get; set; }
     }
 }
