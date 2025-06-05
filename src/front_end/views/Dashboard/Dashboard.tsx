@@ -106,27 +106,32 @@ const Dashboard = () => {
   return (
 
     <View style={styles.container}>
-      <View>
-        <Text style={{ color: Colors.fundoCard, fontSize: 20, width: "100%" }}>Bem vinda {usuario?.nome}</Text>
+      <View style={{ padding: 15, width: "100%", justifyContent: "center", borderTopLeftRadius: 80, borderTopRightRadius: 80 }}>
+        <Text style={{ color: Colors.textButton, fontSize: 20, width: "100%" }}>Bem vindo,</Text>
+        <Text style={{ color: Colors.textButton, fontSize: 20, width: "100%" }}>{usuario?.nome}</Text>
       </View>
       <View style={styles.subContainer}>
         <View style={styles.cards}>
-          {pagamentoResponse != undefined && (
+          {pagamentoResponse != undefined ?
             <Card
               title={`Pagamentos de ${pagamentoResponse.mesPagamento}`}
               quantidade={pagamentoResponse.quantidadePagamentos}
               status={pagamentoResponse.status}
               valorTotal={`R$${pagamentoResponse.valorTotal}`}
             ></Card>
-          )}
-          {pagamentoResponse != undefined && (
+            : <Card title="Não tem pagamentos para esse mês"></Card>
+          }
+          {pagamentoResponse != undefined ?
             <Card
               title={`Pagamentos de ${pagamentoResponse.mesPagamento}`}
               quantidade={pagamentoResponse.quantidadePagamentos}
               status={pagamentoResponse.status}
               valorTotal={`R$${pagamentoResponse.valorTotal}`}
             ></Card>
-          )}
+            :
+            <Card title="Não tem pagamentos para esse mês"></Card>
+
+          }
         </View>
         {listaPagamentosResponse != null && listaPagamentosResponse?.length > 0 && (
           <GraficoGastos
@@ -150,17 +155,19 @@ const styles = StyleSheet.create({
   },
   cards: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
+    justifyContent: 'center',
     width: '100%'
   },
   subContainer: {
     width: '100%',
     height: '100%',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
+    flexDirection: 'column',
     backgroundColor: Colors.padraoBackGround,
     borderTopLeftRadius: 80,
     borderTopRightRadius: 80,
+    padding: 10
   }
 })
 
