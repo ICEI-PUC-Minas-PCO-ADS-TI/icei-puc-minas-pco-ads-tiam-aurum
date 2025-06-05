@@ -22,8 +22,8 @@ namespace AurumApi.Services
                 .OrderByDescending(j => j.DataPedido)
                 .ToListAsync();
 
-            if (pedidos is null)
-                throw new InvalidOperationException($"Usuário com ID {usuarioId} não existe, ou não possui pedidos.");
+            if (!pedidos.Any())
+                throw new InvalidOperationException($"Nenhum pedido encontrado para o usuário {usuarioId}.");
 
             return pedidos.Select(p => new PedidoResponse
             {
@@ -65,8 +65,8 @@ namespace AurumApi.Services
                 .OrderByDescending(j => j.DataPedido)
                 .ToListAsync();
 
-            if (pedidos is null)
-                throw new InvalidOperationException($"Usuário com ID {clienteId} não existe, ou não possui pedidos.");
+            if (!pedidos.Any())
+                throw new InvalidOperationException($"Nenhum pedido encontrado para o cliente {clienteId}.");
 
             return pedidos.Select(p => new PedidoResponse
             {
@@ -96,9 +96,15 @@ namespace AurumApi.Services
             await _aurumDataContext.Pedidos.AddAsync(novoPedido);
             await _aurumDataContext.SaveChangesAsync();
 
+            var joiasIds = dto.Itens.Select(i => i.JoiaId).ToList();
+
+            var joias = await _aurumDataContext.Joias
+                .Where(j => joiasIds.Contains(j.Id) && j.UsuarioId == usuarioId)
+                .ToListAsync();
+
             foreach (var item in dto.Itens)
             {
-                var joia = await _aurumDataContext.Joias.FirstOrDefaultAsync(j => j.Id == item.JoiaId && j.UsuarioId == usuarioId);
+                var joia = joias.FirstOrDefault(j => j.Id == item.JoiaId);
 
                 if (joia == null)
                     throw new InvalidOperationException($"Joia com ID {item.JoiaId} não encontrada.");
