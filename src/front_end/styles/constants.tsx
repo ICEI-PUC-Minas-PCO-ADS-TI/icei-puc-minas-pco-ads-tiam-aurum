@@ -6,5 +6,6 @@ export const Colors = {
   textInfo: '#d1bc99fb',
   defaultText: '#000000',
   green: '#00FF00',
-  fundoCard: '#FFFDFD'
+  fundoCard: '#FFFDFD',
+  padraoBackGround: "#D9D9D9"
 }
