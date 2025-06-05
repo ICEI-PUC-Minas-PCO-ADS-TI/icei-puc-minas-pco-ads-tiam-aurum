@@ -56,17 +56,20 @@ export const UserViewStyle: BottomTabNavigationOptions = {
   tabBarLabelStyle: {
     color: Colors.textButton,
   },
+  tabBarActiveBackgroundColor: Colors.padraoBackGround,
   tabBarIcon: ({ color, size }) => (
-    <Icon name="person" color={Colors.textButton} size={size} />
+    <Icon name="person" color={Colors.textButton} size={33} />
   ),
 }
 
 export const DashboardStyle: BottomTabNavigationOptions = {
   headerShown: false,
+  tabBarShowLabel: false,
   tabBarLabelStyle: {
     color: Colors.textButton,
   },
+  tabBarActiveBackgroundColor: Colors.padraoBackGround,
   tabBarIcon: ({ color, size }) => (
-    <Icon name="home" color={Colors.textButton} size={size} />
+    <Icon name="home" color={Colors.textButton} size={33} />
   ),
 }

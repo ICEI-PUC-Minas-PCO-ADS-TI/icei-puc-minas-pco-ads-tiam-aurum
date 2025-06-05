@@ -155,6 +155,7 @@ const styles = StyleSheet.create({
   },
   cards: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     justifyContent: 'center',
     width: '100%'
   },

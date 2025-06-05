@@ -26,6 +26,8 @@ export default function Tabs() {
         tabBarIconStyle: {
           marginBottom: 5,
         },
+        tabBarActiveTintColor: Colors.padraoBackGround,
+        tabBarInactiveTintColor: Colors.defaultText,
       }}
     >
       <Tab.Screen
