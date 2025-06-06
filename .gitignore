@@ -1,1 +1,9 @@
+# Ignorar arquivos e pastas desnecessários para o build
+.vs
+*.log
+*.tmp
 node_modules
+*.env
+*.local
+*.DS_Store
+src/back/
