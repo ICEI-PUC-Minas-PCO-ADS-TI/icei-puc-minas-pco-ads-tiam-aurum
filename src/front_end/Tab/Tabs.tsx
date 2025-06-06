@@ -1,6 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Colors } from "../styles/constants";
-import { DashboardStyle, UserViewStyle } from "../styles/pages";
+import { CalendarioStyle, DashboardStyle, UserViewStyle } from "../styles/pages";
+import { Calendario } from "../views/Calendario/Calendario";
 import Dashboard from "../views/Dashboard/Dashboard";
 import { UserView } from "../views/User/UserView";
 
@@ -40,6 +41,11 @@ export default function Tabs() {
         component={UserView}
         options={UserViewStyle}
       />
+      <Tab.Screen
+        name={"Calendario"}
+        component={Calendario}
+        options={CalendarioStyle}
+      ></Tab.Screen>
     </Tab.Navigator>
   )
 }

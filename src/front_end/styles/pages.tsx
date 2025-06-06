@@ -74,3 +74,15 @@ export const DashboardStyle: BottomTabNavigationOptions = {
     <Icon name="home" color={Colors.textButton} size={33} />
   ),
 }
+
+export const CalendarioStyle: BottomTabNavigationOptions = {
+  tabBarShowLabel: false,
+  tabBarLabelStyle: {
+    color: Colors.textButton,
+  },
+  tabBarActiveBackgroundColor: Colors.padraoBackGround,
+
+  tabBarIcon: ({ color, size }) => (
+    <Icon name="calendar" size={29} color={Colors.textButton} />
+  )
+}
