@@ -53,6 +53,7 @@ export const CadastroStyle: StackNavigationOptions = {
 export const UserViewStyle: BottomTabNavigationOptions = {
   headerTitle: () => <Logo />,
   headerShown: false,
+  tabBarShowLabel: false,
   tabBarLabelStyle: {
     color: Colors.textButton,
   },

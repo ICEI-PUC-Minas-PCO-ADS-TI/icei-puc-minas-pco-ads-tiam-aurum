@@ -17,9 +17,10 @@ import { Colors } from "../../styles/constants";
 const validationSchema = Yup.object().shape({
   nome: Yup.string().required('Campo obrigatório'),
   email: Yup.string().email('Email inválido').required('Campo obrigatório'),
+  senha: Yup.string().min(6, 'A senha deve ter pelo menos 6 caracteres').required('Campo obrigatório'),
 });
 
-export const UserView = () => {
+export const UserView = ({ navigation }: any) => {
   const [photoUri, setPhotoUri] = React.useState<string | null>(null);
   const [usuario, setUsuario] = useState<UsuarioState | null>(store.getState().auth.usuario || null);
   const [viewMode, setViewMode] = useState<boolean>(false);
@@ -104,122 +105,132 @@ export const UserView = () => {
     }
   }
 
+  const deslogger = () => {
+    dispatch(setAuthentication(null))
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Login' }],
+    });
+  }
+
 
   return (
     <View style={styles.container}>
-      <Alert text1="Alerta" text2={messagemNotificaion} type="info" viewMode={viewNotifications}></Alert>
-      <Formik
-        initialValues={usuario ? { ...usuario } : { nome: '', email: '', documento: '', telefone: '', senha: '' }}
-        validationSchema={validationSchema}
-        onSubmit={(values) => {
-          saveUserData(values);
-        }}
-      >
-        {({
-          values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue
-        }) => (
-          <View style={styles.informacoesUsuario}>
-            <SafeAreaView style={styles2.container}>
-              <Image
-                style={styles2.stretch}
-                source={require("../../assets/usuario.jpeg")}
-              />
-            </SafeAreaView>
-            <View style={{ gap: 10, width: "100%" }}>
-              <View style={styles.campoInputs}>
-                <Text style={styles.labelContainer}>NOME</Text>
-                <TextInput
-                  style={!viewMode ? styles.inputDesativado : styles.inputAtivado}
-                  placeholder="Nome"
-                  onChangeText={handleChange('nome')}
-                  onChange={(date) => setFieldValue('nome', date)}
-                  value={values.nome ? values.nome : ""}
-                  editable={viewMode}
+      <View style={styles.subContainer}>
+        <Alert text1="Alerta" text2={messagemNotificaion} type="info" viewMode={viewNotifications}></Alert>
+        <View style={{ width: "100%", alignItems: "flex-end" }}>
+          <View style={{ width: "20%", marginRight: 25 }}>
+            <DefaultButton
+              cor={Colors.button}
+              corTexto={Colors.textButton}
+              nome={"Sair"}
+              onPress={() => deslogger()}
+            />
+          </View>
+        </View>
+        <Formik
+          initialValues={usuario ? { ...usuario } : { nome: '', email: '', documento: '', telefone: '', senha: '' }}
+          validationSchema={validationSchema}
+          onSubmit={(values) => {
+            saveUserData(values);
+          }}
+        >
+          {({
+            values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue, resetForm
+          }) => (
+            <View style={styles.informacoesUsuario}>
+              <SafeAreaView style={styles2.container}>
+                <Image
+                  style={styles2.stretch}
+                  source={require("../../assets/usuario.jpeg")}
                 />
-                {touched.nome && errors.nome && <Text style={styles.error}>{errors.nome}</Text>}
-              </View>
-              <View style={styles.campoInputs}>
-                <Text style={styles.labelContainer}>EMAIL</Text>
-                <TextInput
-                  style={!viewMode ? styles.inputDesativado : styles.inputAtivado}
-                  value={values.email ? values.email : ""}
-                  placeholder="Email"
-                  onChangeText={handleChange('email')}
-                  editable={viewMode}
-                />
-                {touched.email && errors.email && <Text style={styles.error}>{errors.email}</Text>}
-              </View>
-              <View style={styles.campoInputs}>
-                <Text style={styles.labelContainer}>SENHA</Text>
-                <TextInput
-                  value={values.senha ? values.senha : ""}
-                  style={!viewMode ? styles.inputDesativado : styles.inputAtivado}
-                  placeholder="Senha"
-                  editable={viewMode}
-                  onChangeText={handleChange('senha')}
-                  secureTextEntry={true}
-                />
-              </View>
-              <View style={styles.campoInputs}>
-                <Text style={styles.labelContainer}>CPF</Text>
-                <MaskedTextInput
-                  mask="999.999.999-99"
-                  style={styles.inputDesativado}
-                  placeholder="CPF"
-                  keyboardType="numeric"
-                  onChangeText={(text, rawText) => {
-                    handleChange("cpf")(rawText); // Use o valor sem máscara no Formik
-                  }}
-                  value={values.documento ? values.documento : ""}
-                  editable={false}
-                />
-              </View>
-              <View style={styles.campoInputs}>
-                <Text style={styles.labelContainer}>TELEFONE</Text>
-                <MaskedTextInput
-                  mask="(99) 99999-9999"
-                  style={!viewMode ? styles.inputDesativado : styles.inputAtivado}
-                  placeholder="Celular"
-                  keyboardType="numeric"
-                  onChangeText={(text, rawText) => {
-                    handleChange("telefone")(rawText); // Use o valor sem máscara no Formik
-                  }}
-                  value={values.telefone ? values.telefone : ""}
-                />
-                {touched.telefone && errors.telefone && <Text style={styles.error}>{errors.telefone}</Text>}
-              </View>
-              <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 10 }}>
-                {!viewMode && (
-                  <DefaultButton
-                    cor={Colors.button}
-                    corTexto={Colors.textButton}
-                    nome={"Editar"}
-                    onPress={() => setViewMode(!viewMode)}
+              </SafeAreaView>
+              <View style={{ gap: 10, width: "100%" }}>
+                <View style={styles.campoInputs}>
+                  <Text style={styles.labelContainer}>NOME</Text>
+                  <TextInput
+                    style={!viewMode ? styles.inputDesativado : styles.inputAtivado}
+                    placeholder="Nome"
+                    onChangeText={handleChange('nome')}
+                    onChange={(date) => setFieldValue('nome', date)}
+                    value={values.nome ? values.nome : ""}
+                    editable={viewMode}
                   />
-                )}
-                {viewMode && (
-                  <DefaultButton
-                    cor={Colors.button}
-                    corTexto={Colors.textButton}
-                    nome={"Salvar"}
-                    onPress={handleSubmit}
+                  {touched.nome && errors.nome && <Text style={styles.error}>{errors.nome}</Text>}
+                </View>
+                <View style={styles.campoInputs}>
+                  <Text style={styles.labelContainer}>EMAIL</Text>
+                  <TextInput
+                    style={!viewMode ? styles.inputDesativado : styles.inputAtivado}
+                    value={values.email ? values.email : ""}
+                    placeholder="Email"
+                    onChangeText={handleChange('email')}
+                    editable={viewMode}
                   />
-                )}
-                {viewMode && (
-                  <DefaultButton
-                    cor={Colors.button}
-                    corTexto={Colors.textButton}
-                    nome={"Cancelar"}
-                    onPress={() => setViewMode(!viewMode)}
+                  {touched.email && errors.email && <Text style={styles.error}>{errors.email}</Text>}
+                </View>
+                <View style={styles.campoInputs}>
+                  <Text style={styles.labelContainer}>SENHA</Text>
+                  <TextInput
+                    value={values.senha ? values.senha : ""}
+                    style={!viewMode ? styles.inputDesativado : styles.inputAtivado}
+                    placeholder="Senha"
+                    editable={viewMode}
+                    onChangeText={handleChange('senha')}
+                    secureTextEntry={true}
                   />
-                )}
+                </View>
+                {touched.senha && errors.senha && <Text style={styles.error}>{errors.senha}</Text>}
+                <View style={styles.campoInputs}>
+                  <Text style={styles.labelContainer}>CPF</Text>
+                  <MaskedTextInput
+                    mask="999.999.999-99"
+                    style={styles.inputDesativado}
+                    placeholder="CPF"
+                    keyboardType="numeric"
+                    onChangeText={(text, rawText) => {
+                      handleChange("cpf")(rawText);
+                    }}
+                    value={values.documento ? values.documento : ""}
+                    editable={false}
+                  />
+                </View>
+                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 10 }}>
+                  {!viewMode && (
+                    <DefaultButton
+                      cor={Colors.button}
+                      corTexto={Colors.textButton}
+                      nome={"Editar"}
+                      onPress={() => setViewMode(!viewMode)}
+                    />
+                  )}
+                  {viewMode && (
+                    <DefaultButton
+                      cor={Colors.button}
+                      corTexto={Colors.textButton}
+                      nome={"Salvar"}
+                      onPress={handleSubmit}
+                    />
+                  )}
+                  {viewMode && (
+                    <DefaultButton
+                      cor={Colors.button}
+                      corTexto={Colors.textButton}
+                      nome={"Cancelar"}
+                      onPress={() => {
+                        setViewMode(!viewMode);
+                        resetForm()
+                      }}
+                    />
+                  )}
 
+                </View>
               </View>
             </View>
-          </View>
-        )
-        }
-      </Formik >
+          )
+          }
+        </Formik >
+      </View>
       {/* <Button title="Abrir Câmera" onPress={openCamera} />
       <Button title="Selecionar da Galeria" onPress={openGallery} />
       {photoUri && <Image source={{ uri: photoUri }} style={styles.image} />} */}
@@ -273,17 +284,28 @@ const styles = StyleSheet.create({
     color: 'red',
   },
   labelContainer: {
-    fontSize: 15,
+    fontSize: 20,
     marginTop: 2,
     width: '26%',
     color: Colors.textInfo,
+    fontWeight: 'bold',
   },
-  campoInputs: { flexDirection: 'row', alignItems: 'center', width: '100%' }
+  campoInputs: { flexDirection: 'row', alignItems: 'center', width: '100%' },
+  subContainer: {
+    width: "100%",
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: Colors.padraoBackGround,
+    height: "100%",
+    gap: 10,
+    borderTopLeftRadius: 80,
+    borderTopRightRadius: 80,
+  }
 });
 
 const styles2 = StyleSheet.create({
   container: {
-    width: "80%",
+    width: "50%",
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: Colors.button,
@@ -292,10 +314,11 @@ const styles2 = StyleSheet.create({
     borderTopStartRadius: 160,
     borderBottomRightRadius: 160,
     borderBottomLeftRadius: 160,
+    height: 160,
   },
   stretch: {
-    width: "80%",
-    height: 160,
+    width: "70%",
+    height: 100,
     resizeMode: 'stretch',
     borderRadius: 100
   },
