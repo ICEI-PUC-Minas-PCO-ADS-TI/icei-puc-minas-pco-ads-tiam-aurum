@@ -119,7 +119,7 @@ export const UserView = ({ navigation }: any) => {
       <View style={styles.subContainer}>
         <Alert text1="Alerta" text2={messagemNotificaion} type="info" viewMode={viewNotifications}></Alert>
         <View style={{ width: "100%", alignItems: "flex-end" }}>
-          <View style={{ width: "20%", marginRight: 25 }}>
+          <View style={{ width: "22%", marginRight: 25 }}>
             <DefaultButton
               cor={Colors.button}
               corTexto={Colors.textButton}
@@ -252,7 +252,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   informacoesUsuario: {
-    width: "85%",
+    width: "100%",
     justifyContent: 'flex-start',
     alignItems: 'center',
     padding: 20,
