@@ -10,6 +10,7 @@ import Container from '../../components/Container';
 import cardContainerStyle from '../../styles/cardContainer';
 import formularioStyle from '../../styles/formulario';
 import api from '../../services/api';
+import store from '../../store';
 
 
 export default function FinalizarCompra(props: any) {
@@ -44,7 +45,16 @@ export default function FinalizarCompra(props: any) {
         };
 
         try {
-            await api.post('pedido?usuarioId=1', pedido);
+            const usuarioId = store.getState().auth.usuario?.id;
+
+            if (!usuarioId) {
+                Alert.alert("Erro", "Usuário não identificado.");
+                return;
+            }
+            
+            await api.post(`pedido?usuarioId=${usuarioId}`, JSON.stringify(pedido), {
+                headers: { 'Content-Type': 'application/json' },
+            });
 
             Alert.alert('Pedido finalizado com sucesso!');
             limparCarrinho();
@@ -104,9 +114,9 @@ export default function FinalizarCompra(props: any) {
                     value={formaPagamento}
                 >
                     <View style={styles.radioGroup}>
-                        <RadioButton.Item label="Pix" value="Pix" style={styles.radioItem}/>
-                        <RadioButton.Item label="Cartão de Crédito" value="Cartão" style={styles.radioItem}/>
-                        <RadioButton.Item label="Boleto" value="Boleto" style={styles.radioItem}/>
+                        <RadioButton.Item label="Pix" value="Pix" style={styles.radioItem} />
+                        <RadioButton.Item label="Cartão de Crédito" value="Cartão" style={styles.radioItem} />
+                        <RadioButton.Item label="Boleto" value="Boleto" style={styles.radioItem} />
                     </View>
                 </RadioButton.Group>
                 <TouchableOpacity style={formularioStyle.botao} onPress={enviarPedido}>

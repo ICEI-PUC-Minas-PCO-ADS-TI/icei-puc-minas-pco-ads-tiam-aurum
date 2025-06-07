@@ -7,6 +7,7 @@ import Container from '../../components/Container';
 import cardContainerStyle from '../../styles/cardContainer';
 import formularioStyle from '../../styles/formulario';
 import api from '../../services/api';
+import store from '../../store';
 
 const imagemPadrao = require('../../assets/no-image.jpeg');
 
@@ -114,12 +115,22 @@ export default function CadastroJoia({ route, navigation }: any) {
 
     try {
       if (joiaEditando?.id) {
+
         await api.put(`joia/${joiaEditando.id}`, dados, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
         Alert.alert('Sucesso', 'Joia atualizada!');
+
       } else {
-        await api.post('joia?usuarioId=1', dados, {
+        
+        const usuarioId = store.getState().auth.usuario?.id;
+        
+        if (!usuarioId) {
+          Alert.alert("Erro", "Usuário não identificado.");
+          return;
+        }
+
+        await api.post(`joia?usuarioId=${usuarioId}`, dados, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
         Alert.alert('Sucesso', 'Joia cadastrada!');
