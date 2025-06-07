@@ -1,8 +1,9 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Colors } from "../styles/constants";
-import { DashboardStyle, UserViewStyle } from "../styles/pages";
+import { CadastroJoiasStyle, DashboardStyle, ProdutosStyle, UserViewStyle } from "../styles/pages";
 import Dashboard from "../views/Dashboard/Dashboard";
 import { UserView } from "../views/User/UserView";
+import Produtos from "../views/Joias/Produtos";
 
 const Tab = createBottomTabNavigator();
 
@@ -39,6 +40,11 @@ export default function Tabs() {
         name="Perfil"
         component={UserView}
         options={UserViewStyle}
+      />
+      <Tab.Screen
+        name="Produtos"
+        component={Produtos}
+        options={ProdutosStyle}
       />
     </Tab.Navigator>
   )

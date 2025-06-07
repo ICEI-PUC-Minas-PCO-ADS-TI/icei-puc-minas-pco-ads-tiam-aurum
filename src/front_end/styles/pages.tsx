@@ -74,3 +74,23 @@ export const DashboardStyle: BottomTabNavigationOptions = {
     <Icon name="home" color={Colors.textButton} size={33} />
   ),
 }
+
+export const ProdutosStyle: BottomTabNavigationOptions = {
+  headerShown: false,
+  tabBarLabelStyle: {
+    color: Colors.textButton,
+  },
+  tabBarIcon: ({ size }) => (
+    <Icon name="list" color={Colors.textButton} size={size} />
+  ),
+}
+
+export const CadastroJoiasStyle: BottomTabNavigationOptions = {
+  headerShown: false,
+  tabBarLabelStyle: {
+    color: Colors.textButton,
+  },
+  tabBarIcon: ({ size }) => (
+    <Icon name="add" color={Colors.textButton} size={size} />
+  ),
+}
