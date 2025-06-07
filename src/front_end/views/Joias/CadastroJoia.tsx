@@ -1,120 +1,227 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Button, StyleSheet, Text, Alert, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { View, TextInput, StyleSheet, Text, Alert, ScrollView, Image, TouchableOpacity } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import { Ionicons } from '@expo/vector-icons';
 import api from '../../services/api';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-type RootStackParamList = {
-  CadastroJoia: { joia?: Joia };
-  Produtos: undefined;
-};
-
-type Props = NativeStackScreenProps<RootStackParamList, 'CadastroJoia'>;
+const imagemPadrao = require('../../assets/no-image.jpeg');
 
 interface Joia {
-  Id?: number;
-  Nome: string;
-  Descricao?: string;
-  Preco: number;
-  Quantidade: number;
-  UrlImagem?: string;
+  id?: number;
+  nome: string;
+  descricao?: string;
+  preco: number;
+  quantidade: number;
+  urlImagem?: string;
 }
 
-export default function CadastroJoia({ route, navigation }: Props) {
-  const joiaEdit = route.params?.joia;
-
-  const [nome, setNome] = useState(joiaEdit?.Nome || '');
-  const [descricao, setDescricao] = useState(joiaEdit?.Descricao || '');
-  const [preco, setPreco] = useState(joiaEdit?.Preco ? joiaEdit.Preco.toString() : '');
-  const [quantidade, setQuantidade] = useState(joiaEdit?.Quantidade ? joiaEdit.Quantidade.toString() : '');
+export default function CadastroJoia({ route, navigation }: any) {
+  const joiaExistente = route.params?.joia;
+  const [nome, setNome] = useState(joiaExistente?.nome || '');
+  const [descricao, setDescricao] = useState(joiaExistente?.descricao || '');
+  const [preco, setPreco] = useState(joiaExistente?.preco ? joiaExistente.preco.toString() : '');
+  const [quantidade, setQuantidade] = useState(joiaExistente?.quantidade ? joiaExistente.quantidade.toString() : '');
   const [imagem, setImagem] = useState<{ uri: string } | null>(null);
 
   useEffect(() => {
-    if (joiaEdit?.UrlImagem) {
-      setImagem({ uri: joiaEdit.UrlImagem });
-    }
-  }, [joiaEdit]);
+    if (joiaExistente) {
+      setNome(joiaExistente.nome || '');
+      setDescricao(joiaExistente.descricao || '');
+      setPreco(joiaExistente.preco ? joiaExistente.preco.toString() : '');
+      setQuantidade(joiaExistente.quantidade ? joiaExistente.quantidade.toString() : '');
 
-  async function pickImage() {
+      if (joiaExistente.urlImagem) {
+        setImagem({ uri: joiaExistente.urlImagem });
+      } else {
+        setImagem(null);
+      }
+    } else {
+      setNome('');
+      setDescricao('');
+      setPreco('');
+      setQuantidade('');
+      setImagem(imagemPadrao);
+    }
+  }, [joiaExistente]);
+
+  async function pegaImagemGaleria() {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== 'granted') {
-      Alert.alert('Permissão necessária', 'Precisamos de acesso à galeria para escolher imagens.');
+      Alert.alert('Permissão necessária', 'Precisamos de acesso da sua galeria.');
       return;
     }
 
-    let result = await ImagePicker.launchImageLibraryAsync({
+    const seleciona = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      quality: 0.5,
       allowsEditing: true,
+      quality: 0.5,
     });
 
-    if (!result.canceled && result.assets && result.assets.length > 0) {
-      setImagem({ uri: result.assets[0].uri });
+    if (!seleciona.canceled && seleciona.assets?.length) {
+      setImagem({ uri: seleciona.assets[0].uri });
     }
   }
 
-  async function handleSubmit() {
+  async function tirarFotoCamera() {
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert('Permissão necessária', 'Precisamos do acesso da sua câmera.');
+      return;
+    }
+
+    const seleciona = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      quality: 0.5,
+    });
+
+    if (!seleciona.canceled && seleciona.assets?.length) {
+      setImagem({ uri: seleciona.assets[0].uri });
+    }
+  }
+
+  async function cadastraJoia() {
     if (!nome || !preco || !quantidade) {
       Alert.alert('Erro', 'Nome, preço e quantidade são obrigatórios.');
       return;
     }
 
-    const formData = new FormData();
-    formData.append('Nome', nome);
-    formData.append('Descricao', descricao);
-    formData.append('Preco', parseFloat(preco).toString());
-    formData.append('Quantidade', parseInt(quantidade, 10).toString());
+    const dadosCadastro = new FormData();
+    dadosCadastro.append('Nome', nome);
+    dadosCadastro.append('Descricao', descricao);
+    dadosCadastro.append('Preco', parseFloat(preco).toString());
+    dadosCadastro.append('Quantidade', parseInt(quantidade, 10).toString());
 
     if (imagem && imagem.uri && !imagem.uri.startsWith('http')) {
-      const filename = imagem.uri.split('/').pop() || 'photo.jpg';
-      const match = /\.(\w+)$/.exec(filename);
+      const nomeArquivo = imagem.uri.split('/').pop() || 'photo.jpg';
+      const match = /\.(\w+)$/.exec(nomeArquivo);
       const type = match ? `image/${match[1]}` : `image/jpeg`;
 
-      formData.append('imagem', {
+      dadosCadastro.append('imagem', {
         uri: imagem.uri,
-        name: filename,
+        name: nomeArquivo,
         type,
       } as any);
     }
 
     try {
-      if (joiaEdit?.Id) {
-        await api.put(`joia/${joiaEdit.Id}`, formData, {
+      if (joiaExistente?.id) {
+        await api.put(`joia/${joiaExistente.id}`, dadosCadastro, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
-        Alert.alert('Sucesso', 'Joia atualizada.');
+        Alert.alert('Sucesso', 'A joia foi atualizada.');
       } else {
-        await api.post(`joia?usuarioId=1`, formData, {
+        await api.post(`joia?usuarioId=1`, dadosCadastro, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
-        Alert.alert('Sucesso', 'Joia cadastrada.');
+        Alert.alert('Sucesso', 'Joia cadastrada!');
       }
       navigation.goBack();
     } catch (error) {
-      Alert.alert('Erro', 'Falha ao salvar joia.');
+      Alert.alert('Erro', 'Erro ao salvar joia.');
       console.error(error);
     }
   }
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {/* inputs e botões */}
+      <ScrollView style={styles.cardContainer}>
+        <Text style={styles.txtTitulo}>
+          {joiaExistente ? 'Informações' : 'Cadastro de Joias'}
+        </Text>
+
+        <View style={{ alignItems: 'center', marginBottom: 0 }}>
+          <Image
+            source={imagem?.uri ? { uri: imagem.uri } : imagemPadrao}
+            style={styles.imgPrevisualizacao}
+          />
+        </View>
+
+        <View style={styles.imageButtonsContainer}>
+          <TouchableOpacity style={styles.imageButton} onPress={pegaImagemGaleria}>
+            <Ionicons style={styles.icone} name="images-outline"></Ionicons>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.imageButton} onPress={tirarFotoCamera}>
+            <Ionicons style={styles.icone} name="camera-outline"></Ionicons>
+          </TouchableOpacity>
+        </View>
+
+        <Text style={styles.label}>Nome da Joia:</Text>
+        <TextInput
+          style={styles.input}
+          value={nome}
+          onChangeText={setNome}
+          placeholder="Ex: Colar de ouro"
+        />
+
+        <Text style={styles.label}>Descrição:</Text>
+        <TextInput
+          style={styles.input}
+          value={descricao}
+          onChangeText={setDescricao}
+          placeholder="Opcional"
+          multiline
+        />
+
+        <Text style={styles.label}>Preço:</Text>
+        <TextInput
+          style={styles.input}
+          value={preco}
+          onChangeText={setPreco}
+          placeholder="Ex: 199.90"
+          keyboardType="numeric"
+        />
+
+        <Text style={styles.label}>Quantidade:</Text>
+        <TextInput
+          style={styles.input}
+          value={quantidade}
+          onChangeText={setQuantidade}
+          placeholder="Ex: 3"
+          keyboardType="numeric"
+        />
+
+        <TouchableOpacity style={styles.btnSalvar} onPress={cadastraJoia}>
+          <Text style={styles.txtBtnSalvar}>
+            {joiaExistente ? 'Atualizar' : 'Cadastrar'}
+          </Text>
+        </TouchableOpacity>
+      </ScrollView>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     padding: 15,
+    backgroundColor: '#364B4B',
+  },
+  cardContainer: {
+    backgroundColor: '#D9D9D9',
+    borderRadius: 40,
+    padding: 20,
+    elevation: 2,
+    marginTop: 20,
+  },
+  txtTitulo: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#364B4B',
+    textAlign: 'center',
+    marginBottom: 10,
   },
   label: {
     marginTop: 15,
     marginBottom: 5,
     fontWeight: 'bold',
+    fontSize: 18,
+    color: '#364B4B',
   },
   input: {
-    backgroundColor: '#fff',
-    borderRadius: 5,
+    backgroundColor: '#A3A3A3',
+    color: '#F7E7CE',
+    borderRadius: 20,
     padding: 10,
     borderColor: '#999',
     borderWidth: 1,
@@ -126,9 +233,38 @@ const styles = StyleSheet.create({
     backgroundColor: '#eee',
     borderRadius: 8,
   },
-  imagePreview: {
-    width: 150,
-    height: 150,
+  imageButton: {
+    padding: 10,
+    backgroundColor: '#030034',
+    borderRadius: 8,
+    width: '23%',
+    alignItems: 'center',
+  },
+  icone: {
+    fontSize: 28,
+    color: '#D4AF37',
+  },
+  imgPrevisualizacao: {
+    width: 160,
+    height: 160,
     borderRadius: 8,
   },
+  imageButtonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    marginVertical: 20,
+  },
+  btnSalvar: {
+    backgroundColor: '#293A3A',
+    width: '100%',
+    padding: 15,
+    borderRadius: 20,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  txtBtnSalvar: {
+    color: '#D4AF37',
+    fontWeight: 'bold',
+    fontSize: 18,
+  }
 });
