@@ -14,12 +14,18 @@ namespace AurumApi.Models
         public decimal PrecoUnidade { get; set; }
         [Column("subtotal")]
         public decimal Subtotal { get; set; }
+        [Column("nomejoia")]
+        public string NomeJoia { get; set; }
+        [Column("descricaojoia")]
+        public string DescricaoJoia { get; set; }
+        [Column("imagemurljoia")]
+        public string ImagemUrlJoia { get; set; }
         [Column("pedidoid")]
         public int PedidoId { get; set; }
         [JsonIgnore]
         public Pedido? Pedido { get; set; }
         [Column("joiaid")]
-        public int JoiaId { get; set; }
+        public int? JoiaId { get; set; }
         public Joia? Joia { get; set; }
     }
 }

@@ -76,7 +76,7 @@ namespace AurumApi.Services
             Joia joia = new Joia
             {
                 Nome = joiaDto.Nome.Trim(),
-                Descricao = joiaDto.Descricao.Trim(),
+                Descricao = joiaDto.Descricao?.Trim(),
                 Preco = joiaDto.Preco,
                 Quantidade = joiaDto.Quantidade,
                 ImagemUrl = urlImagem,
