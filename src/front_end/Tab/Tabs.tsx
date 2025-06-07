@@ -1,10 +1,10 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Colors } from "../styles/constants";
-import { CalendarioStyle, DashboardStyle, ProdutosStyle, UserViewStyle } from "../styles/pages";
+import { CalendarioStyle, DashboardStyle, ProdutosStackStyle, UserViewStyle } from "../styles/pages";
 import { Calendario } from "../views/Calendario/Calendario";
 import Dashboard from "../views/Dashboard/Dashboard";
-import Produtos from "../views/Joias/Produtos";
 import { UserView } from "../views/User/UserView";
+import { ProdutosStackScreen } from "./ProdutosStackScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -43,15 +43,12 @@ export default function Tabs() {
         options={UserViewStyle}
       />
       <Tab.Screen
-        name="Produtos"
-        component={Produtos}
-        options={ProdutosStyle}
-      />
-      <Tab.Screen
         name={"Calendario"}
         component={Calendario}
         options={CalendarioStyle}
       ></Tab.Screen>
+      <Tab.Screen name="ProdutosStack" component={ProdutosStackScreen} options={ProdutosStackStyle} />
+
     </Tab.Navigator>
   )
 }

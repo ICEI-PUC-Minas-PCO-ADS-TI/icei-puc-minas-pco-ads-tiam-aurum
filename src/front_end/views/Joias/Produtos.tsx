@@ -1,9 +1,9 @@
-import React, { useCallback, useState } from 'react';
-import { View, FlatList, StyleSheet, TouchableOpacity, Text, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useFocusEffect } from '@react-navigation/native';
+import React, { useCallback, useState } from 'react';
+import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import JoiaCard, { Joia } from '../../components/JoiaCard';
 import api from '../../services/api';
-import { useFocusEffect } from '@react-navigation/native';
 
 export default function Produtos({ navigation }: any) {
   const [joias, renderizaJoias] = useState<Joia[]>([]);
@@ -26,7 +26,7 @@ export default function Produtos({ navigation }: any) {
   }
 
   function editarJoia(joia: Joia) {
-    navigation.navigate('CadastroJoia', { joia });
+    navigation.navigate('CadastroJoias', { joia });
   }
 
   async function deletarJoia(joiaId: number) {
@@ -61,31 +61,31 @@ export default function Produtos({ navigation }: any) {
   }
 
   return (
-  <View style={styles.container}>
-    <FlatList
-      data={joias}
-      keyExtractor={item => item.id.toString()}
-      contentContainerStyle={styles.cardContainer}
-      ListHeaderComponent={
-        <Text style={styles.txtTitulo}>Produtos</Text>
-      }
-      renderItem={({ item }) => (
-        <JoiaCard
-          joia={item}
-          editar={() => editarJoia(item)}
-          deletar={() => deletarJoia(item.id)}
-          adicionarCarrinho={() => adicionaCarrinho(item)}
-        />
-      )}
-    />
+    <View style={styles.container}>
+      <FlatList
+        data={joias}
+        keyExtractor={item => item.id.toString()}
+        contentContainerStyle={styles.cardContainer}
+        ListHeaderComponent={
+          <Text style={styles.txtTitulo}>Produtos</Text>
+        }
+        renderItem={({ item }) => (
+          <JoiaCard
+            joia={item}
+            editar={() => editarJoia(item)}
+            deletar={() => deletarJoia(item.id)}
+            adicionarCarrinho={() => adicionaCarrinho(item)}
+          />
+        )}
+      />
 
-    <TouchableOpacity
-      style={styles.btnAdd}
-      onPress={() => navigation.navigate('CadastroJoia', { joia: undefined })}
-    >
-      <Ionicons name="add" size={28} color="#D4AF37" />
-    </TouchableOpacity>
-  </View>
+      <TouchableOpacity
+        style={styles.btnAdd}
+        onPress={() => navigation.navigate('CadastroJoias', { joia: undefined })}
+      >
+        <Ionicons name="add" size={28} color="#D4AF37" />
+      </TouchableOpacity>
+    </View>
   );
 }
 

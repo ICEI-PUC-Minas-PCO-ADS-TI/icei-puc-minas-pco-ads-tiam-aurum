@@ -10,6 +10,8 @@ export const TabsStyle: StackNavigationOptions = {
     backgroundColor: Colors.fundo,
   },
   headerTitle: () => <Logo />,
+  headerLeft: () => null, // Isso remove o botão de voltar
+
 }
 
 export const LoginStyle: StackNavigationOptions = {
@@ -75,23 +77,15 @@ export const DashboardStyle: BottomTabNavigationOptions = {
   ),
 }
 
-export const ProdutosStyle: BottomTabNavigationOptions = {
+export const ProdutosStackStyle: BottomTabNavigationOptions = {
   headerShown: false,
+  tabBarShowLabel: false,
   tabBarLabelStyle: {
     color: Colors.textButton,
   },
+  tabBarActiveBackgroundColor: Colors.padraoBackGround,
   tabBarIcon: ({ size }) => (
     <Icon name="list" color={Colors.textButton} size={size} />
-  ),
-}
-
-export const CadastroJoiasStyle: BottomTabNavigationOptions = {
-  headerShown: false,
-  tabBarLabelStyle: {
-    color: Colors.textButton,
-  },
-  tabBarIcon: ({ size }) => (
-    <Icon name="add" color={Colors.textButton} size={size} />
   ),
 }
 

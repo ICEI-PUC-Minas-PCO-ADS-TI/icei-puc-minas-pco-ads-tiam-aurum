@@ -6,7 +6,6 @@ import { CadastroStyle, LoginStyle, TabsStyle } from './styles/pages';
 import Tabs from './Tab/Tabs';
 import Login from './views/Login';
 import Cadastro from './views/User/Cadastro';
-import CadastroJoia from './views/Joias/CadastroJoia';
 
 const Stack = createStackNavigator();
 
@@ -18,7 +17,6 @@ export default function App() {
           <Stack.Screen options={LoginStyle} name="Login" component={Login} />
           <Stack.Screen options={CadastroStyle} name="Cadastro" component={Cadastro} />
           <Stack.Screen options={TabsStyle} name="Tabs" component={Tabs} />
-          <Stack.Screen options={{ headerShown: false }} name="CadastroJoia" component={CadastroJoia} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
