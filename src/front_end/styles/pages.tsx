@@ -84,8 +84,8 @@ export const ProdutosStackStyle: BottomTabNavigationOptions = {
     color: Colors.textButton,
   },
   tabBarActiveBackgroundColor: Colors.padraoBackGround,
-  tabBarIcon: ({ size }) => (
-    <Icon name="list" color={Colors.textButton} size={size} />
+  tabBarIcon: () => (
+    <Icon name="list" color={Colors.textButton} size={33} />
   ),
 }
 
@@ -98,5 +98,17 @@ export const CalendarioStyle: BottomTabNavigationOptions = {
 
   tabBarIcon: ({ color, size }) => (
     <Icon name="calendar" size={29} color={Colors.textButton} />
+  )
+}
+
+export const CarrinhoStackStyle: BottomTabNavigationOptions = {
+  tabBarShowLabel: false,
+  tabBarLabelStyle: {
+    color: Colors.textButton,
+  },
+  tabBarActiveBackgroundColor: Colors.padraoBackGround,
+
+  tabBarIcon: () => (
+    <Icon name="cart" size={33} color={Colors.textButton} />
   )
 }
