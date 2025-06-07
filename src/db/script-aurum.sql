@@ -66,10 +66,12 @@ CREATE TABLE joiasPedidos (
 	subtotal NUMERIC(10,2) NOT NULL,
 
 	pedidoId INTEGER NOT NULL,
-	joiaId INTEGER NOT NULL,	
+	joiaId INTEGER,	
+	nomeJoia VARCHAR(100);
+	descricaoJoia TEXT;
+	imagemUrlJoia VARCHAR(500);
 
 	CONSTRAINT fk_pedido FOREIGN KEY (pedidoId) REFERENCES pedidos(id),
-	CONSTRAINT fk_joia FOREIGN KEY (joiaId) REFERENCES joias(id)
 );
 
 CREATE TABLE pagamentos ( 
