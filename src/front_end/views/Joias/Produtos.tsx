@@ -1,8 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
-import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, FlatList, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import JoiaCard, { Joia } from '../../components/JoiaCard';
+import Container from '../../components/Container';
+import cardContainerStyle from '../../styles/cardContainer';
 import api from '../../services/api';
 
 export default function Produtos({ navigation }: any) {
@@ -61,14 +63,12 @@ export default function Produtos({ navigation }: any) {
   }
 
   return (
-    <View style={styles.container}>
+    <Container>
+      <Text style={styles.txtTitulo}>Produtos</Text>
       <FlatList
         data={joias}
         keyExtractor={item => item.id.toString()}
-        contentContainerStyle={styles.cardContainer}
-        ListHeaderComponent={
-          <Text style={styles.txtTitulo}>Produtos</Text>
-        }
+        contentContainerStyle={cardContainerStyle.cardContainer}
         renderItem={({ item }) => (
           <JoiaCard
             joia={item}
@@ -85,27 +85,17 @@ export default function Produtos({ navigation }: any) {
       >
         <Ionicons name="add" size={28} color="#D4AF37" />
       </TouchableOpacity>
-    </View>
+    </Container>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 10,
-    backgroundColor: '#364B4B',
-  },
-  cardContainer: {
-    backgroundColor: '#D9D9D9',
-    borderRadius: 40,
-    padding: 20,
-    elevation: 2,
-  },
   txtTitulo: {
-    fontSize: 28,
+    fontSize: 30,
     fontWeight: 'bold',
-    color: '#364B4B',
-    textAlign: 'center',
+    color: '#D4AF37',
+    marginVertical: 20,
+    marginLeft: 20,
     marginBottom: 10,
   },
   btnAdd: {

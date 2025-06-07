@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, TextInput, StyleSheet, Text, Alert, ScrollView, Image, TouchableOpacity } from 'react-native';
+import Container from '../../components/Container';
+import cardContainerStyle from '../../styles/cardContainer';
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../../services/api';
@@ -123,12 +125,11 @@ export default function CadastroJoia({ route, navigation }: any) {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <ScrollView style={styles.cardContainer}>
-        <Text style={styles.txtTitulo}>
-          {joiaExistente ? 'Informações' : 'Cadastro de Joias'}
-        </Text>
-
+    <Container>
+      <Text style={styles.txtTitulo}>
+        {joiaExistente ? 'Informações' : 'Cadastro de Joias'}
+      </Text>
+      <ScrollView style={cardContainerStyle.cardContainer}>
         <View style={{ alignItems: 'center', marginBottom: 0 }}>
           <Image
             source={imagem?.uri ? { uri: imagem.uri } : imagemPadrao}
@@ -187,40 +188,31 @@ export default function CadastroJoia({ route, navigation }: any) {
           </Text>
         </TouchableOpacity>
       </ScrollView>
-    </ScrollView>
+    </Container>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 15,
-    backgroundColor: '#364B4B',
-  },
-  cardContainer: {
-    backgroundColor: '#D9D9D9',
-    borderRadius: 40,
-    padding: 20,
-    elevation: 2,
-    marginTop: 20,
-  },
   txtTitulo: {
-    fontSize: 28,
+    fontSize: 30,
     fontWeight: 'bold',
-    color: '#364B4B',
-    textAlign: 'center',
+    color: '#D4AF37',
+    marginVertical: 20,
+    marginLeft: 20,
     marginBottom: 10,
   },
   label: {
     marginTop: 15,
     marginBottom: 5,
-    fontWeight: 'bold',
-    fontSize: 18,
+    fontWeight: '500',
+    fontSize: 20,
     color: '#364B4B',
   },
   input: {
     backgroundColor: '#A3A3A3',
     color: '#F7E7CE',
+    fontWeight: '400',
+    fontSize: 16,
     borderRadius: 20,
     padding: 10,
     borderColor: '#999',
@@ -245,8 +237,8 @@ const styles = StyleSheet.create({
     color: '#D4AF37',
   },
   imgPrevisualizacao: {
-    width: 160,
-    height: 160,
+    width: 230,
+    height: 200,
     borderRadius: 8,
   },
   imageButtonsContainer: {
@@ -261,6 +253,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: 'center',
     marginTop: 20,
+    marginBottom: 40,
   },
   txtBtnSalvar: {
     color: '#D4AF37',
