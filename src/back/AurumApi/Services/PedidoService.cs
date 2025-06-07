@@ -86,10 +86,13 @@ namespace AurumApi.Services
 
             decimal valorTotal = 0;
 
+            var cliente = await _aurumDataContext.Clientes.FirstOrDefaultAsync(c => c.Documento == dto.CPFCliente)
+                ?? throw new InvalidOperationException($"Cliente com o CPF: {dto.CPFCliente} não encontrado");
+
             var novoPedido = new Pedido
             {
                 UsuarioId = usuarioId,
-                ClienteId = dto.ClienteId,
+                ClienteId = cliente.Id,
                 DataPedido = DateTime.UtcNow,
                 ValorTotal = 0 // vai atualizado depois de calcular os itens do pedido
             };
@@ -140,7 +143,7 @@ namespace AurumApi.Services
                 // define as informações base de cada pagamento
                 int qtdParcelas = dto.Pagamento.QtdParcelas;
                 decimal valorParcela = Math.Round(valorTotal / qtdParcelas, 2);
-                var vencimento = dto.Pagamento.DataPrimeiroVencimento;
+                var vencimento = DateTime.SpecifyKind(dto.Pagamento.DataPrimeiroVencimento, DateTimeKind.Utc);
 
                 for (int i = 1; i <= qtdParcelas; i++)
                 {
