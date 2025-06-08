@@ -6,3 +6,10 @@ export interface PagamentoResponse {
   status: StatusPagamento;
   quantidadePagamentos: number;
 }
+
+export interface ITarefa{
+  id: number;
+  descricao: string;
+  DataARealizar: Date;
+  DataCriado: Date;
+}
