@@ -61,7 +61,7 @@ const GraficoGastos: React.FC<GraficoGastosProps> = ({ pagamentos = [] }) => {
       <View style={styles.graficoContainer}>
         <BarChart
           data={dadosDoGrafico}
-          width={screenWidth * 0.95}
+          width={screenWidth * 0.90}
           height={180}
           chartConfig={configDoGrafico}
           yAxisLabel="R$ "
@@ -80,7 +80,6 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Colors.fundo,
     padding: 10,
   },
   graficoContainer: {

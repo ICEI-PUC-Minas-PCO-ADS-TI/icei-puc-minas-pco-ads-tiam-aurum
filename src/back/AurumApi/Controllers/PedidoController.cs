@@ -80,12 +80,9 @@ namespace AurumApi.Controllers
         {
             try
             {
-                var joia = await _service.GetPedidoById(pedidoId);
+                var pedido = await _service.GetPedidoById(pedidoId);
 
-                if (joia == null)
-                    return NotFound($"Pedido com ID {pedidoId} não encontrado.");
-
-                return Ok(joia);
+                return Ok(pedido);
             }
             catch (ArgumentException ex)
             {
@@ -130,7 +127,7 @@ namespace AurumApi.Controllers
             }
             catch (DbUpdateException ex)
             {
-                return StatusCode(500, "Erro ao salvar a joia no banco de dados.");
+                return StatusCode(500, "Erro ao salvar a pedido no banco de dados.");
 
             }
             catch (Exception ex)

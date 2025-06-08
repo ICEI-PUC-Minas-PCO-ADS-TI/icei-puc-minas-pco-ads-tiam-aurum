@@ -16,14 +16,18 @@ const Card: React.FC<CardProps> = (values: CardProps) => {
     <View style={styles.card}>
       <Text style={styles.sobTitle}>{values.title}</Text>
       <Text style={styles.title}>{values.valorTotal}</Text>
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <Text style={styles.sobTitle}>Statust </Text>
-        <Text style={styles.caracterTitle}>{values.status}</Text>
-      </View>
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <Text style={styles.sobTitle}>Quantidade: </Text>
-        <Text style={styles.caracterTitle}>{values.quantidade}</Text>
-      </View>
+      {values.status !== undefined && (
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <Text style={styles.sobTitle}>Status </Text>
+          <Text style={styles.caracterTitle}>{values.status}</Text>
+        </View>
+      )}
+      {values.quantidade !== undefined && (
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <Text style={styles.sobTitle}>Quantidade: </Text>
+          <Text style={styles.caracterTitle}>{values.quantidade}</Text>
+        </View>
+      )}
     </View>
   );
 };
@@ -39,7 +43,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 4,
     elevation: 3, // Android
-    width: '50%',
+    width: '43%',
   },
   title: {
     fontSize: 20,

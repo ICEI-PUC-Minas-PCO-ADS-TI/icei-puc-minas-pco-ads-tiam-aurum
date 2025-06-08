@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { AppState, StyleSheet, Text, View } from "react-native";
 import Card from "../../components/Card";
 import GraficoGastos from "../../components/Grafico";
 import { StatusPagamento } from "../../enums/StatusPagamento";
@@ -75,37 +75,70 @@ const Dashboard = () => {
   }
 
   useEffect(() => {
-    pagamentosMes()
-    dashboard()
+    let intervalId: NodeJS.Timeout;
+    let appState: import("react-native").AppStateStatus = AppState.currentState;
+
+    const fetchData = () => {
+      pagamentosMes();
+      dashboard();
+    }
+
+    fetchData();
+
+    intervalId = setInterval(fetchData, 5 * 60 * 1000);
+
+    const handleAppStateChange = (nextAppState: import("react-native").AppStateStatus) => {
+      if (appState.match(/inactive|background/) && nextAppState === "active") {
+        fetchData();
+      }
+      appState = nextAppState;
+    };
+
+    const subscription = AppState.addEventListener("change", handleAppStateChange);
+
+    return () => {
+      clearInterval(intervalId);
+      subscription.remove();
+    };
   }, []);
+
 
   return (
 
     <View style={styles.container}>
-      <Text style={{ color: Colors.fundoCard, fontSize: 20, width: "100%" }}>Bem vinda {usuario?.nome}</Text>
-      <View style={styles.cards}>
-        {pagamentoResponse != undefined && (
-          <Card
-            title={`Pagamentos de ${pagamentoResponse.mesPagamento}`}
-            quantidade={pagamentoResponse.quantidadePagamentos}
-            status={pagamentoResponse.status}
-            valorTotal={`R$${pagamentoResponse.valorTotal}`}
-          ></Card>
-        )}
-        {pagamentoResponse != undefined && (
-          <Card
-            title={`Pagamentos de ${pagamentoResponse.mesPagamento}`}
-            quantidade={pagamentoResponse.quantidadePagamentos}
-            status={pagamentoResponse.status}
-            valorTotal={`R$${pagamentoResponse.valorTotal}`}
-          ></Card>
+      <View style={{ padding: 15, width: "100%", justifyContent: "center", borderTopLeftRadius: 80, borderTopRightRadius: 80 }}>
+        <Text style={{ color: Colors.textButton, fontSize: 20, width: "100%" }}>Bem vindo,</Text>
+        <Text style={{ color: Colors.textButton, fontSize: 20, width: "100%" }}>{usuario?.nome}</Text>
+      </View>
+      <View style={styles.subContainer}>
+        <View style={styles.cards}>
+          {pagamentoResponse != undefined ?
+            <Card
+              title={`Pagamentos de ${pagamentoResponse.mesPagamento}`}
+              quantidade={pagamentoResponse.quantidadePagamentos}
+              status={pagamentoResponse.status}
+              valorTotal={`R$${pagamentoResponse.valorTotal}`}
+            ></Card>
+            : <Card title="Não tem pagamentos para esse mês"></Card>
+          }
+          {pagamentoResponse != undefined ?
+            <Card
+              title={`Pagamentos de ${pagamentoResponse.mesPagamento}`}
+              quantidade={pagamentoResponse.quantidadePagamentos}
+              status={pagamentoResponse.status}
+              valorTotal={`R$${pagamentoResponse.valorTotal}`}
+            ></Card>
+            :
+            <Card title="Não tem pagamentos para esse mês"></Card>
+
+          }
+        </View>
+        {listaPagamentosResponse != null && listaPagamentosResponse?.length > 0 && (
+          <GraficoGastos
+            pagamentos={listaPagamentosResponse}
+          />
         )}
       </View>
-      {listaPagamentosResponse != null && listaPagamentosResponse?.length > 0 && (
-        <GraficoGastos
-          pagamentos={listaPagamentosResponse}
-        />
-      )}
     </View>
   )
 }
@@ -117,11 +150,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: Colors.fundo,
     width: '100%',
+    flexDirection: 'column',
+    gap: 40,
   },
   cards: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    justifyContent: 'center',
     width: '100%'
+  },
+  subContainer: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flexDirection: 'column',
+    backgroundColor: Colors.padraoBackGround,
+    borderTopLeftRadius: 80,
+    borderTopRightRadius: 80,
+    padding: 10
   }
 })
 
