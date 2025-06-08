@@ -5,7 +5,6 @@ namespace AurumApi.Models
     [Table("joias")]
     public class Joia
     {
-        internal string statu;
 
         [Column("id")]
         public int Id { get; set; }

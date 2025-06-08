@@ -173,7 +173,8 @@ namespace AurumApi.Services
             return await _aurumDataContext.Pagamentos.AnyAsync(p => p.PedidoId == id);
         }
 
-        public async Task<bool> RegistrarDevolucaoOuTroca(int joiaId, string tipo)
+
+        public async Task<bool> RegistrarDevolucaoOuTroca(int joiaId, int tipo)
         {
             if (joiaId <= 0)
                 throw new ArgumentException("ID da joia inválido.");
@@ -183,15 +184,21 @@ namespace AurumApi.Services
             if (joia == null)
                 throw new InvalidOperationException($"Joia com ID {joiaId} não encontrada.");
 
-            tipo = tipo.ToLower();
-
-            if (tipo != "devolucao" && tipo != "troca")
-                throw new ArgumentException("Tipo deve ser 'devolucao' ou 'troca'.");
-
-            joia.Status= tipo == "devolucao" ? "Devolução" : "Troca";
+            switch (tipo)
+            {
+                case 2:
+                    joia.Status = "Devolução";
+                    break;
+                case 3:
+                    joia.Status = "Troca";
+                    break;
+                default:
+                    throw new ArgumentException("Tipo inválido. Use 2 para devolução ou 3 para troca.");
+            }
 
             _aurumDataContext.Joias.Update(joia);
             return await _aurumDataContext.SaveChangesAsync() > 0;
         }
+
     }
 }
