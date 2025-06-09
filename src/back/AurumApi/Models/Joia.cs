@@ -18,7 +18,7 @@ namespace AurumApi.Models
         public int Quantidade { get; set; }
         [Column("imagemurl")]
 
-        public string Status { get; set; } 
+        public string? Status { get; set; } 
          [Column("status")]
         public string? ImagemUrl { get; set; }
         [Column("imagempublicid")]
