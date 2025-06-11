@@ -94,7 +94,8 @@ namespace AurumApi.Services
                 UsuarioId = usuarioId,
                 ClienteId = cliente.Id,
                 DataPedido = DateTime.UtcNow,
-                ValorTotal = 0 // vai atualizado depois de calcular os itens do pedido
+                ValorTotal = 0, // vai atualizado depois de calcular os itens do pedido
+                Tipo = ETipoPedido.Compra
             };
 
             await _aurumDataContext.Pedidos.AddAsync(novoPedido);
