@@ -19,5 +19,8 @@ namespace AurumApi.Models
         public Cliente? Cliente { get; set; }
         public ICollection<Pagamento> Pagamentos { get; set; } = new List<Pagamento>();
         public ICollection<JoiaPedido> JoiasPedidos { get; set; } = new List<JoiaPedido>();
+        [Column("tipo")]
+        public int tipo {get; set;}
+        
     }
 }
