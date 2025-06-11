@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using AurumApi.Enum;
 
 namespace AurumApi.Models
 {
@@ -19,6 +20,7 @@ namespace AurumApi.Models
         public Cliente? Cliente { get; set; }
         public ICollection<Pagamento> Pagamentos { get; set; } = new List<Pagamento>();
         public ICollection<JoiaPedido> JoiasPedidos { get; set; } = new List<JoiaPedido>();
+
         [Column("tipo")]
         public ETipoPedido? Tipo {get; set;}
         
