@@ -20,7 +20,7 @@ namespace AurumApi.Models
         public ICollection<Pagamento> Pagamentos { get; set; } = new List<Pagamento>();
         public ICollection<JoiaPedido> JoiasPedidos { get; set; } = new List<JoiaPedido>();
         [Column("tipo")]
-        public int tipo {get; set;}
+        public int? tipo {get; set;}
         
     }
 }
