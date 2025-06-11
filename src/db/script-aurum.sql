@@ -41,6 +41,7 @@ CREATE TABLE pedidos (
 	
 	usuarioId INTEGER NOT NULL,
 	clienteId INTEGER NOT NULL,
+	tipo INTEGER NULL,
 
 	CONSTRAINT fk_usuario FOREIGN KEY (usuarioId) REFERENCES usuarios(id),
 	CONSTRAINT fk_cliente FOREIGN KEY (clienteId) REFERENCES clientes(id)
