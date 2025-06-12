@@ -1,4 +1,5 @@
 ﻿using AurumApi.DTO;
+using AurumApi.Enum;
 using AurumApi.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -210,6 +211,28 @@ public async Task<IActionResult> RegistrarStatusPecaAsync([FromQuery] int joiaId
     }
 }
 
+
+
+        [HttpGet("api/pedido/tipo/{tipo:int}")]
+        public async Task<IActionResult> GetPedidosPorTipoAsync(int tipo)
+        {
+            try
+            {
+                if (!System.Enum.IsDefined(typeof(ETipoPedido), tipo))
+                    return BadRequest("Tipo de pedido inválido.");
+
+                var pedidos = await _service.GetPedidosPorTipo((ETipoPedido)tipo);
+                return Ok(pedidos);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro interno no servidor: {ex.Message}");
+            }
+        }
 
     }
 }
