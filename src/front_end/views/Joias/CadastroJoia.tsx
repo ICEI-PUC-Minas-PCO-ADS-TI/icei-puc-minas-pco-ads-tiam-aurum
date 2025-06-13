@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, TextInput, StyleSheet, Text, Alert, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { TextInputMask } from 'react-native-masked-text';
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -87,7 +88,7 @@ export default function CadastroJoia({ route, navigation }: any) {
     const formData = new FormData();
     formData.append('Nome', nome);
     formData.append('Descricao', descricao);
-    formData.append('Preco', parseFloat(preco).toString());
+    formData.append('Preco', preco.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'));
     formData.append('Quantidade', parseInt(quantidade, 10).toString());
 
     if (imagem && imagem.uri && !imagem.uri.startsWith('http')) {
@@ -122,9 +123,9 @@ export default function CadastroJoia({ route, navigation }: any) {
         Alert.alert('Sucesso', 'Joia atualizada!');
 
       } else {
-        
+
         const usuarioId = store.getState().auth.usuario?.id;
-        
+
         if (!usuarioId) {
           Alert.alert("Erro", "Usuário não identificado.");
           return;
@@ -184,12 +185,19 @@ export default function CadastroJoia({ route, navigation }: any) {
         />
 
         <Text style={formularioStyle.label}>Preço:</Text>
-        <TextInput
+        <TextInputMask
+          type={'money'}
+          options={{
+            precision: 2,
+            separator: ',',
+            delimiter: '.',
+            unit: 'R$ ',
+            suffixUnit: '',
+          }}
           style={formularioStyle.input}
           value={preco}
           onChangeText={setPreco}
-          keyboardType="numeric"
-          placeholder="Ex: 199.90"
+          placeholder="Ex: R$ 199,90"
         />
 
         <Text style={formularioStyle.label}>Quantidade:</Text>
