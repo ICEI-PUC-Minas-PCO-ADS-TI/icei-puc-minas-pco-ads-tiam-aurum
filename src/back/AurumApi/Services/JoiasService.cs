@@ -76,6 +76,7 @@ namespace AurumApi.Services
             Joia joia = new Joia
             {
                 Nome = joiaDto.Nome.Trim(),
+                Codigo = joiaDto.Codigo,
                 Descricao = joiaDto.Descricao?.Trim(),
                 Preco = joiaDto.Preco,
                 Quantidade = joiaDto.Quantidade,
@@ -90,6 +91,7 @@ namespace AurumApi.Services
             return new JoiaResponse
             {
                 Id = joia.Id,
+                Codigo = joia.Codigo,
                 Nome = joia.Nome,
                 Descricao = joia.Descricao,
                 Preco = joia.Preco,
@@ -120,7 +122,7 @@ namespace AurumApi.Services
             }
 
             joia.Nome = string.IsNullOrWhiteSpace(joiaDto.Nome) ? joia.Nome : joiaDto.Nome.Trim();
-            joia.Descricao = string.IsNullOrWhiteSpace(joiaDto.Descricao) ? joia.Descricao : joiaDto.Descricao.Trim();
+            joia.Codigo = string.IsNullOrWhiteSpace(joiaDto.Codigo) ? joia.Codigo : joiaDto.Codigo.Trim();
             joia.Preco = joiaDto.Preco ?? joia.Preco;
             joia.Quantidade = joiaDto.Quantidade ?? joia.Quantidade;
 

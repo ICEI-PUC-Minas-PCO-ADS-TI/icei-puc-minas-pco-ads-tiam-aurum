@@ -8,6 +8,8 @@ namespace AurumApi.Models
 
         [Column("id")]
         public int Id { get; set; }
+        [Column("codigo")]
+        public string? Codigo { get; set; }
         [Column("nome")]
         public string Nome { get; set; }
         [Column("descricao")]
