@@ -34,6 +34,7 @@ namespace AurumApi.Services
             return new JoiaResponse
             {
                 Id = joia.Id,
+                Codigo = joia.Codigo,
                 Nome = joia.Nome,
                 Descricao = joia.Descricao,
                 Preco = joia.Preco,
@@ -53,12 +54,37 @@ namespace AurumApi.Services
             return joias.Select(j => new JoiaResponse
             {
                 Id = j.Id,
+                Codigo = j.Codigo,
                 Nome = j.Nome,
                 Descricao = j.Descricao,
                 Preco = j.Preco,
                 Quantidade = j.Quantidade,
                 UrlImagem = j.ImagemUrl
             });
+        }
+
+        public async Task<IEnumerable<JoiaResponse>> GetJoiaByTerm(int usuarioId, string term)
+        {
+            var joias = await _aurumDataContext.Joias
+                .AsNoTracking()
+                .Where(j => j.UsuarioId == usuarioId && (j.Nome.Contains(term) || j.Codigo.Contains(term)))
+                .OrderBy(j => j.Nome)
+                .ToListAsync();
+
+            if (!joias.Any())
+                return [];
+
+            return joias.Select(j => new JoiaResponse
+            {
+                Id = j.Id,
+                Codigo = j.Codigo,
+                Nome = j.Nome,
+                Descricao = j.Descricao,
+                Preco = j.Preco,
+                Quantidade = j.Quantidade,
+                UrlImagem = j.ImagemUrl
+            });
+
         }
 
         public async Task<Joia> GetJoiaForUpdate(int id)
@@ -71,6 +97,12 @@ namespace AurumApi.Services
 
         public async Task<JoiaResponse> CreateJoia(JoiaCreateDTO joiaDto, int usuarioId, IFormFile? imagem)
         {
+            if (!string.IsNullOrEmpty(joiaDto.Codigo))
+            {
+                var existe = await _aurumDataContext.Joias.AnyAsync(j => j.Codigo == joiaDto.Codigo);
+                if (existe) throw new ArgumentException("Código já utilizado.");
+            }
+
             var (urlImagem, publicId) = await UploadImagemAsync(imagem);
 
             Joia joia = new Joia
@@ -103,6 +135,12 @@ namespace AurumApi.Services
         {
             if (id <= 0)
                 throw new ArgumentException("Joia inválida.");
+
+            if (!string.IsNullOrEmpty(joiaDto.Codigo))
+            {
+                var existe = await _aurumDataContext.Joias.AnyAsync(j => j.Codigo == joiaDto.Codigo);
+                if (existe) throw new ArgumentException("Código já utilizado.");
+            }
 
             var joia = await GetJoiaForUpdate(id);
 
