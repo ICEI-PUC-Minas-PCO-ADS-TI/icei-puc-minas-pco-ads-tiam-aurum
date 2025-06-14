@@ -9,14 +9,16 @@ import cardContainerStyle from '../../styles/cardContainer';
 import formularioStyle from '../../styles/formulario';
 import useCarrinho from '../../store/CarrinhoContext';
 import api from '../../services/api';
+import store from '../../store';
 
 export default function Produtos({ navigation }: any) {
   const [joias, renderizaJoias] = useState<Joia[]>([]);
-  const usuarioId = 1; // substituir pelo id do usuário através do jwt ou contexto global
+  const usuarioId = store.getState().auth.usuario?.id; // substituir pelo id do usuário através do jwt ou contexto global
   const [joiaSelecionada, setJoiaSelecionada] = useState<Joia | null>(null);
   const [quantidadeSelecionada, setQuantidadeSelecionada] = useState('');
   const [modalVisivel, setModalVisivel] = useState(false);
   const { adicionarItem } = useCarrinho();
+  const [termoBusca, setTermoBusca] = useState('')
 
   useFocusEffect(
     useCallback(() => {
@@ -30,6 +32,23 @@ export default function Produtos({ navigation }: any) {
       renderizaJoias(response.data);
     } catch (error) {
       console.log('Deu ruim pra buscar as joias', error);
+    }
+  }
+
+  async function buscarJoiasPorTermo() {
+    try {
+      if (!termoBusca.trim()) {
+        carregarJoias();
+        return;
+      }
+
+      const response = await api.get<Joia[]>(`joia/usuario/${usuarioId}/buscar`, {
+        params: { term: termoBusca.toUpperCase().trim() }
+      });
+      renderizaJoias(response.data);
+    } catch (error) {
+      console.log('Erro ao buscar por termo:', error);
+      Alert.alert('Erro ao buscar joias.');
     }
   }
 
@@ -98,6 +117,19 @@ export default function Produtos({ navigation }: any) {
   return (
     <Container>
       <Text style={formularioStyle.titulo}>Joias</Text>
+      <View style={styles.barraBuscaContainer}>
+        <TextInput
+          placeholder="Buscar por nome ou código"
+          style={styles.barraBuscaInput}
+          value={termoBusca}
+          onChangeText={setTermoBusca}
+          onSubmitEditing={buscarJoiasPorTermo}
+          returnKeyType="search"
+        />
+        <TouchableOpacity onPress={buscarJoiasPorTermo} style={styles.btnBuscar}>
+          <Ionicons name="search" size={20} color="#D4AF37" />
+        </TouchableOpacity>
+      </View>
       <View style={cardContainerStyle.cardContainer}>
         {joias.length === 0 ? (
           <Text style={formularioStyle.label}>Nenhuma joia cadastrada.</Text>
@@ -222,5 +254,27 @@ const styles = StyleSheet.create({
     color: '#D4AF37',
     fontWeight: 'bold',
     fontSize: 16,
+  },
+  barraBuscaContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 15,
+    marginHorizontal: 10,
+    backgroundColor: '#fff',
+    paddingHorizontal: 10,
+    borderRadius: 8,
+  },
+
+  barraBuscaInput: {
+    flex: 1,
+    height: 40,
+    fontSize: 16,
+    paddingHorizontal: 8,
+    color: '#000',
+  },
+
+  btnBuscar: {
+    padding: 6,
+    marginLeft: 5,
   },
 });

@@ -107,8 +107,8 @@ namespace AurumApi.Services
 
             Joia joia = new Joia
             {
-                Nome = joiaDto.Nome.Trim(),
-                Codigo = joiaDto.Codigo,
+                Nome = joiaDto.Nome.ToUpper().Trim(),
+                Codigo = joiaDto.Codigo.ToUpper().Trim(),
                 Descricao = joiaDto.Descricao?.Trim(),
                 Preco = joiaDto.Preco,
                 Quantidade = joiaDto.Quantidade,
@@ -153,7 +153,9 @@ namespace AurumApi.Services
                 joia.ImagemPublicId = publicId ?? joia.ImagemPublicId;
             }
 
-            joia.Nome = string.IsNullOrWhiteSpace(joiaDto.Nome) ? joia.Nome : joiaDto.Nome.Trim();
+            joia.Nome = string.IsNullOrWhiteSpace(joiaDto.Nome) ? joia.Nome : joiaDto.Nome.ToUpper().Trim();
+            joia.Codigo = string.IsNullOrWhiteSpace(joiaDto.Codigo) ? null : joiaDto.Codigo.ToUpper().Trim();
+            joia.Descricao = string.IsNullOrWhiteSpace(joiaDto.Descricao) ? null : joiaDto.Descricao.Trim();
             joia.Preco = joiaDto.Preco ?? joia.Preco;
             joia.Quantidade = joiaDto.Quantidade ?? joia.Quantidade;
 
