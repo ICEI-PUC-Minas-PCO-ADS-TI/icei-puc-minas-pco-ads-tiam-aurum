@@ -136,12 +136,6 @@ namespace AurumApi.Services
             if (id <= 0)
                 throw new ArgumentException("Joia inválida.");
 
-            if (!string.IsNullOrEmpty(joiaDto.Codigo))
-            {
-                var existe = await _aurumDataContext.Joias.AnyAsync(j => j.Codigo == joiaDto.Codigo);
-                if (existe) throw new ArgumentException("Código já utilizado.");
-            }
-
             var joia = await GetJoiaForUpdate(id);
 
             if (joia == null)
@@ -160,7 +154,6 @@ namespace AurumApi.Services
             }
 
             joia.Nome = string.IsNullOrWhiteSpace(joiaDto.Nome) ? joia.Nome : joiaDto.Nome.Trim();
-            joia.Codigo = string.IsNullOrWhiteSpace(joiaDto.Codigo) ? joia.Codigo : joiaDto.Codigo.Trim();
             joia.Preco = joiaDto.Preco ?? joia.Preco;
             joia.Quantidade = joiaDto.Quantidade ?? joia.Quantidade;
 

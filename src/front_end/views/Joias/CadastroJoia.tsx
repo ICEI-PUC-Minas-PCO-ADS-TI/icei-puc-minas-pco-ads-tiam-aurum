@@ -14,6 +14,7 @@ const imagemPadrao = require('../../assets/no-image.jpeg');
 
 interface Joia {
   id?: number;
+  codigo?: string;
   nome: string;
   descricao?: string;
   preco: number;
@@ -23,6 +24,7 @@ interface Joia {
 
 export default function CadastroJoia({ route, navigation }: any) {
   const joiaEditando = route.params?.joia;
+  const [codigo, setCodigo] = useState('');
   const [nome, setNome] = useState('');
   const [descricao, setDescricao] = useState('');
   const [preco, setPreco] = useState('');
@@ -35,6 +37,7 @@ export default function CadastroJoia({ route, navigation }: any) {
 
   function preencherCamposComJoia() {
     if (joiaEditando) {
+      setCodigo(joiaEditando.codigo || '');
       setNome(joiaEditando.nome || '');
       setDescricao(joiaEditando.descricao || '');
       const precoFormatado = joiaEditando.preco?.toFixed(2).replace('.', ',');
@@ -42,6 +45,7 @@ export default function CadastroJoia({ route, navigation }: any) {
       setQuantidade(joiaEditando.quantidade?.toString() || '');
       setImagem(joiaEditando.urlImagem ? { uri: joiaEditando.urlImagem } : null);
     } else {
+      setCodigo('');
       setNome('');
       setDescricao('');
       setPreco('');
@@ -87,6 +91,7 @@ export default function CadastroJoia({ route, navigation }: any) {
 
   function construirFormData(): FormData {
     const formData = new FormData();
+    formData.append('Codigo', codigo);
     formData.append('Nome', nome);
     formData.append('Descricao', descricao);
     formData.append('Preco', preco.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'));
@@ -167,6 +172,14 @@ export default function CadastroJoia({ route, navigation }: any) {
             <Ionicons style={styles.icone} name="camera-outline" />
           </TouchableOpacity>
         </View>
+
+        <Text style={formularioStyle.label}>Código da Joia:</Text>
+        <TextInput
+          style={formularioStyle.input}
+          value={codigo}
+          onChangeText={setCodigo}
+          placeholder="Ex: J123-OURO"
+        />
 
         <Text style={formularioStyle.label}>Nome da Joia:</Text>
         <TextInput

@@ -80,7 +80,7 @@ namespace AurumApi.Controllers
         /// <response code="200">Sucesso</response>
         /// <response code="500">Falha no servidor</response>
         [HttpGet("api/joia/usuario/{usuarioId:int}/buscar")]
-        public async Task<IActionResult> GetByTermAsync([FromQuery] int usuarioId, [FromQuery] string term)
+        public async Task<IActionResult> GetByTermAsync(int usuarioId, [FromQuery] string term)
         {
             try
             {
