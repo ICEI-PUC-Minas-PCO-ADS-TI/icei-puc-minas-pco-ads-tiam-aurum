@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using AurumApi.DTO;
 
 namespace AurumApi.Models
 {
@@ -20,5 +21,16 @@ namespace AurumApi.Models
         public Usuario? Usuario { get; set; }
         [Column("data_a_realizar")]
         public DateTime? DataRealizar { get; set; }
+
+        public TarefaDTO toDTO()
+        {
+            TarefaDTO dto = new TarefaDTO();
+            dto.Id = Id;
+            dto.Descricao = Descricao;
+            dto.DataCriado = DataCriado;
+            dto.DataRealizar = DataRealizar;
+            dto.UsuarioId = UsuarioId;
+            return dto;
+        }
     }
 }
