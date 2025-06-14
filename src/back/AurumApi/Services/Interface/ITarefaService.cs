@@ -8,5 +8,7 @@ namespace AurumApi.Services.Interface
     {
         Task<List<TarefaDTO>> GetTarefaByUsuario(int id);
         Task<ActionResult> UpdateTarefa(TarefaDTO dto);
+        Task<ActionResult> DeleteTarefa(int id);
+        Task<Tarefa> CadastrarTarefa(TarefaDTO dto);
     }
 }
