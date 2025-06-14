@@ -34,9 +34,7 @@ export const Calendario = ({ navigation }: any) => {
     const idUsuario = store.getState().auth.usuario?.id;
     try {
       const response = await api.get(`Tarefa/${idUsuario}`)
-      console.log(response.data)
-      setTarefas(response.data)
-      console.log(tarefas);
+      formataTarefas(response.data)
 
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -46,6 +44,21 @@ export const Calendario = ({ navigation }: any) => {
         }
       }
     }
+  }
+
+  const formataTarefas = (tarefas: ITarefa[]) => {
+    console.log(tarefas)
+    const tarefasComDia = tarefas.map(tarefa => {
+      console.log('dataRealizar:', tarefa.dataRealizar);
+      return {
+        ...tarefa,
+        dataRealizar: tarefa.dataRealizar
+          ? new Date(tarefa.dataRealizar).getDate().toString()
+          : 'Sem data'
+      };
+    });
+    setTarefas(tarefasComDia)
+
   }
 
   useFocusEffect(
@@ -77,7 +90,7 @@ export const Calendario = ({ navigation }: any) => {
               <Text style={{ fontSize: 20, marginLeft: 10, color: Colors.fundo, fontWeight: "bold" }}>Tarefas</Text>
               <FlatList
                 data={tarefas}
-                renderItem={({ item }) => <Item title={"3"} subTitle={item.descricao} />}
+                renderItem={({ item }) => <Item title={item.dataRealizar} subTitle={item.descricao} />}
                 keyExtractor={item => item.id.toString()}
               />
             </View>

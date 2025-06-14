@@ -23,6 +23,7 @@ namespace AurumApi.Services
             if (dto.UsuarioId == 0)
                 throw new InvalidDataException("Tarefa sem usuario, não da pra cadastrar sem usuario");
 
+
             var tarefa = dto.toEntity();
             _aurumDataContext.Tarefa.Add(tarefa);
             await _aurumDataContext.SaveChangesAsync();
