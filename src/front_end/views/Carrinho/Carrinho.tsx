@@ -1,14 +1,34 @@
 import { Text, FlatList, TouchableOpacity, StyleSheet, View } from "react-native";
-import React from 'react';
+import React, { useState } from 'react';
 
 import Container from '../../components/Container';
 import JoiaCard from '../../components/JoiaCard';
+import ModalEditarQuantidade from '../../components/ModalEditarQuantidade';
 import cardContainerStyle from '../../styles/cardContainer';
 import formularioStyle from '../../styles/formulario';
 import useCarrinho, { ItemCarrinho } from '../../store/CarrinhoContext';
 
 export default function Carrinho({ navigation }: any) {
-    const { itens, removerItem } = useCarrinho();
+    const { itens, removerItem, atualizarItem } = useCarrinho();
+    const [modalVisivel, setModalVisivel] = useState(false);
+    const [itemSelecionado, setItemSelecionado] = useState<ItemCarrinho | null>(null);
+
+
+    function abrirModalEditar(item: ItemCarrinho) {
+        setItemSelecionado(item);
+        setModalVisivel(true);
+    }
+
+    function atualizarQuantidade(novaQtd: number) {
+        if (itemSelecionado) {
+            atualizarItem(itemSelecionado.joia.id, novaQtd);
+        }
+    }
+
+    function fecharModal() {
+        setModalVisivel(false);
+        setItemSelecionado(null);
+    }
 
     function finalizarCompra() {
         navigation.navigate('FinalizarCompra');
@@ -29,6 +49,7 @@ export default function Carrinho({ navigation }: any) {
                                 <JoiaCard
                                     joia={{ ...itemCarrinho.joia, quantidade: itemCarrinho.quantidade }}
                                     deletar={() => removerItem(itemCarrinho.joia.id)}
+                                    editar={() => abrirModalEditar(itemCarrinho)}
                                 />
                             )}
                         />
@@ -37,6 +58,13 @@ export default function Carrinho({ navigation }: any) {
                         </TouchableOpacity>
                     </>
                 )}
+                <ModalEditarQuantidade
+                    visivel={modalVisivel}
+                    fechar={fecharModal}
+                    quantidadeAtual={itemSelecionado?.quantidade || 1}
+                    estoque={itemSelecionado?.joia.quantidade || 1}
+                    onConfirmar={atualizarQuantidade}
+                />
             </View>
         </Container>
     );
