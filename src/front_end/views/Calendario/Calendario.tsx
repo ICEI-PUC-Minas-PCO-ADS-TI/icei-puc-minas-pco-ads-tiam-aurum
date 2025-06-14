@@ -1,13 +1,16 @@
+import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
 import React, { useState } from "react";
-import { FlatList, StatusBar, StyleSheet, Text, View } from "react-native";
+import { FlatList, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Calendar } from 'react-native-calendars';
 import Icon from 'react-native-vector-icons/Ionicons'; // Importando os ícones
 import { ITarefa } from "../../interfaces/interfaces";
 import api from "../../services/api";
 import store from "../../store";
 import { Colors } from "../../styles/constants";
+
+
 
 type ItemProps = { title: string; subTitle?: string };
 
@@ -48,16 +51,16 @@ export const Calendario = ({ navigation }: any) => {
 
   const formataTarefas = (tarefas: ITarefa[]) => {
     console.log(tarefas)
-    const tarefasComDia = tarefas.map(tarefa => {
-      console.log('dataRealizar:', tarefa.dataRealizar);
+    const tarefasComDiaMes = tarefas.map(tarefa => {
+      const data = new Date(tarefa.dataRealizar);
+      const dia = data.getDate().toString().padStart(2, '0');
+      const mes = (data.getMonth() + 1).toString().padStart(2, '0'); // +1 porque janeiro é 0
       return {
         ...tarefa,
-        dataRealizar: tarefa.dataRealizar
-          ? new Date(tarefa.dataRealizar).getDate().toString()
-          : 'Sem data'
+        dataRealizar: `${dia}/${mes}` // formato "dd/mm"
       };
     });
-    setTarefas(tarefasComDia)
+    setTarefas(tarefasComDiaMes)
 
   }
 
@@ -96,6 +99,12 @@ export const Calendario = ({ navigation }: any) => {
             </View>
           )}
         </View>
+        <TouchableOpacity
+          style={styles.btnAdd}
+          onPress={() => navigation.navigate('CadastroJoias')}
+        >
+          <Ionicons name="add" size={28} color="#D4AF37" />
+        </TouchableOpacity>
       </View>
     </View >
   )
@@ -130,7 +139,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     padding: 5
-  }
+  },
+  btnAdd: {
+    backgroundColor: '#364B4B',
+    padding: 0,
+    borderRadius: 50,
+    bottom: 20,
+    left: 0,
+    elevation: 2,
+    width: "12%",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "7%"
+  },
 })
 
 const styles2 = StyleSheet.create({
