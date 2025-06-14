@@ -147,8 +147,6 @@ namespace AurumApi.Controllers
             try
             {
                 var result = await _service.UpdateJoia(idJoia, joiaDto, imagem);
-                if (!result)
-                    throw new Exception($"Não foi possível atualizar a joia.");
                 return NoContent();
             }
             catch (ArgumentException ex)

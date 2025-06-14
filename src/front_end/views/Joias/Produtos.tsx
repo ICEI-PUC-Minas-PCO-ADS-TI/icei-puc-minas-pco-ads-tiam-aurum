@@ -97,7 +97,7 @@ export default function Produtos({ navigation }: any) {
 
   return (
     <Container>
-      <Text style={formularioStyle.titulo}>Produtos</Text>
+      <Text style={formularioStyle.titulo}>Joias</Text>
       <View style={cardContainerStyle.cardContainer}>
         {joias.length === 0 ? (
           <Text style={formularioStyle.label}>Nenhuma joia cadastrada.</Text>

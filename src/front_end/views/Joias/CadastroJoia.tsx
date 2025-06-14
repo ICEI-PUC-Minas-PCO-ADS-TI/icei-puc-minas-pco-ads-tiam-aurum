@@ -37,7 +37,8 @@ export default function CadastroJoia({ route, navigation }: any) {
     if (joiaEditando) {
       setNome(joiaEditando.nome || '');
       setDescricao(joiaEditando.descricao || '');
-      setPreco(joiaEditando.preco?.toString() || '');
+      const precoFormatado = joiaEditando.preco?.toFixed(2).replace('.', ',');
+      setPreco(precoFormatado || '');
       setQuantidade(joiaEditando.quantidade?.toString() || '');
       setImagem(joiaEditando.urlImagem ? { uri: joiaEditando.urlImagem } : null);
     } else {
@@ -204,7 +205,10 @@ export default function CadastroJoia({ route, navigation }: any) {
         <TextInput
           style={formularioStyle.input}
           value={quantidade}
-          onChangeText={setQuantidade}
+          onChangeText={(text) => {
+            const somenteNumeros = text.replace(/[^0-9]/g, '');
+            setQuantidade(somenteNumeros);
+          }}
           keyboardType="numeric"
           placeholder="Ex: 3"
         />
