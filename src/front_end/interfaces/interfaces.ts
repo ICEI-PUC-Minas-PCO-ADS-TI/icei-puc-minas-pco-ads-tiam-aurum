@@ -13,3 +13,10 @@ export interface ITarefa{
   dataRealizar: string;
   DataCriado: Date;
 }
+
+export interface ICriacaoTarefa{
+  descricao: string;
+  dataRealizar: string;
+  usuarioId?: number |  null |  undefined;
+  DataCriado?: string
+ }

@@ -88,8 +88,10 @@ export const Calendario = ({ navigation }: any) => {
         </View>
         <View style={styles.containerCard}>
           {tarefas.length > 0 && (
-            <View style={{ backgroundColor: Colors.fundoCard, width: "80%", borderRadius: 20 }}>
-              <Text style={{ fontSize: 20, marginLeft: 10, color: Colors.fundo, fontWeight: "bold" }}>Tarefas</Text>
+            <View style={{ backgroundColor: Colors.fundoCard, width: "83%", borderRadius: 20, flex: 1, height: "100%" }}>
+              <Text style={{ fontSize: 20, marginLeft: 10, color: Colors.fundo, fontWeight: "bold", paddingVertical: 10 }}>
+                Tarefas
+              </Text>
               <FlatList
                 data={tarefas}
                 renderItem={({ item }) => <Item title={item.dataRealizar} subTitle={item.descricao} />}
@@ -137,7 +139,8 @@ const styles = StyleSheet.create({
     textAlignVertical: "center",
     alignItems: "center",
     width: "100%",
-    padding: 5
+    padding: 5,
+    height: "35%"
   },
   btnAdd: {
     backgroundColor: '#364B4B',
