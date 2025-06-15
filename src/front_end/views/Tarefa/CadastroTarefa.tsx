@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import * as Yup from 'yup';
+import Alert from "../../components/Alert";
 import DateInput from "../../components/DateInput";
 import { DefaultButton } from "../../components/DefautlBotton";
 import FormikWrapper from "../../components/FormikWrapper";
@@ -22,13 +23,18 @@ const validationSchema = Yup.object().shape({
 })
 
 export const CadastroTarefa = ({ navigation }): any => {
-  const [dataRealizar, setData] = useState(new Date());
+  const [dataRealizar, setData] = useState<Date | null>(null);
   const [descricao, setDescricao] = useState<string>("");
-  const [dataRealziar, setDataRealizar] = useState<Date | null>(null);
+  const [viewMode, setViewMode] = useState<boolean>(false);
+  const [notificacao1, setNotificacao1] = useState<string>("");
+  const [notificacao2, setNotificacao2] = useState<string>("");
+  const [typeNotificao, setTypeNotificacao] = useState<string>("");
 
   const handleSubmit = () => {
     if (descricao != "" && dataRealizar != null) {
       cadastrarTarefa({ descricao: descricao, dataRealizar: dataRealizar.toISOString() })
+    } else {
+      alert("Informe a descrição e a data a realizar");
     }
   };
 
@@ -43,15 +49,46 @@ export const CadastroTarefa = ({ navigation }): any => {
     try {
       const response = await api.post("Tarefa/cadastro", newTarefa)
       console.log(response.data)
+      if (response.status === 200) {
+        mensagemNotificacao(true);
+        setTimeout(() => {
+          navigation.navigate("Calendario")
+          limparForm()
+        }, 3000);
+      }
+
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.log(error.response?.data)
+        mensagemNotificacao(false);
       }
+    }
+  }
+
+  const limparForm = () => {
+    setDescricao("");
+    setNotificacao1("");
+    setNotificacao2("");
+    setTypeNotificacao("")
+    setViewMode(false);
+  }
+
+  const mensagemNotificacao = (mensagem: boolean) => {
+    setViewMode(true);
+    if (mensagem) {
+      setNotificacao1("Sucesso");
+      setNotificacao2("Tarefa criada com sucesso");
+      setTypeNotificacao("success")
+    } else {
+      setNotificacao1("Erro");
+      setNotificacao2("Erro ao criar tarefa");
+      setTypeNotificacao("error")
     }
   }
 
   return (
     <View style={styles.container}>
+      <Alert text1={notificacao1} text2={notificacao2} type={typeNotificao} viewMode={viewMode} ></Alert>
       <View style={{ width: "90%", flexDirection: "row", alignItems: "center", justifyContent: "space-around", padding: 10 }}>
         <Text style={styles.titleCalendario}>Cadastro Tarefa</Text>
       </View>

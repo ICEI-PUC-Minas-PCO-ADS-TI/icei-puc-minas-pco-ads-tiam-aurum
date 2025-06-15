@@ -44,7 +44,7 @@ export default function Tabs() {
         options={UserViewStyle}
       />
       <Tab.Screen
-        name={"Calendario"}
+        name={"CalendarioStack"}
         component={TarefaStackScreen}
         options={CalendarioStyleStackStyle}
       ></Tab.Screen>
