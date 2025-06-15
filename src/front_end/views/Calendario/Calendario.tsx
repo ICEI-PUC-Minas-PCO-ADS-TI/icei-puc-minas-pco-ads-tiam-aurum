@@ -23,7 +23,6 @@ const Item = ({ title, subTitle }: ItemProps) => (
     </View>
     {subTitle && (
       <Text style={styles2.subTitle}>
-        {/* Bolinha preta antes do subtítulo */}
         {'\u2022'} {subTitle}
       </Text>
     )}
@@ -101,7 +100,7 @@ export const Calendario = ({ navigation }: any) => {
         </View>
         <TouchableOpacity
           style={styles.btnAdd}
-          onPress={() => navigation.navigate('CadastroJoias')}
+          onPress={() => navigation.navigate('CadastroTarefa')}
         >
           <Ionicons name="add" size={28} color="#D4AF37" />
         </TouchableOpacity>
