@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: aurum-api
+    env: docker
+    repo: https://github.com/ICEI-PUC-Minas-PCO-ADS-TI/icei-puc-minas-pco-ads-tiam-aurum
+    branch: main  # ou o nome correto da branch
+    rootDir: src/back/AurumApi
+    plan: free
+    autoDeploy: true
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
