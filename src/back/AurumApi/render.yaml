@@ -5,7 +5,6 @@ services:
     repo: https://github.com/ICEI-PUC-Minas-PCO-ADS-TI/icei-puc-minas-pco-ads-tiam-aurum
     branch: main
     rootDir: src/back/AurumApi
-    dockerfilePath: src/back/AurumApi/Dockerfile
     plan: free
     autoDeploy: true
     envVars:
