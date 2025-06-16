@@ -26,20 +26,23 @@ namespace AurumApi.Controllers
         }
 
         [HttpPost("cadastrar")]
+        [AllowAnonymous]
         public async Task<IActionResult> CadastrarUsuario([FromBody] UsuarioDTO usuarioDTO)
         {
-            try {
+            
+
+            try
+            {
                 var usuario = await _usuarioService.CadastrarUsuarioAsync(usuarioDTO);
                 return CreatedAtAction(nameof(CadastrarUsuario), new { id = usuario.Id }, usuario);
             }
-            catch(ArgumentException e)
+            catch (ArgumentException e) 
             {
                 return BadRequest(e.Message);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, "Erro interno no servidor: " + ex.Message);
-
             }
         }
 

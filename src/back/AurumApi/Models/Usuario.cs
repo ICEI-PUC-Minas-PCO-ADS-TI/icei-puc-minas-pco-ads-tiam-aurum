@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using AurumApi.DTO;
+using AurumApi.Validation;
 
 namespace AurumApi.Models
 {
