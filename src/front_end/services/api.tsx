@@ -2,7 +2,7 @@ import axios from 'axios';
 import store from '../store';
 
 const api = axios.create({
-  baseURL: "http://192.168.15.7:5038/api/",
+  baseURL: "https://aurumapi.onrender.com/api/",
   headers: {
     'Content-Type': 'application/json',
   },
