@@ -10,6 +10,13 @@ export interface PagamentoResponse {
 export interface ITarefa{
   id: number;
   descricao: string;
-  DataARealizar: Date;
+  dataRealizar: string;
   DataCriado: Date;
 }
+
+export interface ICriacaoTarefa{
+  descricao: string;
+  dataRealizar: string;
+  usuarioId?: number |  null |  undefined;
+  DataCriado?: string
+ }

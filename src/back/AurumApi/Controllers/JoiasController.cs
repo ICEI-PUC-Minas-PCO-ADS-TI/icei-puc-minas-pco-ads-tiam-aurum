@@ -72,6 +72,28 @@ namespace AurumApi.Controllers
         }
 
         /// <summary>
+        /// Obter joia(s) por termo de pesquisa
+        /// </summary>
+        /// <param name="usuarioId">Identificador do usuário</param>
+        /// <param name="term">Código ou nome da joia</param>
+        /// <returns>Coleção de joias ou joia caso pesquisa por código</returns>
+        /// <response code="200">Sucesso</response>
+        /// <response code="500">Falha no servidor</response>
+        [HttpGet("api/joia/usuario/{usuarioId:int}/buscar")]
+        public async Task<IActionResult> GetByTermAsync(int usuarioId, [FromQuery] string term)
+        {
+            try
+            {
+                var joias = await _service.GetJoiaByTerm(usuarioId, term);
+                return StatusCode(200, joias);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro interno no servidor:{ex.Message}");
+            }
+        }
+
+        /// <summary>
         /// Cadastrar uma joia
         /// </summary>
         /// <param name="joiaDto">Dados da joia</param>
@@ -91,7 +113,11 @@ namespace AurumApi.Controllers
                 var joiaResponse = await _service.CreateJoia(joiaDto, usuarioId, imagem);
                 return Created($"/api/joia/{joiaResponse.Id}", joiaResponse);
             }
-            catch(DbUpdateException ex)
+            catch (ArgumentException ex)
+            {
+                return StatusCode(400, "Joia inválida. Verifique os dados informados.");
+            }
+            catch (DbUpdateException ex)
             {
                 return StatusCode(500, "Erro ao salvar a joia no banco de dados.");
                 
@@ -121,8 +147,6 @@ namespace AurumApi.Controllers
             try
             {
                 var result = await _service.UpdateJoia(idJoia, joiaDto, imagem);
-                if (!result)
-                    throw new Exception($"Não foi possível atualizar a joia.");
                 return NoContent();
             }
             catch (ArgumentException ex)

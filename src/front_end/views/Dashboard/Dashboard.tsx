@@ -62,11 +62,9 @@ const Dashboard = () => {
 
     try {
       const response = await api.post('Pagamento/dashboard', filtro);
-      console.log("Dashboard response:", response.data);
       setListaPagamentosResponse(response.data);
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.log("Erro na requisição:", error.response?.data);
         if (error.response?.status === 400) {
           console.log(error.response.data)
         }

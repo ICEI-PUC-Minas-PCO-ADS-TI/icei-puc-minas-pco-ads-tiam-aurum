@@ -89,7 +89,7 @@ export const ProdutosStackStyle: BottomTabNavigationOptions = {
   ),
 }
 
-export const CalendarioStyle: BottomTabNavigationOptions = {
+export const CalendarioStyleStackStyle: BottomTabNavigationOptions = {
   tabBarShowLabel: false,
   tabBarLabelStyle: {
     color: Colors.textButton,

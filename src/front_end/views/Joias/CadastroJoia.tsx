@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, TextInput, StyleSheet, Text, Alert, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { TextInputMask } from 'react-native-masked-text';
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -13,6 +14,7 @@ const imagemPadrao = require('../../assets/no-image.jpeg');
 
 interface Joia {
   id?: number;
+  codigo?: string;
   nome: string;
   descricao?: string;
   preco: number;
@@ -22,6 +24,7 @@ interface Joia {
 
 export default function CadastroJoia({ route, navigation }: any) {
   const joiaEditando = route.params?.joia;
+  const [codigo, setCodigo] = useState('');
   const [nome, setNome] = useState('');
   const [descricao, setDescricao] = useState('');
   const [preco, setPreco] = useState('');
@@ -34,12 +37,15 @@ export default function CadastroJoia({ route, navigation }: any) {
 
   function preencherCamposComJoia() {
     if (joiaEditando) {
+      setCodigo(joiaEditando.codigo || '');
       setNome(joiaEditando.nome || '');
       setDescricao(joiaEditando.descricao || '');
-      setPreco(joiaEditando.preco?.toString() || '');
+      const precoFormatado = joiaEditando.preco?.toFixed(2).replace('.', ',');
+      setPreco(precoFormatado || '');
       setQuantidade(joiaEditando.quantidade?.toString() || '');
       setImagem(joiaEditando.urlImagem ? { uri: joiaEditando.urlImagem } : null);
     } else {
+      setCodigo('');
       setNome('');
       setDescricao('');
       setPreco('');
@@ -85,9 +91,10 @@ export default function CadastroJoia({ route, navigation }: any) {
 
   function construirFormData(): FormData {
     const formData = new FormData();
+    formData.append('Codigo', codigo);
     formData.append('Nome', nome);
     formData.append('Descricao', descricao);
-    formData.append('Preco', parseFloat(preco).toString());
+    formData.append('Preco', preco.replace(/\D/g, '').replace(/(\d{2})$/, '.$1'));
     formData.append('Quantidade', parseInt(quantidade, 10).toString());
 
     if (imagem && imagem.uri && !imagem.uri.startsWith('http')) {
@@ -122,9 +129,9 @@ export default function CadastroJoia({ route, navigation }: any) {
         Alert.alert('Sucesso', 'Joia atualizada!');
 
       } else {
-        
+
         const usuarioId = store.getState().auth.usuario?.id;
-        
+
         if (!usuarioId) {
           Alert.alert("Erro", "Usuário não identificado.");
           return;
@@ -166,6 +173,14 @@ export default function CadastroJoia({ route, navigation }: any) {
           </TouchableOpacity>
         </View>
 
+        <Text style={formularioStyle.label}>Código da Joia:</Text>
+        <TextInput
+          style={formularioStyle.input}
+          value={codigo}
+          onChangeText={setCodigo}
+          placeholder="Ex: J123-OURO"
+        />
+
         <Text style={formularioStyle.label}>Nome da Joia:</Text>
         <TextInput
           style={formularioStyle.input}
@@ -184,19 +199,29 @@ export default function CadastroJoia({ route, navigation }: any) {
         />
 
         <Text style={formularioStyle.label}>Preço:</Text>
-        <TextInput
+        <TextInputMask
+          type={'money'}
+          options={{
+            precision: 2,
+            separator: ',',
+            delimiter: '.',
+            unit: 'R$ ',
+            suffixUnit: '',
+          }}
           style={formularioStyle.input}
           value={preco}
           onChangeText={setPreco}
-          keyboardType="numeric"
-          placeholder="Ex: 199.90"
+          placeholder="Ex: R$ 199,90"
         />
 
         <Text style={formularioStyle.label}>Quantidade:</Text>
         <TextInput
           style={formularioStyle.input}
           value={quantidade}
-          onChangeText={setQuantidade}
+          onChangeText={(text) => {
+            const somenteNumeros = text.replace(/[^0-9]/g, '');
+            setQuantidade(somenteNumeros);
+          }}
           keyboardType="numeric"
           placeholder="Ex: 3"
         />

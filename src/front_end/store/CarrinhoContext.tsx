@@ -11,6 +11,7 @@ interface CarrinhoContextData {
     adicionarItem: (joia: Joia, quantidade: number) => void;
     removerItem: (idJoia: number) => void;
     limparCarrinho: () => void;
+    atualizarItem: (idJoia: number, novaQuantidade: number) => void;
 }
 
 const CarrinhoContext = createContext<CarrinhoContextData>({} as CarrinhoContextData);
@@ -37,12 +38,22 @@ export const CarrinhoProvider = ({ children }: { children: ReactNode }) => {
         setItens(prev => prev.filter(item => item.joia.id !== idJoia));
     }
 
+    function atualizarItem(idJoia: number, novaQuantidade: number) {
+        setItens(prev =>
+            prev.map(item =>
+                item.joia.id === idJoia
+                    ? { ...item, quantidade: novaQuantidade }
+                    : item
+            )
+        );
+    }
+
     const limparCarrinho = () => {
         setItens([]);
     };
 
     return (
-        <CarrinhoContext.Provider value={{ itens, adicionarItem, removerItem, limparCarrinho }}>
+        <CarrinhoContext.Provider value={{ itens, adicionarItem, removerItem, limparCarrinho, atualizarItem }}>
             {children}
         </CarrinhoContext.Provider>
     );

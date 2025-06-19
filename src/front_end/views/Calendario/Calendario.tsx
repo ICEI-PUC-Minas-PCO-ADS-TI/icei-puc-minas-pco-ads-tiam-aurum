@@ -1,13 +1,16 @@
+import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
 import React, { useState } from "react";
-import { FlatList, StatusBar, StyleSheet, Text, View } from "react-native";
+import { FlatList, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Calendar } from 'react-native-calendars';
 import Icon from 'react-native-vector-icons/Ionicons'; // Importando os ícones
 import { ITarefa } from "../../interfaces/interfaces";
 import api from "../../services/api";
 import store from "../../store";
 import { Colors } from "../../styles/constants";
+
+
 
 type ItemProps = { title: string; subTitle?: string };
 
@@ -20,7 +23,6 @@ const Item = ({ title, subTitle }: ItemProps) => (
     </View>
     {subTitle && (
       <Text style={styles2.subTitle}>
-        {/* Bolinha preta antes do subtítulo */}
         {'\u2022'} {subTitle}
       </Text>
     )}
@@ -34,9 +36,7 @@ export const Calendario = ({ navigation }: any) => {
     const idUsuario = store.getState().auth.usuario?.id;
     try {
       const response = await api.get(`Tarefa/${idUsuario}`)
-      console.log(response.data)
-      setTarefas(response.data)
-      console.log(tarefas);
+      formataTarefas(response.data)
 
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -46,6 +46,21 @@ export const Calendario = ({ navigation }: any) => {
         }
       }
     }
+  }
+
+  const formataTarefas = (tarefas: ITarefa[]) => {
+    console.log(tarefas)
+    const tarefasComDiaMes = tarefas.map(tarefa => {
+      const data = new Date(tarefa.dataRealizar);
+      const dia = data.getDate().toString().padStart(2, '0');
+      const mes = (data.getMonth() + 1).toString().padStart(2, '0'); // +1 porque janeiro é 0
+      return {
+        ...tarefa,
+        dataRealizar: `${dia}/${mes}` // formato "dd/mm"
+      };
+    });
+    setTarefas(tarefasComDiaMes)
+
   }
 
   useFocusEffect(
@@ -73,16 +88,24 @@ export const Calendario = ({ navigation }: any) => {
         </View>
         <View style={styles.containerCard}>
           {tarefas.length > 0 && (
-            <View style={{ backgroundColor: Colors.fundoCard, width: "80%", borderRadius: 20 }}>
-              <Text style={{ fontSize: 20, marginLeft: 10, color: Colors.fundo, fontWeight: "bold" }}>Tarefas</Text>
+            <View style={{ backgroundColor: Colors.fundoCard, width: "83%", borderRadius: 20, flex: 1, height: "100%" }}>
+              <Text style={{ fontSize: 20, marginLeft: 10, color: Colors.fundo, fontWeight: "bold", paddingVertical: 10 }}>
+                Tarefas
+              </Text>
               <FlatList
                 data={tarefas}
-                renderItem={({ item }) => <Item title={"3"} subTitle={item.descricao} />}
+                renderItem={({ item }) => <Item title={item.dataRealizar} subTitle={item.descricao} />}
                 keyExtractor={item => item.id.toString()}
               />
             </View>
           )}
         </View>
+        <TouchableOpacity
+          style={styles.btnAdd}
+          onPress={() => navigation.navigate('CadastroTarefa')}
+        >
+          <Ionicons name="add" size={28} color="#D4AF37" />
+        </TouchableOpacity>
       </View>
     </View >
   )
@@ -116,8 +139,21 @@ const styles = StyleSheet.create({
     textAlignVertical: "center",
     alignItems: "center",
     width: "100%",
-    padding: 5
-  }
+    padding: 5,
+    height: "35%"
+  },
+  btnAdd: {
+    backgroundColor: '#364B4B',
+    padding: 0,
+    borderRadius: 50,
+    bottom: 20,
+    left: 0,
+    elevation: 2,
+    width: "12%",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "7%"
+  },
 })
 
 const styles2 = StyleSheet.create({

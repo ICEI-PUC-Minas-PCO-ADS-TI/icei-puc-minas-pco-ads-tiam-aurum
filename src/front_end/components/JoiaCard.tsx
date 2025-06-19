@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 export interface Joia {
   id: number;
+  codigo?: string;
   nome: string;
   descricao?: string;
   quantidade: number;
@@ -27,6 +28,7 @@ export default function JoiaCard({ joia, editar: editar, deletar: deletar, adici
       />
       <View style={styles.info}>
         <Text style={styles.nome}>{joia.nome}</Text>
+        <Text style={styles.textoDestaque}>Código: {joia.codigo}</Text>
         <Text style={styles.texto}>Quantidade: {joia.quantidade}</Text>
         <Text style={styles.texto}>Preço: R$ {joia.preco.toFixed(2)}</Text>
       </View>
@@ -71,6 +73,11 @@ const styles = StyleSheet.create({
   texto: {
     fontSize: 16,
     color: '#000',
+  },
+  textoDestaque: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#364B4B',
   },
   info: {
     flex: 1,
