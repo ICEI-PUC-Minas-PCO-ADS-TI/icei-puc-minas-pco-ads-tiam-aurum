@@ -20,3 +20,18 @@ export interface ICriacaoTarefa{
   usuarioId?: number |  null |  undefined;
   DataCriado?: string
  }
+ export interface ClienteDTO {
+  id: number;
+  nome: string;
+  documento: string;
+  telefone?: string;
+  dataCadastro?: string;
+  cep: string;
+  logradouro: string;
+  numero: string;
+  complemento?: string;
+  bairro: string;
+  cidade: string;
+  estado: string;
+}
+

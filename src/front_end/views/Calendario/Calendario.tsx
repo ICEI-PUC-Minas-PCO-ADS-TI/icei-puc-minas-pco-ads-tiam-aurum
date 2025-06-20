@@ -12,7 +12,7 @@ import { Colors } from "../../styles/constants";
 
 
 
-type ItemProps = { title: string; subTitle?: string };
+export type ItemProps = { title: string; subTitle?: string };
 
 
 const Item = ({ title, subTitle }: ItemProps) => (

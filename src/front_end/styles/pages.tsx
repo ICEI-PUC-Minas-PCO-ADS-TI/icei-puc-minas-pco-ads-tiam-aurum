@@ -112,3 +112,15 @@ export const CarrinhoStackStyle: BottomTabNavigationOptions = {
     <Icon name="cart" size={33} color={Colors.textButton} />
   )
 }
+
+export const ClientesList: BottomTabNavigationOptions = {
+  tabBarShowLabel: false,
+  tabBarLabelStyle: {
+    color: Colors.textButton,
+  },
+  tabBarActiveBackgroundColor: Colors.padraoBackGround,
+
+  tabBarIcon: () => (
+    <Icon name="people" size={33} color={Colors.textButton} />
+  )
+}
