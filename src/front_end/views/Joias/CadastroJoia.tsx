@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, StyleSheet, Text, Alert, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { View, TextInput, StyleSheet, Text, Alert, ScrollView, Image, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import { TextInputMask } from 'react-native-masked-text';
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
@@ -151,87 +151,94 @@ export default function CadastroJoia({ route, navigation }: any) {
 
   return (
     <Container>
-      <Text style={formularioStyle.titulo}>
-        {joiaEditando ? 'Editar Joia' : 'Cadastrar Joia'}
-      </Text>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
+        <Text style={formularioStyle.titulo}>
+          {joiaEditando ? 'Editar Joia' : 'Cadastrar Joia'}
+        </Text>
 
-      <ScrollView style={cardContainerStyle.cardContainer}>
-        <View style={{ alignItems: 'center' }}>
-          <Image
-            source={imagem?.uri ? { uri: imagem.uri } : imagemPadrao}
-            style={styles.imgPrevisualizacao}
+        <ScrollView style={cardContainerStyle.cardContainer}
+          contentContainerStyle={{ paddingBottom: 100 }}
+          keyboardShouldPersistTaps="handled">
+          <View style={{ alignItems: 'center' }}>
+            <Image
+              source={imagem?.uri ? { uri: imagem.uri } : imagemPadrao}
+              style={styles.imgPrevisualizacao}
+            />
+          </View>
+
+          <View style={styles.imageButtonsContainer}>
+            <TouchableOpacity style={styles.imageButton} onPress={selecionarImagemDaGaleria}>
+              <Ionicons style={styles.icone} name="images-outline" />
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.imageButton} onPress={tirarFotoComCamera}>
+              <Ionicons style={styles.icone} name="camera-outline" />
+            </TouchableOpacity>
+          </View>
+
+          <Text style={formularioStyle.label}>Código da Joia:</Text>
+          <TextInput
+            style={formularioStyle.input}
+            value={codigo}
+            onChangeText={setCodigo}
+            placeholder="Ex: J123-OURO"
           />
-        </View>
 
-        <View style={styles.imageButtonsContainer}>
-          <TouchableOpacity style={styles.imageButton} onPress={selecionarImagemDaGaleria}>
-            <Ionicons style={styles.icone} name="images-outline" />
+          <Text style={formularioStyle.label}>Nome da Joia:</Text>
+          <TextInput
+            style={formularioStyle.input}
+            value={nome}
+            onChangeText={setNome}
+            placeholder="Ex: Colar de Ouro"
+          />
+
+          <Text style={formularioStyle.label}>Descrição:</Text>
+          <TextInput
+            style={formularioStyle.input}
+            value={descricao}
+            onChangeText={setDescricao}
+            placeholder="Opcional"
+            multiline
+          />
+
+          <Text style={formularioStyle.label}>Preço:</Text>
+          <TextInputMask
+            type={'money'}
+            options={{
+              precision: 2,
+              separator: ',',
+              delimiter: '.',
+              unit: 'R$ ',
+              suffixUnit: '',
+            }}
+            style={formularioStyle.input}
+            value={preco}
+            onChangeText={setPreco}
+            placeholder="Ex: R$ 199,90"
+          />
+
+          <Text style={formularioStyle.label}>Quantidade:</Text>
+          <TextInput
+            style={formularioStyle.input}
+            value={quantidade}
+            onChangeText={(text) => {
+              const somenteNumeros = text.replace(/[^0-9]/g, '');
+              setQuantidade(somenteNumeros);
+            }}
+            keyboardType="numeric"
+            placeholder="Ex: 3"
+          />
+
+          <TouchableOpacity style={formularioStyle.botao} onPress={salvarJoia}>
+            <Text style={formularioStyle.textoBotao}>
+              {joiaEditando ? 'Atualizar' : 'Cadastrar'}
+            </Text>
           </TouchableOpacity>
-
-          <TouchableOpacity style={styles.imageButton} onPress={tirarFotoComCamera}>
-            <Ionicons style={styles.icone} name="camera-outline" />
-          </TouchableOpacity>
-        </View>
-
-        <Text style={formularioStyle.label}>Código da Joia:</Text>
-        <TextInput
-          style={formularioStyle.input}
-          value={codigo}
-          onChangeText={setCodigo}
-          placeholder="Ex: J123-OURO"
-        />
-
-        <Text style={formularioStyle.label}>Nome da Joia:</Text>
-        <TextInput
-          style={formularioStyle.input}
-          value={nome}
-          onChangeText={setNome}
-          placeholder="Ex: Colar de Ouro"
-        />
-
-        <Text style={formularioStyle.label}>Descrição:</Text>
-        <TextInput
-          style={formularioStyle.input}
-          value={descricao}
-          onChangeText={setDescricao}
-          placeholder="Opcional"
-          multiline
-        />
-
-        <Text style={formularioStyle.label}>Preço:</Text>
-        <TextInputMask
-          type={'money'}
-          options={{
-            precision: 2,
-            separator: ',',
-            delimiter: '.',
-            unit: 'R$ ',
-            suffixUnit: '',
-          }}
-          style={formularioStyle.input}
-          value={preco}
-          onChangeText={setPreco}
-          placeholder="Ex: R$ 199,90"
-        />
-
-        <Text style={formularioStyle.label}>Quantidade:</Text>
-        <TextInput
-          style={formularioStyle.input}
-          value={quantidade}
-          onChangeText={(text) => {
-            const somenteNumeros = text.replace(/[^0-9]/g, '');
-            setQuantidade(somenteNumeros);
-          }}
-          keyboardType="numeric"
-          placeholder="Ex: 3"
-        />
-
-        <TouchableOpacity style={formularioStyle.botao} onPress={salvarJoia}>
-          <Text style={formularioStyle.textoBotao}>
-            {joiaEditando ? 'Atualizar' : 'Cadastrar'}
-          </Text>
-        </TouchableOpacity>
-      </ScrollView>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </Container>
   );
 }
