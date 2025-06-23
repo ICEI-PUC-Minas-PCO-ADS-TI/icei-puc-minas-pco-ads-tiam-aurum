@@ -1,4 +1,5 @@
 ﻿using AurumApi.Models;
+using AurumApi.Validation;
 
 namespace AurumApi.DTO
 {
@@ -8,6 +9,7 @@ namespace AurumApi.DTO
         public string? Email { get; set; }
         public string? Nome { get; set; }
         public string? Senha { get; set; }
+        [CpfValidation]
         public string? Documento { get; set; }
 
 

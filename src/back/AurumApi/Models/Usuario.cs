@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using AurumApi.DTO;
+using AurumApi.Validation;
 
 namespace AurumApi.Models
 {
@@ -20,6 +21,8 @@ namespace AurumApi.Models
         public ICollection<Joia> Joias { get; set; } = new List<Joia>();
         public ICollection<Cliente> Clientes { get; set; } = new List<Cliente>();
         public ICollection<Pedido> Pedidos { get; set; } = new List<Pedido>();
+        public ICollection<Tarefa> Tarefas { get; set; } = new List<Tarefa>();
+
 
         public UsuarioDTO toDTO()
         {

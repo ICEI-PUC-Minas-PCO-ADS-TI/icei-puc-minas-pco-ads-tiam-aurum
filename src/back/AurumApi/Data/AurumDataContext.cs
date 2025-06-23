@@ -16,6 +16,7 @@ namespace AurumApi.Data
         public DbSet<JoiaPedido> JoiasPedidos { get; set; }
         public DbSet<Pagamento> Pagamentos { get; set; }
         public DbSet<EnderecoCliente> EnderecosClientes { get; set; }
+        public DbSet<Tarefa> Tarefa { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -37,6 +38,12 @@ namespace AurumApi.Data
                 .HasMany(u => u.Pedidos)
                 .WithOne(p => p.Usuario)
                 .HasForeignKey(p => p.UsuarioId);
+
+            modelBuilder.Entity<Usuario>()
+                .HasMany(u => u.Tarefas)          
+                .WithOne(t => t.Usuario)           
+                .HasForeignKey(t => t.UsuarioId);  
+
 
             modelBuilder.Entity<Cliente>()
                 .HasMany(c => c.Enderecos)

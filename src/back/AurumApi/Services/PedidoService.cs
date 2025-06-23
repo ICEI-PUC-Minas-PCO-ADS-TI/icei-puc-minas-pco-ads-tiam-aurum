@@ -22,8 +22,8 @@ namespace AurumApi.Services
                 .OrderByDescending(j => j.DataPedido)
                 .ToListAsync();
 
-            if (pedidos is null)
-                throw new InvalidOperationException($"Usuário com ID {usuarioId} não existe, ou não possui pedidos.");
+            if (!pedidos.Any())
+                throw new InvalidOperationException($"Nenhum pedido encontrado para o usuário {usuarioId}.");
 
             return pedidos.Select(p => new PedidoResponse
             {
@@ -65,8 +65,8 @@ namespace AurumApi.Services
                 .OrderByDescending(j => j.DataPedido)
                 .ToListAsync();
 
-            if (pedidos is null)
-                throw new InvalidOperationException($"Usuário com ID {clienteId} não existe, ou não possui pedidos.");
+            if (!pedidos.Any())
+                throw new InvalidOperationException($"Nenhum pedido encontrado para o cliente {clienteId}.");
 
             return pedidos.Select(p => new PedidoResponse
             {
@@ -80,25 +80,37 @@ namespace AurumApi.Services
 
         public async Task<PedidoResponse> CreatePedido(int usuarioId, PedidoCreateDTO dto)
         {
+            // carrinho vazio
             if (dto.Itens == null || !dto.Itens.Any())
                 throw new ArgumentException("Pedido deve conter pelo menos um item.");
 
             decimal valorTotal = 0;
 
+            var cliente = await _aurumDataContext.Clientes.FirstOrDefaultAsync(c => c.Documento == dto.CPFCliente)
+                ?? throw new InvalidOperationException($"Cliente com o CPF: {dto.CPFCliente} não encontrado");
+
             var novoPedido = new Pedido
             {
                 UsuarioId = usuarioId,
-                ClienteId = dto.ClienteId,
+                ClienteId = cliente.Id,
                 DataPedido = DateTime.UtcNow,
-                ValorTotal = 0
+                ValorTotal = 0, // vai atualizado depois de calcular os itens do pedido
+                Tipo = Enum.ETipoPedido.Compra
             };
 
             await _aurumDataContext.Pedidos.AddAsync(novoPedido);
             await _aurumDataContext.SaveChangesAsync();
 
+            var joiasIds = dto.Itens.Select(i => i.JoiaId).ToList(); // pega os IDs das joias do carrinho
+            // pega as joias selecionadas
+            var joias = await _aurumDataContext.Joias
+                .Where(j => joiasIds.Contains(j.Id) && j.UsuarioId == usuarioId)
+                .ToListAsync();
+
             foreach (var item in dto.Itens)
             {
-                var joia = await _aurumDataContext.Joias.FirstOrDefaultAsync(j => j.Id == item.JoiaId && j.UsuarioId == usuarioId);
+                // percorre por cada joia para criar o JoiaPedido
+                var joia = joias.FirstOrDefault(j => j.Id == item.JoiaId);
 
                 if (joia == null)
                     throw new InvalidOperationException($"Joia com ID {item.JoiaId} não encontrada.");
@@ -107,7 +119,7 @@ namespace AurumApi.Services
                     throw new ArgumentException($"Estoque insuficiente para a joia {joia.Nome}. Disponível: {joia.Quantidade}");
 
                 var subTotal = joia.Preco * item.Quantidade;
-                valorTotal += subTotal;
+                valorTotal += subTotal; // vai somando o total do pedido
 
                 var joiaPedido = new JoiaPedido
                 {
@@ -118,14 +130,61 @@ namespace AurumApi.Services
                     Subtotal = subTotal
                 };
 
-                joia.Quantidade -= item.Quantidade;
+                joia.Quantidade -= item.Quantidade; // atualiza o estoque
 
                 _aurumDataContext.JoiasPedidos.Add(joiaPedido);
-                _aurumDataContext.Joias.Update(joia);
+                _aurumDataContext.Joias.Update(joia); // atualiza no banco
             }
 
-            novoPedido.ValorTotal = valorTotal;
+            novoPedido.ValorTotal = valorTotal; // depois de percorrer todas as joias atualiza o total do pedido
+
+            // geração dos pagamentos (parcelas se houver)
+            if (dto.Pagamento != null)
+            {
+                // define as informações base de cada pagamento
+                int qtdParcelas = dto.Pagamento.QtdParcelas;
+                decimal valorParcela = Math.Round(valorTotal / qtdParcelas, 2);
+                var vencimento = DateTime.SpecifyKind(dto.Pagamento.DataPrimeiroVencimento, DateTimeKind.Utc);
+
+                for (int i = 1; i <= qtdParcelas; i++)
+                {
+                    // cria um novo pagamento para cada parcela
+                    var pagamento = new Pagamento
+                    {
+                        PedidoId = novoPedido.Id,
+                        ClienteId = novoPedido.ClienteId,
+                        UsuarioId = usuarioId,
+                        QtdParcelas = qtdParcelas,
+                        ValorParcela = valorParcela,
+                        DataPagamento = null,
+                        DataVencimento = vencimento.AddMonths(i - 1), // adiciona os meses de vencimento conforme a quantidade de parcela
+                        Status = "Pendente",
+                        FormaPagamento = dto.Pagamento.FormaPagamento,
+                        NumeroParcela = i, // altera o número da parcela
+                        ValorPagamento = valorTotal
+                    };
+
+                    _aurumDataContext.Pagamentos.Add(pagamento);
+                }
+            }
+
             await _aurumDataContext.SaveChangesAsync();
+
+            var pagamentosResponse = await _aurumDataContext.Pagamentos
+                .Where(p => p.PedidoId == novoPedido.Id)
+                .Select(p => new PagamentoResponseDTO
+                {
+                    Id = p.Id,
+                    QtdParcelas = p.QtdParcelas,
+                    ValorParcela = p.ValorParcela,
+                    DataPagamento = p.DataPagamento,
+                    DataVencimento = p.DataVencimento,
+                    Status = p.Status,
+                    FormaPagamento = p.FormaPagamento,
+                    NumeroParcela = p.NumeroParcela,
+                    ValorPagamento = p.ValorPagamento
+                })
+                .ToListAsync();
 
             return new PedidoResponse
             {
@@ -133,7 +192,8 @@ namespace AurumApi.Services
                 UsuarioId = novoPedido.UsuarioId,
                 ClienteId = novoPedido.ClienteId,
                 DataPedido = novoPedido.DataPedido,
-                ValorTotal = novoPedido.ValorTotal
+                ValorTotal = novoPedido.ValorTotal,
+                Pagamentos = pagamentosResponse
             };
         }
 
@@ -173,7 +233,8 @@ namespace AurumApi.Services
             return await _aurumDataContext.Pagamentos.AnyAsync(p => p.PedidoId == id);
         }
 
-        public async Task<bool> RegistrarDevolucaoOuTroca(int joiaId, string tipo)
+
+        public async Task<bool> RegistrarDevolucaoOuTroca(int joiaId, int tipo)
         {
             if (joiaId <= 0)
                 throw new ArgumentException("ID da joia inválido.");
@@ -183,15 +244,21 @@ namespace AurumApi.Services
             if (joia == null)
                 throw new InvalidOperationException($"Joia com ID {joiaId} não encontrada.");
 
-            tipo = tipo.ToLower();
-
-            if (tipo != "devolucao" && tipo != "troca")
-                throw new ArgumentException("Tipo deve ser 'devolucao' ou 'troca'.");
-
-            joia.Status= tipo == "devolucao" ? "Devolução" : "Troca";
+            switch (tipo)
+            {
+                case 2:
+                    joia.Status = "Devolução";
+                    break;
+                case 3:
+                    joia.Status = "Troca";
+                    break;
+                default:
+                    throw new ArgumentException("Tipo inválido. Use 2 para devolução ou 3 para troca.");
+            }
 
             _aurumDataContext.Joias.Update(joia);
             return await _aurumDataContext.SaveChangesAsync() > 0;
         }
+
     }
 }

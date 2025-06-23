@@ -68,7 +68,7 @@ const Login = ({ navigation }: any) => {
       setMensagemNotification("Você sera direcionado a tela inicial, aguarde!");
       setTimeout(() => {
         setViewNotificationSucces(false);
-        navigation.navigate('Tabs');
+        navigation.navigate('Historico');
       }, 6000);
     } else {
       setViewNotificationError(true);

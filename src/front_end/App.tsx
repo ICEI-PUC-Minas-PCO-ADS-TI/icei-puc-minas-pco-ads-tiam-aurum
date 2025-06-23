@@ -6,19 +6,27 @@ import { CadastroStyle, LoginStyle, TabsStyle } from './styles/pages';
 import Tabs from './Tab/Tabs';
 import Login from './views/Login';
 import Cadastro from './views/User/Cadastro';
+import { CarrinhoProvider } from './store/CarrinhoContext';
+import HistoricoPagamentos from './views/Pagamentos/HistoricoPagamentos';
+
 
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Login">
-          <Stack.Screen options={LoginStyle} name="Login" component={Login} />
-          <Stack.Screen options={CadastroStyle} name="Cadastro" component={Cadastro} />
-          <Stack.Screen options={TabsStyle} name="Tabs" component={Tabs} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <CarrinhoProvider>
+        <NavigationContainer>
+  <Stack.Navigator initialRouteName="Historico">
+    <Stack.Screen name="Login" component={Login} />
+    <Stack.Screen name="Cadastro" component={Cadastro} />
+    <Stack.Screen name="Tabs" component={Tabs} />
+    <Stack.Screen name="Historico" component={HistoricoPagamentos} />
+
+  </Stack.Navigator>
+</NavigationContainer>
+
+      </CarrinhoProvider>
     </Provider>
   );
 }

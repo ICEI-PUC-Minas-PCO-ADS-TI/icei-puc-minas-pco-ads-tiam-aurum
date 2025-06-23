@@ -5,10 +5,11 @@ namespace AurumApi.Models
     [Table("joias")]
     public class Joia
     {
-        internal string statu;
 
         [Column("id")]
         public int Id { get; set; }
+        [Column("codigo")]
+        public string? Codigo { get; set; }
         [Column("nome")]
         public string Nome { get; set; }
         [Column("descricao")]
@@ -19,7 +20,7 @@ namespace AurumApi.Models
         public int Quantidade { get; set; }
         [Column("imagemurl")]
 
-        public string Status { get; set; } 
+        public string? Status { get; set; } 
          [Column("status")]
         public string? ImagemUrl { get; set; }
         [Column("imagempublicid")]
