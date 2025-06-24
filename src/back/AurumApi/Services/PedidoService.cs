@@ -1,6 +1,7 @@
 ﻿using AurumApi.Data;
 using AurumApi.DTO;
 using AurumApi.DTO.Response;
+using AurumApi.Enum;
 using AurumApi.Models;
 using AurumApi.Services.Interface;
 using Microsoft.EntityFrameworkCore;
@@ -259,6 +260,28 @@ namespace AurumApi.Services
             _aurumDataContext.Joias.Update(joia);
             return await _aurumDataContext.SaveChangesAsync() > 0;
         }
+
+        public async Task<IEnumerable<PedidoResponse>> GetPedidosPorTipo(ETipoPedido tipo)
+        {
+            var pedidos = await _aurumDataContext.Pedidos
+                .AsNoTracking()
+                .Where(p => p.Tipo.HasValue && p.Tipo.Value == tipo)
+                .OrderByDescending(p => p.DataPedido)
+                .ToListAsync();
+
+            if (!pedidos.Any())
+                throw new InvalidOperationException($"Nenhum pedido do tipo {tipo} foi encontrado.");
+
+            return pedidos.Select(p => new PedidoResponse
+            {
+                Id = p.Id,
+                UsuarioId = p.UsuarioId,
+                ClienteId = p.ClienteId,
+                DataPedido = p.DataPedido,
+                ValorTotal = p.ValorTotal
+            });
+        }
+
 
     }
 }
