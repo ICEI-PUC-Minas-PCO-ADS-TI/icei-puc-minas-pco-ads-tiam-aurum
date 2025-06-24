@@ -81,8 +81,21 @@ namespace AurumApi.Services
             return listaPagamentos;
         }
 
+        public async Task<bool> MarcarComoPago(int pagamentoId)
+        {
+            var pagamento = await _aurumDataContext.Pagamentos.FirstOrDefaultAsync(p => p.Id == pagamentoId);
 
+            if (pagamento == null)
+                throw new InvalidOperationException($"Pagamento com ID {pagamentoId} não encontrado.");
+
+            pagamento.Status = "Pago";
+            pagamento.DataPagamento = DateTime.Now;
+
+            _aurumDataContext.Pagamentos.Update(pagamento);
+            await _aurumDataContext.SaveChangesAsync();
+
+            return true;
+        }
 
     }
-    
 }

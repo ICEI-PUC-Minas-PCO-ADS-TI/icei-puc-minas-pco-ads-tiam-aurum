@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Container from '../../components/Container';
 import { Colors } from "../../styles/constants";
+import Dashboard from '../Dashboard/Dashboard';
+import { PagamentoResponse } from '../../interfaces/interfaces';
+
 
 
 interface Pagamento {
@@ -17,19 +20,25 @@ interface Cliente {
   nome: string;
 }
 
-export default function HistoricoPagamentos() {
+export const HistoricoPagamentos=({ navigation }):any => { 
   const [pagamentos, setPagamentos] = useState<Pagamento[]>([]);
   const [clientes, setClientes] = useState<Cliente[]>([]);
 
+
+export const Dashboard = ({ navigation }: any) => {
+  const [historico, sethistorico] = useState<PagamentoResponse[]>([])
+}
  const API = "http://192.168.0.106:5038";
 
 async function fetchClientes() {
   try {
     // não esqueça do await aqui
     const response = await fetch(`http://192.168.0.106:5038/api/Clientes`);
+     
     if (!response.ok) throw new Error(`Erro ao buscar clientes: ${response.status}`);
-    const data: Cliente[] = await response.json();
-    setClientes(data);
+    await api.post(`pagamento?usuarioId=${clienteId}`, JSON.stringify(Cliente), {
+                    headers: { 'Content-Type': 'application/json' },
+    
   } catch (error) {
     console.error(error);
   }
@@ -67,18 +76,6 @@ async function fetchPagamentos() {
 
   return (
     <Container style={styles.body}>
-    
-      <Text style={styles.title}>Histórico de Pagamentos</Text>
-
-      <View style={styles.cardItem}>
-        <Text style={styles.subTitleCliente}>Cliente</Text>
-        <Text style={styles.subTitle}>Valor</Text>
-        <Text style={styles.subTitle}>Status</Text>
-        <Text style={styles.subTitle}>Data</Text>
-         <Text style={styles.botaoPagar} >
-        Marcar como Pago
-      </Text>
-      </View>
 
       {pagamentos.length === 0 ? (
         <Text style={styles.subTitle}>Nenhum pagamento encontrado.</Text>
@@ -87,8 +84,8 @@ async function fetchPagamentos() {
           <View key={pagamento.id} style={styles.cardItem}>
             <Text style={styles.subTitleCliente}>{getNomeCliente(pagamento.clienteId)}</Text>
             <Text  style={styles.subTitle}>Valor: {pagamento.valor}</Text>
-            <Text>Status: {pagamento.status}</Text>
-            <Text>Data: {new Date(pagamento.data).toLocaleDateString()}</Text>
+            <Text style={styles.subTitle}>Status: {pagamento.status}</Text>
+            <Text style={styles.subTitle}>Data: {new Date(pagamento.data).toLocaleDateString()}</Text>
           </View>
         ))
       )}
@@ -113,9 +110,7 @@ async function fetchPagamentos() {
       console.error(error);
     }
   }}
->
-  Marcar como Pago
-</Text>
+> Marcar como Pago</Text>
 
     )}
   </View>
@@ -124,6 +119,7 @@ async function fetchPagamentos() {
     </Container>
   );
 } 
+}
 
 const styles = StyleSheet.create({
   

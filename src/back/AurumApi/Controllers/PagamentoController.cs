@@ -9,7 +9,7 @@ namespace AurumApi.Controllers
     [ApiController]
     public class PagamentoController : ControllerBase
     {
-         private readonly IPagamento _pagamentoService;
+        private readonly IPagamento _pagamentoService;
 
         public PagamentoController(IPagamento pagamentoService)
         {
@@ -52,5 +52,28 @@ namespace AurumApi.Controllers
             }
         }
 
+
+        [ProducesResponseType(typeof(string), 200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        [HttpPut("marcar-como-pago/{pagamentoId:int}")]
+        public async Task<IActionResult> MarcarComoPago(int pagamentoId)
+        {
+            try
+            {
+                var result = await _pagamentoService.MarcarComoPago(pagamentoId);
+                if (!result)
+                    return StatusCode(500, "Falha ao marcar pagamento como pago.");
+                return Ok("Pagamento marcado como pago com sucesso.");
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro interno no servidor: {ex.Message}");
+            }
+        }
     }
 }

@@ -34,9 +34,9 @@ export default function Tabs() {
       }}
     >
       <Tab.Screen
-        name="Dashboard"
-        component={Dashboard}
-        options={DashboardStyle}
+        name="DashboardStack"
+        component={DashboadStackScreen}
+        options={DrodutosStackStyle}
       />
       <Tab.Screen
         name="Perfil"
