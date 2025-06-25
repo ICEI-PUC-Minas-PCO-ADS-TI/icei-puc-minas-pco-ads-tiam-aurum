@@ -15,9 +15,8 @@ const Stack = createStackNavigator();
 export default function App() {
   return (
     <Provider store={store}>
-      <CarrinhoProvider>
         <NavigationContainer>
-  <Stack.Navigator initialRouteName="Historico">
+  <Stack.Navigator initialRouteName="Login">
     <Stack.Screen name="Login" component={Login} />
     <Stack.Screen name="Cadastro" component={Cadastro} />
     <Stack.Screen name="Tabs" component={Tabs} />
@@ -25,8 +24,6 @@ export default function App() {
 
   </Stack.Navigator>
 </NavigationContainer>
-
-      </CarrinhoProvider>
     </Provider>
   );
 }
