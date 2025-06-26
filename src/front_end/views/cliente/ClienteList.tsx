@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import { useIsFocused, useNavigation } from "@react-navigation/native";
+import { useIsFocused } from "@react-navigation/native";
 import axios from 'axios';
 import React, { useEffect, useState } from "react";
 import { ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -26,10 +26,9 @@ const CardClient = ({ title, subTitle }: ItemProps) => (
   </View>
 );
 
-export default function ClienteList() {
+export default function ClienteList({ navigation }: any) {
   const [usuario, setUsuario] = useState<UsuarioState | null>(store.getState().auth.usuario || null);
   const [clientes, setClientes] = useState<ClienteDTO[]>([]);
-  const navigation = useNavigation<any>();
   const isFocused = useIsFocused();
 
   const carregarClientes = async () => {
@@ -74,7 +73,7 @@ export default function ClienteList() {
         <Text style={styles2.textTitlePage}>Clientes</Text>
         <TouchableOpacity
           style={styles2.btnAdd}
-          onPress={() => navigation.navigate('CadastroTarefa')}
+          onPress={() => navigation.navigate('ClienteEdit')}
         >
           <Ionicons name="add" size={28} color="#D4AF37" />
         </TouchableOpacity>

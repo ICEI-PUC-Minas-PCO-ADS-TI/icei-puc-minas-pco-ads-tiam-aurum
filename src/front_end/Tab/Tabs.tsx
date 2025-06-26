@@ -1,10 +1,10 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Colors } from "../styles/constants";
 import { CalendarioStyleStackStyle, CarrinhoStackStyle, ClientesList, DashboardStyle, ProdutosStackStyle, UserViewStyle } from "../styles/pages";
-import ClienteList from "../views/cliente/ClienteList";
 import Dashboard from "../views/Dashboard/Dashboard";
 import { UserView } from "../views/User/UserView";
 import { CarrinhoStackScreen } from "./CarrinhoStackScreen";
+import { ClienteStackScreen } from "./ClienteStackScreen";
 import { ProdutosStackScreen } from "./ProdutosStackScreen";
 import { TarefaStackScreen } from "./TarefaStackScreen";
 
@@ -52,8 +52,8 @@ export default function Tabs() {
       <Tab.Screen name="ProdutosStack" component={ProdutosStackScreen} options={ProdutosStackStyle} />
       <Tab.Screen name="CarrinhoStack" component={CarrinhoStackScreen} options={CarrinhoStackStyle} />
       <Tab.Screen
-        name="ClienteList"
-        component={ClienteList}
+        name="ClienteStack"
+        component={ClienteStackScreen}
         options={ClientesList}
       ></Tab.Screen>
     </Tab.Navigator>
