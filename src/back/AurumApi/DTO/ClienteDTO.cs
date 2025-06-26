@@ -43,6 +43,8 @@ namespace AurumApi.DTO
         [StringLength(2, ErrorMessage = "UF deve ter 2 caracteres")]
         public string Estado { get; set; }
 
+        public int idUsuario { get; set; }
+
         // DTO para Entidade 
         public Cliente ToEntity()
         {
@@ -52,7 +54,9 @@ namespace AurumApi.DTO
                 Nome = this.Nome,
                 Documento = this.Documento,
                 Telefone = this.Telefone,
-                DataCadastro = this.DataCadastro
+                DataCadastro = this.DataCadastro,
+                UsuarioId = this.idUsuario,
+
             };
 
             cliente.Enderecos.Add(new EnderecoCliente
@@ -66,6 +70,7 @@ namespace AurumApi.DTO
                 Estado = this.Estado,
                 ClienteId = this.Id
             });
+
            
             return cliente;
         }
