@@ -35,7 +35,6 @@ export default function ClienteList() {
   const carregarClientes = async () => {
     try {
       const response = await api.get(`/Clientes/usuario/${usuario?.id}`);
-      console.log(response.data)
       setClientes(response.data);
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -51,6 +50,24 @@ export default function ClienteList() {
     if (isFocused) carregarClientes();
   }, [isFocused]);
 
+  const handleDeleteCliente = async (id: number) => {
+    console.log('Excluindo cliente com ID:', id);
+    try {
+      const response = await api.delete(`/Clientes/${id}`);
+      if (response.status === 204) {
+        console.log("Cliente excluído com sucesso:", response.data);
+        alert("Cliente excluído com sucesso");
+        carregarClientes();
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log("Erro ao excluir cliente:", error.response?.data);
+        if (error.response?.status === 400) {
+          console.log(error.response.data);
+        }
+      }
+    }
+  }
   return (
     <View style={{ flex: 1, backgroundColor: Colors.fundo }}>
       <View style={{ width: "100%", flexDirection: "row", alignItems: "center", justifyContent: "center", height: "10%" }}>
@@ -70,7 +87,7 @@ export default function ClienteList() {
                 key={cliente.id}
                 client={cliente}
                 onEdit={() => { console.log("teste") }}
-                onDelete={() => { console.log("teste") }}
+                onDelete={() => { handleDeleteCliente(cliente.id) }}
                 onViewDetails={() => { console.log("teste") }}
               />
             ))
