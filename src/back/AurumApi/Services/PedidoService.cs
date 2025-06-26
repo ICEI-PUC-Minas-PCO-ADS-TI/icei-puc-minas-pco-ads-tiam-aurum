@@ -282,6 +282,29 @@ namespace AurumApi.Services
             });
         }
 
+        public async Task<IEnumerable<PedidoResponse>> GetPedidosPorClienteETipo(int clienteId, ETipoPedido tipo)
+        {
+            var pedidos = await _aurumDataContext.Pedidos
+                .AsNoTracking()
+                .Where(p => p.ClienteId == clienteId && p.Tipo == tipo)
+                .OrderByDescending(p => p.DataPedido)
+                .ToListAsync();
+        
+            if (!pedidos.Any())
+                throw new InvalidOperationException($"Nenhum pedido do tipo {tipo} encontrado para o cliente {clienteId}.");
+        
+            return pedidos.Select(p => new PedidoResponse
+            {
+                Id = p.Id,
+                UsuarioId = p.UsuarioId,
+                ClienteId = p.ClienteId,
+                DataPedido = p.DataPedido,
+                ValorTotal = p.ValorTotal
+            });
+        }
 
     }
 }
+
+
+
