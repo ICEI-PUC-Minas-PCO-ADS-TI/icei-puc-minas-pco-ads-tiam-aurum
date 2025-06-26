@@ -77,15 +77,24 @@ namespace AurumApi.Services
             return true;
         }
 
+    
+
         public async Task<bool> Remover(int id)
         {
-            var cliente = await _aurumDataContext.Clientes.FindAsync(id);
-            if (cliente == null) return false;
+            var cliente = await _aurumDataContext.Clientes
+            .Include(c => c.Enderecos)
+            .Include(c => c.Pedidos)
+            .Include(c => c.Pagamentos)
+            .FirstOrDefaultAsync(c => c.Id == id);
+
+            if (cliente == null)
+            return false;
 
             _aurumDataContext.Clientes.Remove(cliente);
             await _aurumDataContext.SaveChangesAsync();
             return true;
         }
+
 
         public async Task<bool> VerificarExistencia(int id)
         {
