@@ -1,4 +1,5 @@
 import {StyleSheet, View, ViewProps} from 'react-native';
+import { Colors } from '../styles/constants';  
 
 type ContainerProps = ViewProps;
 
@@ -13,6 +14,6 @@ export default function Container({ children, ...rest }: ContainerProps) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#364B4B',
+        backgroundColor: Colors.fundo,
     },
 });
