@@ -227,5 +227,23 @@ namespace AurumApi.Controllers
             }
         }
 
+        [HttpGet("cliente/{clienteId}/tipo/{tipo}")]
+        public async Task<IActionResult> GetPedidosPorClienteETipo(int clienteId, ETipoPedido tipo)
+        {
+            try
+            {
+                var pedidos = await _pedidoService.GetPedidosPorClienteETipo(clienteId, tipo);
+                return Ok(pedidos);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(new { erro = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { erro = ex.Message });
+            }
+        }
+
     }
 }
