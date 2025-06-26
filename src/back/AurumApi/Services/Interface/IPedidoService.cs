@@ -13,6 +13,8 @@ namespace AurumApi.Services.Interface
         Task<bool> DeletePedido(int id);
         Task<bool> RegistrarDevolucaoOuTroca(int joiaId, int tipo);
         Task<IEnumerable<PedidoResponse>> GetPedidosPorTipo(ETipoPedido tipo);
+        Task<IEnumerable<PedidoResponse>> GetPedidosPorClienteETipo(int clienteId, ETipoPedido tipo);
+
 
 
     }
