@@ -73,7 +73,7 @@ export default function ClienteList({ navigation }: any) {
         <Text style={styles2.textTitlePage}>Clientes</Text>
         <TouchableOpacity
           style={styles2.btnAdd}
-          onPress={() => navigation.navigate('ClienteEdit')}
+          onPress={() => navigation.navigate('ClienteNew')}
         >
           <Ionicons name="add" size={28} color="#D4AF37" />
         </TouchableOpacity>
