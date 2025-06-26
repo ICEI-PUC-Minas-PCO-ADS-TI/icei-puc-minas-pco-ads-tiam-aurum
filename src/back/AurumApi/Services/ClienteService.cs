@@ -16,11 +16,12 @@ namespace AurumApi.Services
             _aurumDataContext = aurumDataContext;
         }
 
-        public async Task<IEnumerable<ClienteDTO>> ObterTodos()
+        public async Task<IEnumerable<ClienteDTO>> ObterTodos(int idUsuario)
         {
             return await _aurumDataContext.Clientes
-                .Include(c => c.Enderecos) 
-                .Include(c => c.Usuario)  
+                .Where(c => c.UsuarioId == idUsuario)
+                .Include(c => c.Enderecos)
+                .Include(c => c.Usuario)
                 .Select(c => ClienteDTO.FromEntity(c))
                 .ToListAsync();
         }

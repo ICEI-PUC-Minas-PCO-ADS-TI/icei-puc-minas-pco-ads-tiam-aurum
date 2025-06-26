@@ -16,10 +16,10 @@ namespace AurumApi.Controllers
             _clienteService = clienteService;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<ClienteDTO>>> Get()
+        [HttpGet("usuario/{idUsuario}")]
+        public async Task<ActionResult<IEnumerable<ClienteDTO>>> Get(int idUsuario)
         {
-            var clientes = await _clienteService.ObterTodos();
+            var clientes = await _clienteService.ObterTodos(idUsuario);
             return Ok(clientes);
         }
 

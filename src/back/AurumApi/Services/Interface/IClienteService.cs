@@ -6,7 +6,7 @@ namespace AurumApi.Services
 {
     public interface IClienteService
     {
-        Task<IEnumerable<ClienteDTO>> ObterTodos();
+        Task<IEnumerable<ClienteDTO>> ObterTodos(int idUsuario);
         Task<ClienteDTO> ObterPorId(int id);
         Task<ClienteDTO> Criar(ClienteDTO clienteDTO);
         Task<bool> Atualizar(int id, ClienteDTO clienteDTO);
