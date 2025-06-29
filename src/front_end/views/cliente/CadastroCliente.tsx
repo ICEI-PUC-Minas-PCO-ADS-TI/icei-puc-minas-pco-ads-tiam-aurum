@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   textInput: {
-    backgroundColor: Colors.fundoCard,
+    backgroundColor: Colors.textInfo,
     width: '100%',
     height: 40,
     marginTop: 10,
@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
     color: 'red'
   },
   textInputEndereco: {
-    backgroundColor: Colors.fundoCard,
+    backgroundColor: Colors.textInfo,
     width: '30%',
     height: 40,
     marginTop: 10,
