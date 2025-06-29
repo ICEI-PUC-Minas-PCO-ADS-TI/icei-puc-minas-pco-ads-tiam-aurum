@@ -49,11 +49,12 @@ export default function ClienteList({ navigation }: any) {
     if (isFocused) carregarClientes();
   }, [isFocused]);
 
-  const handleDeleteCliente = async (id: number) => {
+  const handleDeleteCliente = async (id: number | undefined) => {
     try {
       const response = await api.delete(`/Clientes/${id}`);
       if (response.status === 204) {
         alert("Cliente excluído com sucesso");
+        console.log("Cliente excluído com sucesso", id);
         carregarClientes();
       }
     } catch (error) {
@@ -85,7 +86,7 @@ export default function ClienteList({ navigation }: any) {
                 client={cliente}
                 onEdit={() => { console.log("teste") }}
                 onDelete={() => { handleDeleteCliente(cliente.id) }}
-                onViewDetails={() => { console.log("teste") }}
+                onViewDetails={() => { navigation.navigate('ClienteView', { cliente }) }}
               />
             ))
           ) : (
