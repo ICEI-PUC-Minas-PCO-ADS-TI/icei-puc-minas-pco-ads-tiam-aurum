@@ -1,8 +1,15 @@
+import axios from "axios";
 import { Formik } from "formik";
+import { useState } from "react";
 import { StatusBar, StyleSheet, Text, TextInput, View } from "react-native";
 import { MaskedTextInput } from "react-native-mask-text";
 import * as Yup from "yup";
+import Alert from "../../components/Alert";
 import { DefaultButton } from "../../components/DefautlBotton";
+import { ClienteDTO } from "../../interfaces/interfaces";
+import api from "../../services/api";
+import store from "../../store";
+import { UsuarioState } from "../../store/slices/authSlice";
 import { Colors } from "../../styles/constants";
 
 
@@ -12,10 +19,11 @@ const initialValues = {
   email: "",
   cep: "",
   numero: "",
-  longradouro: "",
+  logradouro: "",
   complemento: "",
   cidade: "",
   estado: "",
+  bairro: "",
 }
 
 const validationSchema = Yup.object().shape({
@@ -29,14 +37,56 @@ const validationSchema = Yup.object().shape({
     .required("CPF é obrigatório"),
 })
 export const CadastroCliente = ({ navigation }: any) => {
+  const [usuario, setUsuario] = useState<UsuarioState | null>(store.getState().auth.usuario || null);
+  const [notification, setNotification] = useState<string>("");
+  const [viewNotification, setViewNotification] = useState<boolean>(false);
+  const [typeNotification, setTypeNotification] = useState<string>("");
+  const [messageNotification, setMessageNotification] = useState<string>("");
+
+
+  const handleCadastroCliente = async (values: ClienteDTO) => {
+    values.idUsuario = usuario?.id || null;
+    try {
+      const response = await api.post<ClienteDTO>("/Clientes", values);
+      if (response.status === 201) {
+        console.log("Cliente cadastrado com sucesso:", response.data);
+        showNotification("Sucesso", "Cliente cadastrado com sucesso!", "success", true);
+        return true;
+      }
+      return false;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log("Erro ao cadastrar cliente:", error.response?.data);
+        if (error.response?.status === 400) {
+          showNotification("Erro", error.response.data?.errors?.Documento[0], "error", true);
+        }
+        return false;
+      }
+    }
+  }
+
+  const showNotification = (text1: string, text2: string, type: string, viewMode: boolean) => {
+    setNotification(text1);
+    setMessageNotification(text2);
+    setTypeNotification(type);
+    setViewNotification(viewMode);
+    setTimeout(() => {
+      setViewNotification(false);
+      setNotification("");
+      setMessageNotification("");
+      setTypeNotification("");
+      navigation.navigate("ClienteList");
+    }, 3000);
+  }
   return (
     <View style={{ flex: 1, backgroundColor: Colors.fundo }}>
+      <Alert text1={notification} text2={messageNotification} type={typeNotification} viewMode={viewNotification}></Alert>
       <View style={styles2.subContainer}>
         <Formik
           validationSchema={validationSchema}
           initialValues={initialValues}
           onSubmit={async (values, { resetForm }) => {
-            // const foiSalvo: boolean | undefined = await handleCadastro(values);
+            const foiSalvo = await handleCadastroCliente(values);
             // if (foiSalvo !== undefined && foiSalvo) {
             //   resetForm();
             // }
@@ -60,6 +110,7 @@ export const CadastroCliente = ({ navigation }: any) => {
                   placeholder="Digite o nome completo do cliente"
                   onChangeText={handleChange("nome")}
                   value={values.nome}
+                  placeholderTextColor="#5e5e5e"
                 />
                 {touched.nome && errors.email && <Text style={styles.error}>{errors.nome}</Text>}
                 <MaskedTextInput
@@ -71,6 +122,7 @@ export const CadastroCliente = ({ navigation }: any) => {
                     handleChange("documento")(rawText);
                   }}
                   value={values.documento}
+                  placeholderTextColor="#5e5e5e"
                 />
                 {touched.documento && errors.documento && <Text style={styles.error}>{errors.documento}</Text>}
                 <TextInput
@@ -78,6 +130,7 @@ export const CadastroCliente = ({ navigation }: any) => {
                   placeholder="Digite o e-mail do cliente"
                   onChangeText={handleChange("email")}
                   value={values.email}
+                  placeholderTextColor="#5e5e5e"
                 />
                 {touched.email && errors.email && <Text style={styles.error}>{errors.email}</Text>}
               </View>
@@ -88,18 +141,21 @@ export const CadastroCliente = ({ navigation }: any) => {
                   placeholder="CEP"
                   onChangeText={handleChange("cep")}
                   value={values.cep}
+                  placeholderTextColor="#5e5e5e"
                 ></TextInput>
                 <TextInput
                   style={styles.textInputEndereco}
                   placeholder="Número"
                   onChangeText={handleChange("numero")}
                   value={values.numero}
+                  placeholderTextColor="#5e5e5e"
                 ></TextInput>
                 <TextInput
                   style={styles.textInputEndereco}
                   placeholder="Bairro "
-                  onChangeText={handleChange("longradouro")}
-                  value={values.longradouro}
+                  onChangeText={handleChange("bairro")}
+                  value={values.bairro}
+                  placeholderTextColor="#5e5e5e"
                 ></TextInput>
               </View>
               <View style={{ width: '100%', gap: 10, alignItems: 'center', justifyContent: "space-around" }}>
@@ -108,18 +164,29 @@ export const CadastroCliente = ({ navigation }: any) => {
                   placeholder="Complemento"
                   onChangeText={handleChange("complemento")}
                   value={values.complemento}
+                  placeholderTextColor="#5e5e5e"
                 ></TextInput>
                 <TextInput
                   style={styles.textInput}
                   placeholder="Cidade"
                   onChangeText={handleChange("cidade")}
                   value={values.cidade}
+                  placeholderTextColor="#5e5e5e"
+
                 ></TextInput>
                 <TextInput
                   style={styles.textInput}
-                  placeholder="Estado"
-                  onChangeText={handleChange("Estado")}
+                  placeholder="Digite o Estado"
+                  onChangeText={handleChange("estado")}
                   value={values.estado}
+                  placeholderTextColor="#5e5e5e"
+                ></TextInput>
+                <TextInput
+                  style={styles.textInput}
+                  placeholder="Digite o Logradouro"
+                  onChangeText={handleChange("logradouro")}
+                  value={values.logradouro}
+                  placeholderTextColor="#5e5e5e"
                 ></TextInput>
               </View>
 
@@ -197,6 +264,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     fontWeight: 'bold',
     color: Colors.defaultText,
+
   },
   error: {
     color: 'red'

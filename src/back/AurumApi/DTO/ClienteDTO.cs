@@ -1,4 +1,5 @@
 ﻿using AurumApi.Models;
+using AurumApi.Validation;
 using System.ComponentModel.DataAnnotations;
 
 namespace AurumApi.DTO
@@ -14,6 +15,7 @@ namespace AurumApi.DTO
 
         [Required(ErrorMessage = "Documento é obrigatório")]
         [StringLength(20, ErrorMessage = "Documento não pode exceder 20 caracteres")]
+        [CpfValidation]
         public string Documento { get; set; }
 
         [StringLength(20, ErrorMessage = "Telefone não pode exceder 20 caracteres")]

@@ -50,11 +50,9 @@ export default function ClienteList({ navigation }: any) {
   }, [isFocused]);
 
   const handleDeleteCliente = async (id: number) => {
-    console.log('Excluindo cliente com ID:', id);
     try {
       const response = await api.delete(`/Clientes/${id}`);
       if (response.status === 204) {
-        console.log("Cliente excluído com sucesso:", response.data);
         alert("Cliente excluído com sucesso");
         carregarClientes();
       }
