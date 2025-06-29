@@ -144,7 +144,7 @@ export const ClienteView = ({ route, navigation }: any) => {
             values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue, resetForm
           }) => (
             <View style={styles.informacoesUsuario}>
-              <View st>
+              <View>
                 <Text style={styles.textTitlePage}>Cliente</Text>
               </View>
               <View style={{ gap: 10, width: "100%" }}>
