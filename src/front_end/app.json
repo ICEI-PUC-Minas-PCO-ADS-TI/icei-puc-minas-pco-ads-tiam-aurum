@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Aurum",
-    "slug": "Aurum",
+    "slug": "aurum3",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./image/aurum.png",
@@ -29,8 +29,9 @@
     },
     "extra": {
       "eas": {
-        "projectId": "514d176c-7b37-454a-9696-8211e3555b55"
+        "projectId": "8a11527f-4e42-47b9-aac5-505a2b97eb1d"
       }
-    }
+    },
+    "owner": "rafaelbrands"
   }
 }
