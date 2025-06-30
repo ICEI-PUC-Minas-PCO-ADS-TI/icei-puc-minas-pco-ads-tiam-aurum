@@ -46,6 +46,7 @@ export default function Produtos({ navigation }: any) {
         params: { term: termoBusca.toUpperCase().trim() }
       });
       renderizaJoias(response.data);
+      setTermoBusca('');
     } catch (error) {
       console.log('Erro ao buscar por termo:', error);
       Alert.alert('Erro ao buscar joias.');
