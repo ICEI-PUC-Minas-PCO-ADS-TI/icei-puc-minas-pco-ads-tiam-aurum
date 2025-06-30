@@ -87,8 +87,19 @@ namespace AurumApi.Services
 
             decimal valorTotal = 0;
 
-            var cliente = await _aurumDataContext.Clientes.FirstOrDefaultAsync(c => c.Documento == dto.CPFCliente)
-                ?? throw new InvalidOperationException($"Cliente com o CPF: {dto.CPFCliente} não encontrado");
+            var cliente = await _aurumDataContext.Clientes.FirstOrDefaultAsync(c => c.Documento == dto.CPFCliente);
+
+            if(cliente == null)
+            {
+                var cpfFormatado = dto.CPFCliente
+                    .Replace("-", "")
+                    .Replace(".", "")
+                    .Replace(',', ' ')
+                    .Replace(" ", "");
+
+                cliente = await _aurumDataContext.Clientes.FirstOrDefaultAsync(c => c.Documento == cpfFormatado) 
+                    ?? throw new InvalidOperationException($"Cliente com o CPF: {dto.CPFCliente} não encontrado");
+            }
 
             var novoPedido = new Pedido
             {
