@@ -149,22 +149,40 @@ namespace AurumApi.Services
 
                 for (int i = 1; i <= qtdParcelas; i++)
                 {
-                    // cria um novo pagamento para cada parcela
-                    var pagamento = new Pagamento
+                    var pagamento = new Pagamento();
+                    if (dto.Pagamento.FormaPagamento == "Cartão")
                     {
-                        PedidoId = novoPedido.Id,
-                        ClienteId = novoPedido.ClienteId,
-                        UsuarioId = usuarioId,
-                        QtdParcelas = qtdParcelas,
-                        ValorParcela = valorParcela,
-                        DataPagamento = null,
-                        DataVencimento = vencimento.AddMonths(i - 1), // adiciona os meses de vencimento conforme a quantidade de parcela
-                        Status = "Pendente",
-                        FormaPagamento = dto.Pagamento.FormaPagamento,
-                        NumeroParcela = i, // altera o número da parcela
-                        ValorPagamento = valorTotal
-                    };
-
+                        pagamento = new Pagamento
+                        {
+                            PedidoId = novoPedido.Id,
+                            ClienteId = novoPedido.ClienteId,
+                            UsuarioId = usuarioId,
+                            QtdParcelas = qtdParcelas,
+                            ValorParcela = valorParcela,
+                            DataPagamento = DateTime.UtcNow,
+                            DataVencimento = vencimento.AddMonths(i - 1),
+                            Status = "Pago",
+                            FormaPagamento = dto.Pagamento.FormaPagamento,
+                            NumeroParcela = i,
+                            ValorPagamento = valorTotal
+                        };
+                    } else
+                    {
+                        pagamento = new Pagamento
+                        {
+                            PedidoId = novoPedido.Id,
+                            ClienteId = novoPedido.ClienteId,
+                            UsuarioId = usuarioId,
+                            QtdParcelas = qtdParcelas,
+                            ValorParcela = valorParcela,
+                            DataPagamento = null,
+                            DataVencimento = vencimento.AddMonths(i - 1), // adiciona os meses de vencimento conforme a quantidade de parcela
+                            Status = "Pendente",
+                            FormaPagamento = dto.Pagamento.FormaPagamento,
+                            NumeroParcela = i, // altera o número da parcela
+                            ValorPagamento = valorTotal
+                        };
+                    }
                     _aurumDataContext.Pagamentos.Add(pagamento);
                 }
             }
