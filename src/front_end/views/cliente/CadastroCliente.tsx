@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Formik } from "formik";
 import { useState } from "react";
-import { StatusBar, StyleSheet, Text, TextInput, View } from "react-native";
+import { ScrollView, StatusBar, StyleSheet, Text, TextInput, View } from "react-native";
 import { MaskedTextInput } from "react-native-mask-text";
 import * as Yup from "yup";
 import Alert from "../../components/Alert";
@@ -35,6 +35,20 @@ const validationSchema = Yup.object().shape({
     .required("E-mail é obrigatório"),
   documento: Yup.string()
     .required("CPF é obrigatório"),
+  estado: Yup.string()
+    .max(2, "O estado deve ter no maxímo 2 caracteres")
+    .required("Estado é obrigatório"),
+  cidade: Yup.string()
+    .required("Cidade é obrigatória"),
+  cep: Yup.string()
+    .required("CEP é obrigatório"),
+  numero: Yup.string()
+    .required("Número é obrigatório"),
+  bairro: Yup.string()
+    .required("Bairro é obrigatório"),
+  logradouro: Yup.string()
+    .required("Logradouro é obrigatório"),
+
 })
 export const CadastroCliente = ({ navigation }: any) => {
   const [usuario, setUsuario] = useState<UsuarioState | null>(store.getState().auth.usuario || null);
@@ -102,96 +116,113 @@ export const CadastroCliente = ({ navigation }: any) => {
             isSubmitting,
             setFieldValue,
           }) => (
-            <View style={styles.headerContainer}>
-              <Text style={styles2.textTitlePage}>Novo  Cliente</Text>
-              <View style={styles.inputContainer}>
-                <TextInput
-                  style={styles.textInput}
-                  placeholder="Digite o nome completo do cliente"
-                  onChangeText={handleChange("nome")}
-                  value={values.nome}
-                  placeholderTextColor="#5e5e5e"
-                />
-                {touched.nome && errors.email && <Text style={styles.error}>{errors.nome}</Text>}
-                <MaskedTextInput
-                  mask="999.999.999-99"
-                  style={styles.textInput}
-                  placeholder="CPF"
-                  keyboardType="numeric"
-                  onChangeText={(text, rawText) => {
-                    handleChange("documento")(rawText);
-                  }}
-                  value={values.documento}
-                  placeholderTextColor="#5e5e5e"
-                />
-                {touched.documento && errors.documento && <Text style={styles.error}>{errors.documento}</Text>}
-                <TextInput
-                  style={styles.textInput}
-                  placeholder="Digite o e-mail do cliente"
-                  onChangeText={handleChange("email")}
-                  value={values.email}
-                  placeholderTextColor="#5e5e5e"
-                />
-                {touched.email && errors.email && <Text style={styles.error}>{errors.email}</Text>}
-              </View>
-              <Text style={styles2.textTitlePage}>Endereço</Text>
-              <View style={{ width: '100%', flexDirection: 'row', gap: 20, alignItems: 'center', justifyContent: "space-around" }}>
-                <TextInput
-                  style={styles.textInputEndereco}
-                  placeholder="CEP"
-                  onChangeText={handleChange("cep")}
-                  value={values.cep}
-                  placeholderTextColor="#5e5e5e"
-                ></TextInput>
-                <TextInput
-                  style={styles.textInputEndereco}
-                  placeholder="Número"
-                  onChangeText={handleChange("numero")}
-                  value={values.numero}
-                  placeholderTextColor="#5e5e5e"
-                ></TextInput>
-                <TextInput
-                  style={styles.textInputEndereco}
-                  placeholder="Bairro "
-                  onChangeText={handleChange("bairro")}
-                  value={values.bairro}
-                  placeholderTextColor="#5e5e5e"
-                ></TextInput>
-              </View>
-              <View style={{ width: '100%', gap: 10, alignItems: 'center', justifyContent: "space-around" }}>
-                <TextInput
-                  style={styles.textInput}
-                  placeholder="Complemento"
-                  onChangeText={handleChange("complemento")}
-                  value={values.complemento}
-                  placeholderTextColor="#5e5e5e"
-                ></TextInput>
-                <TextInput
-                  style={styles.textInput}
-                  placeholder="Cidade"
-                  onChangeText={handleChange("cidade")}
-                  value={values.cidade}
-                  placeholderTextColor="#5e5e5e"
+            <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
+              <View style={styles.headerContainer}>
+                <Text style={styles2.textTitlePage}>Novo  Cliente</Text>
+                <View style={styles.inputContainer}>
+                  <TextInput
+                    style={styles.textInput}
+                    placeholder="Digite o nome completo do cliente"
+                    onChangeText={handleChange("nome")}
+                    value={values.nome}
+                    placeholderTextColor="#5e5e5e"
+                  />
+                  {touched.nome && errors.nome && <Text style={styles.error}>{errors.nome}</Text>}
+                  <MaskedTextInput
+                    mask="999.999.999-99"
+                    style={styles.textInput}
+                    placeholder="CPF"
+                    keyboardType="numeric"
+                    onChangeText={(text, rawText) => {
+                      handleChange("documento")(rawText);
+                    }}
+                    value={values.documento}
+                    placeholderTextColor="#5e5e5e"
+                  />
+                  {touched.documento && errors.documento && <Text style={styles.error}>{errors.documento}</Text>}
+                  <TextInput
+                    style={styles.textInput}
+                    placeholder="Digite o e-mail do cliente"
+                    onChangeText={handleChange("email")}
+                    value={values.email}
+                    placeholderTextColor="#5e5e5e"
+                  />
+                  {touched.email && errors.email && <Text style={styles.error}>{errors.email}</Text>}
+                </View>
+                <Text style={styles2.textTitlePage}>Endereço</Text>
+                <View style={{ width: '100%', flexDirection: 'row', gap: 20, alignItems: 'center', justifyContent: "space-around" }}>
+                  <View style={{ width: '30%', flexDirection: 'column' }}>
+                    <MaskedTextInput
+                      mask="99999-999"
+                      style={styles.textInputEndereco}
+                      placeholder="CEP"
+                      keyboardType="numeric"
+                      onChangeText={(text, rawText) => {
+                        handleChange("cep")(rawText);
+                      }}
+                      value={values.cep}
+                      placeholderTextColor="#5e5e5e"
+                    ></MaskedTextInput>
+                    {touched.cep && errors.cep && <Text style={styles.error}>{errors.cep}</Text>}
+                  </View>
+                  <View style={{ width: '30%', flexDirection: 'column' }}>
+                    < TextInput
+                      style={styles.textInputEndereco}
+                      placeholder="Número"
+                      onChangeText={handleChange("numero")}
+                      value={values.numero}
+                      placeholderTextColor="#5e5e5e"
+                    ></TextInput>
+                    {touched.numero && errors.numero && <Text style={styles.error}>{errors.numero}</Text>}
+                  </View>
+                  <View>
+                    <TextInput
+                      style={styles.textInputEndereco}
+                      placeholder="Complemento"
+                      onChangeText={handleChange("complemento")}
+                      value={values.complemento}
+                      placeholderTextColor="#5e5e5e"
+                    ></TextInput>
+                  </View>
+                </View>
+                <View style={{ width: '100%', gap: 10, alignItems: 'center', justifyContent: "space-around" }}>
+                  <TextInput
+                    style={styles.textInput}
+                    placeholder="Bairro "
+                    onChangeText={handleChange("bairro")}
+                    value={values.bairro}
+                    placeholderTextColor="#5e5e5e"
+                  ></TextInput>
+                  {touched.bairro && errors.bairro && <Text style={styles.error}>{errors.numero}</Text>}
+                  <TextInput
+                    style={styles.textInput}
+                    placeholder="Cidade"
+                    onChangeText={handleChange("cidade")}
+                    value={values.cidade}
+                    placeholderTextColor="#5e5e5e"
+                  ></TextInput>
+                  {touched.cidade && errors.cidade && <Text style={styles.error}>{errors.cidade}</Text>}
+                  <TextInput
+                    style={styles.textInput}
+                    placeholder="Digite o Estado"
+                    onChangeText={handleChange("estado")}
+                    value={values.estado}
+                    placeholderTextColor="#5e5e5e"
+                  ></TextInput>
+                  {touched.estado && errors.estado && <Text style={styles.error}>{errors.estado}</Text>}
+                  <TextInput
+                    style={styles.textInput}
+                    placeholder="Digite o Logradouro"
+                    onChangeText={handleChange("logradouro")}
+                    value={values.logradouro}
+                    placeholderTextColor="#5e5e5e"
+                  ></TextInput>
+                  {touched.logradouro && errors.logradouro && <Text style={styles.error}>{errors.logradouro}</Text>}
+                </View>
 
-                ></TextInput>
-                <TextInput
-                  style={styles.textInput}
-                  placeholder="Digite o Estado"
-                  onChangeText={handleChange("estado")}
-                  value={values.estado}
-                  placeholderTextColor="#5e5e5e"
-                ></TextInput>
-                <TextInput
-                  style={styles.textInput}
-                  placeholder="Digite o Logradouro"
-                  onChangeText={handleChange("logradouro")}
-                  value={values.logradouro}
-                  placeholderTextColor="#5e5e5e"
-                ></TextInput>
+                <DefaultButton onPress={handleSubmit} corTexto={Colors.textButton} cor={Colors.button} nome="Cadastrar" ></DefaultButton>
               </View>
-
-              <DefaultButton onPress={handleSubmit} corTexto={Colors.textButton} cor={Colors.button} nome="Cadastrar" ></DefaultButton>
-            </View>
+            </ScrollView>
           )}
         </Formik>
       </View>
@@ -271,7 +302,7 @@ const styles = StyleSheet.create({
   },
   textInputEndereco: {
     backgroundColor: Colors.textInfo,
-    width: '30%',
+    width: '100%',
     height: 40,
     marginTop: 10,
     borderRadius: 5,
