@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TextInput, View, Text, StyleSheet, Alert, Platform, TouchableOpacity } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { RadioButton } from 'react-native-paper';
-import { TextInputMask } from 'react-native-masked-text';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import RNPickerSelect from 'react-native-picker-select';
 
 import useCarrinho from '../../store/CarrinhoContext';
 import Container from '../../components/Container';
@@ -17,11 +17,28 @@ export default function FinalizarCompra(props: any) {
     const { itens, limparCarrinho } = useCarrinho();
 
     const [clienteCPF, setClienteCPF] = useState('');
+    const [clientes, setClientes] = useState<{ id: number; nome: string; documento: string }[]>([]);
     const [qtdParcelas, setQtdParcelas] = useState('1');
     const [formaPagamento, setFormaPagamento] = useState('Pix');
 
     const [dataVencimento, setDataVencimento] = useState<Date | undefined>(undefined);
     const [exibirCalendario, setExibirCalendario] = useState(false);
+
+    const usuarioId = store.getState().auth.usuario?.id;
+
+    useEffect(() => {
+        async function carregarClientes() {
+            try {
+                const response = await api.get(`/clientes/usuario/${usuarioId}`);
+                setClientes(response.data);
+            } catch (error) {
+                console.error('Erro ao buscar clientes:', error);
+                Alert.alert('Erro', 'Não foi possível carregar os clientes.');
+            }
+        }
+
+        if (usuarioId) carregarClientes();
+    }, [usuarioId]);
 
     async function enviarPedido() {
         if (!clienteCPF || !qtdParcelas || !dataVencimento || !formaPagamento) {
@@ -51,7 +68,7 @@ export default function FinalizarCompra(props: any) {
                 Alert.alert("Erro", "Usuário não identificado.");
                 return;
             }
-            
+
             await api.post(`pedido?usuarioId=${usuarioId}`, JSON.stringify(pedido), {
                 headers: { 'Content-Type': 'application/json' },
             });
@@ -77,14 +94,21 @@ export default function FinalizarCompra(props: any) {
         <Container>
             <Text style={formularioStyle.titulo}>Finalizar Compra</Text>
             <ScrollView style={cardContainerStyle.cardContainer}>
-                <Text style={formularioStyle.label}>CPF do Cliente:</Text>
-                <TextInputMask
-                    type={'cpf'}
-                    value={clienteCPF}
-                    onChangeText={setClienteCPF}
-                    style={formularioStyle.input}
-                    placeholder="123.456.789-00"
-                />
+
+                <Text style={formularioStyle.label}>Selecione o Cliente:</Text>
+                <View style={styles.selectCliente}>
+                    <RNPickerSelect
+                        onValueChange={(value) => setClienteCPF(value)}
+                        items={clientes.map(cliente => ({
+                            label: `${cliente.nome} (${cliente.documento})`,
+                            value: cliente.documento,
+                            key: cliente.id,
+                        }))}
+                        placeholder={{ label: 'Selecione um cliente', value: null }}
+                        style={pickerSelectStyles}
+                        useNativeAndroidPickerStyle={false}
+                    />
+                </View>
 
                 <Text style={formularioStyle.label}>Quantidade de Parcelas:</Text>
                 <TextInput
@@ -142,5 +166,26 @@ const styles = StyleSheet.create({
     },
     btn: {
         marginBottom: 10,
-    }
-});
+    },
+    selectCliente: {
+        backgroundColor: '#A3A3A3',
+        borderRadius: 20,
+        borderWidth: 1,
+        borderColor: '#999',
+        marginBottom: 10,
+    },
+})
+
+const pickerSelectStyles = {
+    inputIOS: {
+        color: '#F7E7CE',
+        fontSize: 16,
+        padding: 12,
+    },
+    inputAndroid: {
+        color: '#F7E7CE',
+        fontSize: 16,
+        padding: 12,
+    },
+};
+;
