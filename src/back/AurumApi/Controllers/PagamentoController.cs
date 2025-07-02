@@ -58,8 +58,8 @@ namespace AurumApi.Controllers
             try
             {
                 var pagamentosPendentes = await _pagamentoService.ListarPagamentosPendentes(usuarioId);
-                if (pagamentosPendentes == null || !pagamentosPendentes.Any())
-                    return NotFound("Nenhum pagamento pendente encontrado.");
+                if (pagamentosPendentes == null)
+                    pagamentosPendentes = new List<PagamentoDTO>();
                 return Ok(pagamentosPendentes);
             }
             catch (Exception ex)
