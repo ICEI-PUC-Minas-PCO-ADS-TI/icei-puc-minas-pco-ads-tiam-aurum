@@ -9,7 +9,7 @@ namespace AurumApi.Controllers
     [ApiController]
     public class PagamentoController : ControllerBase
     {
-         private readonly IPagamento _pagamentoService;
+        private readonly IPagamento _pagamentoService;
 
         public PagamentoController(IPagamento pagamentoService)
         {
@@ -52,5 +52,40 @@ namespace AurumApi.Controllers
             }
         }
 
+        [HttpGet("usuario/{usuarioId:int}/pendentes")]
+        public async Task<IActionResult> GetPagamentosPendentes(int usuarioId)
+        {
+            try
+            {
+                var pagamentosPendentes = await _pagamentoService.ListarPagamentosPendentes(usuarioId);
+                if (pagamentosPendentes == null || !pagamentosPendentes.Any())
+                    return NotFound("Nenhum pagamento pendente encontrado.");
+                return Ok(pagamentosPendentes);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro interno: {ex.Message}");
+            }
+        }
+
+        [HttpPut("marcar-como-pago/{pagamentoId:int}")]
+        public async Task<IActionResult> MarcarComoPago(int pagamentoId)
+        {
+            try
+            {
+                var sucesso = await _pagamentoService.MarcarComoPago(pagamentoId);
+                if (!sucesso)
+                    return StatusCode(500, "Erro ao marcar o pagamento como pago.");
+                return Ok("Pagamento marcado como pago com sucesso.");
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro interno: {ex.Message}");
+            }
+        }
     }
 }

@@ -81,8 +81,47 @@ namespace AurumApi.Services
             return listaPagamentos;
         }
 
+        public async Task<List<PagamentoDTO>> ListarPagamentosPendentes(int usuarioId)
+        {
+            List<PagamentoDTO> pagamentosPendentes = new List<PagamentoDTO>();
+            pagamentosPendentes = await _aurumDataContext.Pagamentos
+                .Where(p => p.Status == "Pendente" && p.UsuarioId == usuarioId)
+                .Include(p => p.Cliente)
+                .Select(p => new PagamentoDTO
+                {
+                    Id = p.Id,
+                    ValorParcela = p.ValorParcela,
+                    Status = p.Status,
+                    DataVencimento = p.DataVencimento,
+                    FormaPagamento = p.FormaPagamento,
+                    NumeroParcela = p.NumeroParcela,
+                    NomeCliente = p.Cliente.Nome
+                })
+                .ToListAsync();
 
+            return pagamentosPendentes;
+        }
 
-    }
-    
+        public async Task<bool> MarcarComoPago(int pagamentoId)
+        {
+            var pagamento = await _aurumDataContext.Pagamentos.FirstOrDefaultAsync(p => p.Id == pagamentoId);
+
+            if (pagamento == null)
+                throw new InvalidOperationException($"Pagamento com ID {pagamentoId} não encontrado.");
+
+            if (pagamento.Status == "Pago")
+                return true;
+
+            pagamento.Status = "Pago";
+            pagamento.DataPagamento = DateTime.UtcNow;
+
+            if (pagamento.DataVencimento.Kind == DateTimeKind.Unspecified)
+                pagamento.DataVencimento = DateTime.SpecifyKind(pagamento.DataVencimento, DateTimeKind.Utc);
+
+            _aurumDataContext.Pagamentos.Update(pagamento);
+            await _aurumDataContext.SaveChangesAsync();
+
+            return true;
+        }
+    }   
 }

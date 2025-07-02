@@ -15,9 +15,6 @@
         public PedidoDTO? Pedido { get; set; }
         public ClienteDTO? Cliente { get; set; }
         public Decimal ValorPagamento { get; set; }
-
-    
-
-
+        public string? NomeCliente { get; set; }
     }
 }
