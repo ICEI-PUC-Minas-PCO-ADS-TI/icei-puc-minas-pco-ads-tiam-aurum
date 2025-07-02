@@ -124,3 +124,15 @@ export const ClientesList: BottomTabNavigationOptions = {
     <Icon name="people" size={33} color={Colors.textButton} />
   )
 }
+
+export const HistoricoStackStyle: BottomTabNavigationOptions = {
+  tabBarShowLabel: false,
+  tabBarLabelStyle: {
+    color: Colors.textButton,
+  },
+  tabBarActiveBackgroundColor: Colors.padraoBackGround,
+
+  tabBarIcon: () => (
+    <Icon name="card" size={33} color={Colors.textButton} />
+  )
+}

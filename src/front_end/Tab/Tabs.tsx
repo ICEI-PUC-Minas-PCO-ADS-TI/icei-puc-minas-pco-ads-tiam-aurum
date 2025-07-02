@@ -1,12 +1,13 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Colors } from "../styles/constants";
-import { CalendarioStyleStackStyle, CarrinhoStackStyle, ClientesList, DashboardStyle, ProdutosStackStyle, UserViewStyle } from "../styles/pages";
+import { CalendarioStyleStackStyle, CarrinhoStackStyle, ClientesList, DashboardStyle, ProdutosStackStyle, UserViewStyle, HistoricoStackStyle } from "../styles/pages";
 import Dashboard from "../views/Dashboard/Dashboard";
 import { UserView } from "../views/User/UserView";
 import { CarrinhoStackScreen } from "./CarrinhoStackScreen";
 import { ClienteStackScreen } from "./ClienteStackScreen";
 import { ProdutosStackScreen } from "./ProdutosStackScreen";
 import { TarefaStackScreen } from "./TarefaStackScreen";
+import { HistoricoStackScreen } from "./HistoricoStackScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -56,6 +57,7 @@ export default function Tabs() {
         component={ClienteStackScreen}
         options={ClientesList}
       ></Tab.Screen>
+      <Tab.Screen name="Pagamentos" component={HistoricoStackScreen} options={HistoricoStackStyle} />
     </Tab.Navigator>
   )
 }
