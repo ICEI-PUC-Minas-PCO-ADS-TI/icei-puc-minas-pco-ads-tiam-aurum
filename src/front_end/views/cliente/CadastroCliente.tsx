@@ -24,6 +24,7 @@ const initialValues = {
   cidade: "",
   estado: "",
   bairro: "",
+  telefone: ""
 }
 
 const validationSchema = Yup.object().shape({
@@ -48,6 +49,8 @@ const validationSchema = Yup.object().shape({
     .required("Bairro é obrigatório"),
   logradouro: Yup.string()
     .required("Logradouro é obrigatório"),
+  telefone: Yup.string()
+    .required("Telefone é obrigatório")
 
 })
 export const CadastroCliente = ({ navigation }: any) => {
@@ -140,14 +143,18 @@ export const CadastroCliente = ({ navigation }: any) => {
                     placeholderTextColor="#5e5e5e"
                   />
                   {touched.documento && errors.documento && <Text style={styles.error}>{errors.documento}</Text>}
-                  <TextInput
+                  <MaskedTextInput
+                    mask="(99) 9999-9999"
                     style={styles.textInput}
-                    placeholder="Digite o e-mail do cliente"
-                    onChangeText={handleChange("email")}
-                    value={values.email}
+                    placeholder="Telefone"
+                    keyboardType="numeric"
+                    onChangeText={(text, rawText) => {
+                      setFieldValue("telefone", rawText);
+                    }}
+                    value={values.telefone}
                     placeholderTextColor="#5e5e5e"
                   />
-                  {touched.email && errors.email && <Text style={styles.error}>{errors.email}</Text>}
+                  {touched.telefone && errors.telefone && <Text style={styles.error}>{errors.telefone}</Text>}
                 </View>
                 <Text style={styles2.textTitlePage}>Endereço</Text>
                 <View style={{ width: '100%', flexDirection: 'row', gap: 20, alignItems: 'center', justifyContent: "space-around" }}>

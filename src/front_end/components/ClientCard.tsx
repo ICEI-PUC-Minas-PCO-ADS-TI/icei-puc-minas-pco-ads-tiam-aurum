@@ -13,6 +13,7 @@ import {
   UIManager,
   View,
 } from 'react-native';
+import Ionicon from 'react-native-vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { MESANGEM_SEM_INFORMACAO } from '../constantes/ObjectConstants';
 import { ClienteDTO } from '../interfaces/interfaces';
@@ -27,8 +28,8 @@ if (Platform.OS === 'android') {
 interface ClientCardProps {
   client: ClienteDTO;
   onEdit: (id: number) => void;
-  onDelete: (id: number) => void;
-  onViewDetails: (id: number) => void;
+  onDelete: (id: number | undefined) => void;
+  onViewDetails: (id: number | undefined) => void;
 }
 
 const ClientCard: React.FC<ClientCardProps> = ({ client, onEdit, onDelete, onViewDetails }) => {
@@ -80,6 +81,18 @@ const ClientCard: React.FC<ClientCardProps> = ({ client, onEdit, onDelete, onVie
           <Icon name="map-marker-outline" size={16} color="#666" />
           <Text style={styles.infoText}>{client.cidade != null ? client.cidade : MESANGEM_SEM_INFORMACAO}</Text>
         </View>
+        <View style={styles.infoRowIcons}>
+          <Ionicon name="person" size={16} color="green" />
+          <TouchableOpacity style={styles.menuItem} onPress={() => handleMenuAction(() => onViewDetails(client.id))}>
+            <Text style={{ color: 'green' }}>Ver Detalhes</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.infoRowIcons}>
+          <Ionicon name="trash-outline" size={16} color="red" />
+          <TouchableOpacity style={styles.menuItem} onPress={() => handleMenuAction(() => onDelete(client.id))}>
+            <Text style={{ color: 'red' }}>Excluir</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -104,9 +117,6 @@ const ClientCard: React.FC<ClientCardProps> = ({ client, onEdit, onDelete, onVie
             <View style={styles.menuContainer}>
               <TouchableOpacity style={styles.menuItem} onPress={() => handleMenuAction(() => onViewDetails(client.id))}>
                 <Text>Ver Detalhes</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.menuItem} onPress={() => handleMenuAction(() => onEdit(client.id))}>
-                <Text>Editar</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.menuItem} onPress={() => handleMenuAction(() => onDelete(client.id))}>
                 <Text style={{ color: 'red' }}>Excluir</Text>
@@ -208,6 +218,11 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 15,
   },
+  infoRowIcons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
 });
 
 export default ClientCard;

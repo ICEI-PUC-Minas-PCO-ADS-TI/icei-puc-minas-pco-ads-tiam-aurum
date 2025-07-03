@@ -9,15 +9,16 @@ import Alert from "../../components/Alert";
 import { DefaultButton } from "../../components/DefautlBotton";
 import { ClienteDTO } from "../../interfaces/interfaces";
 import api from "../../services/api";
-import { setAuthentication, UsuarioState } from "../../store/slices/authSlice";
+import { UsuarioState } from "../../store/slices/authSlice";
 import { Colors } from "../../styles/constants";
 
 
 
 const validationSchema = Yup.object().shape({
   nome: Yup.string().required('Campo obrigatório'),
-  email: Yup.string().email('Email inválido').required('Campo obrigatório'),
-  senha: Yup.string().min(6, 'A senha deve ter pelo menos 6 caracteres').required('Campo obrigatório'),
+  documento: Yup.string().required('Campo obrigatório'),
+  cidade: Yup.string().required('Campo obrigatório'),
+  estado: Yup.string().required('Campo obrigatório'),
 });
 
 export const ClienteView = ({ route, navigation }: any) => {
@@ -30,15 +31,17 @@ export const ClienteView = ({ route, navigation }: any) => {
 
   const saveUserData = async (values: UsuarioState) => {
     try {
-      const response = await api.put(`Usuario/Atualizar/`, values);
-      console.log("Resposta da API:", response.data);
-      statusResponse(response.status, response.data.message);
-      dispatch(setAuthentication(response.data));
+      const response = await api.put(`Clientes/${values.id}`, values);
+      console.log("Resposta da API:", response.status);
+      if (response.status === 204) {
+        statusResponse(200, "Usuário atualizado com sucesso");
+      }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.log("Erro na requisição:", error.response?.data);
         if (error.response?.status === 400) {
-          statusResponse(error.response.status, error.response.data.message);
+          console.log(`Erro: ${error.response.data.status}`, error.response.data.errors.Documento[0]);
+          statusResponse(error.response.data.status, error.response.data.errors.Documento[0]);
         }
       } else {
         console.log("Erro desconhecido:", error);
@@ -48,7 +51,7 @@ export const ClienteView = ({ route, navigation }: any) => {
   }
 
   const statusResponse = (status: number, message: string) => {
-    if (status === 200) {
+    if (status === 204 || status === 200) {
       handleNotification(true, message);
     } else {
       handleNotification(false, message);
@@ -58,6 +61,14 @@ export const ClienteView = ({ route, navigation }: any) => {
   const handleNotification = (succes: boolean, message: string) => {
     if (succes) {
       setViewMode(false);
+      setViewNotifications(true);
+      setMensagemNotification(message);
+      setTimeout(() => {
+        setMensagemNotification("");
+        setViewNotifications(false);
+      }, 6000);
+    } else {
+      setViewMode(true);
       setViewNotifications(true);
       setMensagemNotification(message);
       setTimeout(() => {
@@ -134,7 +145,7 @@ export const ClienteView = ({ route, navigation }: any) => {
           </View>
         </View>
         <Formik
-          initialValues={clienteView ? { ...clienteView } : { nome: '', email: '', documento: '', telefone: '', senha: '', cidade: "", complemento: "", estado: "" }}
+          initialValues={clienteView ? { ...clienteView } : { nome: '', documento: '', telefone: '', cidade: "", complemento: "", estado: "", numero: "", bairro: "" }}
           validationSchema={validationSchema}
           onSubmit={(values) => {
             saveUserData(values);
@@ -161,29 +172,6 @@ export const ClienteView = ({ route, navigation }: any) => {
                   {touched.nome && errors.nome && <Text style={styles.error}>{errors.nome}</Text>}
                 </View>
                 <View style={styles.campoInputs}>
-                  <Text style={styles.labelContainer}>EMAIL</Text>
-                  <TextInput
-                    style={!viewMode ? styles.inputDesativado : styles.inputAtivado}
-                    value={values.email ? values.email : ""}
-                    placeholder="Email"
-                    onChangeText={handleChange('email')}
-                    editable={viewMode}
-                  />
-                  {touched.email && errors.email && <Text style={styles.error}>{errors.email}</Text>}
-                </View>
-                <View style={styles.campoInputs}>
-                  <Text style={styles.labelContainer}>SENHA</Text>
-                  <TextInput
-                    value={values.senha ? values.senha : ""}
-                    style={!viewMode ? styles.inputDesativado : styles.inputAtivado}
-                    placeholder="Senha"
-                    editable={viewMode}
-                    onChangeText={handleChange('senha')}
-                    secureTextEntry={true}
-                  />
-                </View>
-                {touched.senha && errors.senha && <Text style={styles.error}>{errors.senha}</Text>}
-                <View style={styles.campoInputs}>
                   <Text style={styles.labelContainer}>CPF</Text>
                   <MaskedTextInput
                     mask="999.999.999-99"
@@ -198,19 +186,56 @@ export const ClienteView = ({ route, navigation }: any) => {
                   />
                 </View>
                 <View style={styles.campoInputs}>
+                  <Text style={styles.labelContainer}>Telefone</Text>
+                  <MaskedTextInput
+                    mask="(99) 99999-9999"
+                    style={!viewMode ? styles.inputDesativado : styles.inputAtivado}
+                    placeholder="Telefone"
+                    keyboardType="numeric"
+                    onChangeText={(text, rawText) => setFieldValue("telefone", rawText)}
+                    value={values.telefone ? values.telefone : ""}
+                    editable={viewMode}
+                  />
+                  {touched.telefone && errors.telefone && <Text style={styles.error}>{errors.telefone}</Text>}
+                </View>
+                <View style={styles.campoInputs}>
                   <Text style={styles.labelContainer}>Cidade</Text>
                   <TextInput
                     style={!viewMode ? styles.inputDesativado : styles.inputAtivado}
                     placeholder="Cidade"
                     onChangeText={handleChange('cidade')}
-                    onChange={(date) => setFieldValue('nome', date)}
+                    onChange={(date) => setFieldValue('cidade', date)}
                     value={values.cidade ? values.cidade : ""}
                     editable={viewMode}
                   />
                   {touched.cidade && errors.cidade && <Text style={styles.error}>{errors.cidade}</Text>}
                 </View>
                 <View style={styles.campoInputs}>
-                  <Text style={styles.labelContainer}>Cidade</Text>
+                  <Text style={styles.labelContainer}>Bairro</Text>
+                  <TextInput
+                    style={!viewMode ? styles.inputDesativado : styles.inputAtivado}
+                    placeholder="Bairro"
+                    onChangeText={handleChange('bairro')}
+                    onChange={(date) => setFieldValue('bairro', date)}
+                    value={values.bairro ? values.bairro : ""}
+                    editable={viewMode}
+                  />
+                  {touched.bairro && errors.bairro && <Text style={styles.error}>{errors.bairro}</Text>}
+                </View>
+                <View style={styles.campoInputs}>
+                  <Text style={styles.labelContainer}>Numero</Text>
+                  <TextInput
+                    style={!viewMode ? styles.inputDesativado : styles.inputAtivado}
+                    placeholder="Numero"
+                    onChangeText={handleChange('numero')}
+                    onChange={(date) => setFieldValue('numero', date)}
+                    value={values.numero ? values.numero : ""}
+                    editable={viewMode}
+                  />
+                  {touched.numero && errors.numero && <Text style={styles.error}>{errors.numero}</Text>}
+                </View>
+                <View style={styles.campoInputs}>
+                  <Text style={styles.labelContainer}>Complemento</Text>
                   <TextInput
                     style={!viewMode ? styles.inputDesativado : styles.inputAtivado}
                     placeholder="Complemento"
@@ -222,7 +247,7 @@ export const ClienteView = ({ route, navigation }: any) => {
                   {touched.complemento && errors.complemento && <Text style={styles.error}>{errors.complemento}</Text>}
                 </View>
                 <View style={styles.campoInputs}>
-                  <Text style={styles.labelContainer}>Cidade</Text>
+                  <Text style={styles.labelContainer}>Estado</Text>
                   <TextInput
                     style={!viewMode ? styles.inputDesativado : styles.inputAtivado}
                     placeholder="Complemento"
