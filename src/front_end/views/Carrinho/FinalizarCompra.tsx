@@ -96,19 +96,17 @@ export default function FinalizarCompra(props: any) {
             <ScrollView style={cardContainerStyle.cardContainer}>
 
                 <Text style={formularioStyle.label}>Selecione o Cliente:</Text>
-                <View style={styles.selectCliente}>
-                    <RNPickerSelect
-                        onValueChange={(value) => setClienteCPF(value)}
-                        items={clientes.map(cliente => ({
-                            label: `${cliente.nome} (${cliente.documento})`,
-                            value: cliente.documento,
-                            key: cliente.id,
-                        }))}
-                        placeholder={{ label: 'Selecione um cliente', value: null }}
-                        style={pickerSelectStyles}
-                        useNativeAndroidPickerStyle={false}
-                    />
-                </View>
+                <RNPickerSelect
+                    onValueChange={(value) => setClienteCPF(value)}
+                    items={clientes.map(cliente => ({
+                        label: `${cliente.nome} (${cliente.documento})`,
+                        value: cliente.documento,
+                        key: cliente.id,
+                    }))}
+                    placeholder={{ label: 'Selecione um cliente', value: null }}
+                    style={pickerSelectStyles}
+                    useNativeAndroidPickerStyle={false}
+                />
 
                 <Text style={formularioStyle.label}>Quantidade de Parcelas:</Text>
                 <TextInput
@@ -178,14 +176,24 @@ const styles = StyleSheet.create({
 
 const pickerSelectStyles = {
     inputIOS: {
+        backgroundColor: '#A3A3A3',
         color: '#F7E7CE',
         fontSize: 16,
+        borderRadius: 20,
         padding: 12,
+        borderColor: '#999',
+        borderWidth: 1,
+        marginBottom: 10,
     },
     inputAndroid: {
+        backgroundColor: '#A3A3A3',
         color: '#F7E7CE',
         fontSize: 16,
+        borderRadius: 20,
         padding: 12,
+        borderColor: '#999',
+        borderWidth: 1,
+        marginBottom: 10,
     },
 };
 ;
