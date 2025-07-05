@@ -81,6 +81,7 @@ namespace AurumApi.Data
                 .WithOne(jp => jp.Joia)
                 .HasForeignKey(jp => jp.JoiaId)
                 .OnDelete(DeleteBehavior.Cascade);
+<<<<<<< HEAD
 
             modelBuilder.Entity<EnderecoCliente>()
                 .HasOne(e => e.Cliente)
@@ -101,6 +102,8 @@ namespace AurumApi.Data
                 .WithMany(c => c.Pagamentos)
                 .HasForeignKey(p => p.ClienteId)
                 .OnDelete(DeleteBehavior.Cascade);
+=======
+>>>>>>> 27e5d782342366bd94997cbef5af57084a10a0ac
         }
     }
 }
