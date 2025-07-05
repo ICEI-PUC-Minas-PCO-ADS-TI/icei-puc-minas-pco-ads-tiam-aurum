@@ -105,6 +105,7 @@ namespace AurumApi.Services
             {
                 UsuarioId = usuarioId,
                 ClienteId = cliente.Id,
+                Cliente = cliente,
                 DataPedido = DateTime.UtcNow,
                 ValorTotal = 0, // vai atualizado depois de calcular os itens do pedido
                 Tipo = Enum.ETipoPedido.Compra

@@ -89,9 +89,9 @@ namespace AurumApi.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Pedidos do Cliente
-            modelBuilder.Entity<Pedido>()
-                .HasOne<Cliente>()
-                .WithMany(c => c.Pedidos)
+            modelBuilder.Entity<Cliente>()
+                .HasMany(c => c.Pedidos)
+                .WithOne(p => p.Cliente)
                 .HasForeignKey(p => p.ClienteId)
                 .OnDelete(DeleteBehavior.Cascade);
 
