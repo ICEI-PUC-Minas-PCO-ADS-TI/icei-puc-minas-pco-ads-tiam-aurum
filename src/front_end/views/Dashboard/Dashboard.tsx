@@ -1,5 +1,6 @@
+import { useFocusEffect } from '@react-navigation/native';
 import axios from "axios";
-import { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { AppState, ScrollView, StyleSheet, Text, View } from "react-native";
 import Card from "../../components/Card";
 import GraficoGastos from "../../components/Grafico";
@@ -21,6 +22,7 @@ export interface FiltroDashboardPagamento {
 const Dashboard = () => {
   const mesPagamento: Date = new Date();
   const [pagamentoResponse, setPagamentoResponse] = useState<PagamentoResponse>();
+  const [pagamentoResponsePendente, setPagamentoResponsePendente] = useState<PagamentoResponse>();
   const [listaPagamentosResponse, setListaPagamentosResponse] = useState<PagamentoResponse[]>();
   const [listaPagamentosResponsePendente, setListaPagamentosResponsePendente] = useState<PagamentoResponse[]>();
   const [usuario, setUsuario] = useState<UsuarioState | null>(store.getState().auth.usuario || null);
@@ -51,6 +53,33 @@ const Dashboard = () => {
       }
     }
   }
+  const pagamentosMesPendente = async () => {
+    const usuario = store.getState().auth.usuario;
+
+    const filtro: FiltroDashboardPagamento = {
+      mesPagamento: new Date(mesPagamento.getFullYear(), mesPagamento.getMonth(), 1).toISOString(),
+      status: StatusPagamento.PENDENTE,
+      usuario: {
+        id: usuario?.id || null,
+      }
+    }
+    try {
+      const response = await api.post('Pagamento/pagamentosMes', filtro);
+      const data = new Date(response.data.mesPagamento)
+      const mes: string = data.toLocaleString('pt-BR', { month: 'long' });
+      response.data.mesPagamento = mes.charAt(0).toUpperCase() + mes.slice(1)
+      setPagamentoResponsePendente(response.data)
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log("Erro na requisição:", error.response?.data);
+        setPagamentoResponsePendente(undefined)
+        if (error.response?.status === 400) {
+          console.log(error.response.data)
+        }
+      }
+    }
+  }
+
 
   const dashboard = async () => {
     const filtro: FiltroDashboardPagamento = {
@@ -93,34 +122,36 @@ const Dashboard = () => {
     }
   }
 
-  useEffect(() => {
-    let intervalId: NodeJS.Timeout;
-    let appState: import("react-native").AppStateStatus = AppState.currentState;
 
-    const fetchData = () => {
-      pagamentosMes();
-      dashboard();
-      dashboardPendentes();
-    }
+  // Função para buscar dados
+  const fetchData = () => {
+    pagamentosMes();
+    dashboard();
+    dashboardPendentes();
+    pagamentosMesPendente()
+  };
 
-    fetchData();
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchData();
+      // Se quiser manter o intervalo e o AppState, pode adicionar aqui também
+      let intervalId: NodeJS.Timeout = setInterval(fetchData, 5 * 60 * 1000);
+      let appState: import("react-native").AppStateStatus = AppState.currentState;
 
-    intervalId = setInterval(fetchData, 5 * 60 * 1000);
+      const handleAppStateChange = (nextAppState: import("react-native").AppStateStatus) => {
+        if (appState.match(/inactive|background/) && nextAppState === "active") {
+          fetchData();
+        }
+        appState = nextAppState;
+      };
+      const subscription = AppState.addEventListener("change", handleAppStateChange);
 
-    const handleAppStateChange = (nextAppState: import("react-native").AppStateStatus) => {
-      if (appState.match(/inactive|background/) && nextAppState === "active") {
-        fetchData();
-      }
-      appState = nextAppState;
-    };
-
-    const subscription = AppState.addEventListener("change", handleAppStateChange);
-
-    return () => {
-      clearInterval(intervalId);
-      subscription.remove();
-    };
-  }, []);
+      return () => {
+        clearInterval(intervalId);
+        subscription.remove();
+      };
+    }, [])
+  );
 
 
   return (
@@ -141,12 +172,12 @@ const Dashboard = () => {
             ></Card>
             : <Card title="Não tem pagamentos para esse mês"></Card>
           }
-          {pagamentoResponse != undefined ?
+          {pagamentoResponsePendente != undefined ?
             <Card
-              title={`Pagamentos de ${pagamentoResponse.mesPagamento}`}
-              quantidade={pagamentoResponse.quantidadePagamentos}
-              status={pagamentoResponse.status}
-              valorTotal={`R$${pagamentoResponse.valorTotal}`}
+              title={`Pagamentos de ${pagamentoResponsePendente.mesPagamento}`}
+              quantidade={pagamentoResponsePendente.quantidadePagamentos}
+              status={pagamentoResponsePendente.status}
+              valorTotal={`R$${pagamentoResponsePendente.valorTotal}`}
             ></Card>
             :
             <Card title="Não tem pagamentos para esse mês"></Card>
