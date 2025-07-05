@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Dimensions, StyleSheet, View } from 'react-native';
+import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import { BarChart } from 'react-native-chart-kit';
 import { ChartConfig } from 'react-native-chart-kit/dist/HelperTypes';
 import { PagamentoResponse } from '../interfaces/interfaces';
@@ -59,6 +59,7 @@ const GraficoGastos: React.FC<GraficoGastosProps> = ({ pagamentos = [] }) => {
   return (
     <View style={styles.container}>
       <View style={styles.graficoContainer}>
+        <Text style={{ fontWeight: "bold", fontSize: 25, color: Colors.fundo }}>{pagamentos[0].status}</Text>
         <BarChart
           data={dadosDoGrafico}
           width={screenWidth * 0.90}

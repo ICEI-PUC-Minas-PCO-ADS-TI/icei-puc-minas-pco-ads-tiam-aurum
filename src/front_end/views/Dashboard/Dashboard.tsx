@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { AppState, StyleSheet, Text, View } from "react-native";
+import { AppState, ScrollView, StyleSheet, Text, View } from "react-native";
 import Card from "../../components/Card";
 import GraficoGastos from "../../components/Grafico";
 import { StatusPagamento } from "../../enums/StatusPagamento";
@@ -22,6 +22,7 @@ const Dashboard = () => {
   const mesPagamento: Date = new Date();
   const [pagamentoResponse, setPagamentoResponse] = useState<PagamentoResponse>();
   const [listaPagamentosResponse, setListaPagamentosResponse] = useState<PagamentoResponse[]>();
+  const [listaPagamentosResponsePendente, setListaPagamentosResponsePendente] = useState<PagamentoResponse[]>();
   const [usuario, setUsuario] = useState<UsuarioState | null>(store.getState().auth.usuario || null);
 
   const pagamentosMes = async () => {
@@ -71,6 +72,26 @@ const Dashboard = () => {
       }
     }
   }
+  const dashboardPendentes = async () => {
+    const filtro: FiltroDashboardPagamento = {
+      mesPagamento: new Date(mesPagamento.getFullYear(), mesPagamento.getMonth(), 1).toISOString(),
+      status: StatusPagamento.PENDENTE,
+      usuario: {
+        id: store.getState().auth.usuario?.id || null
+      }
+    }
+
+    try {
+      const response = await api.post('Pagamento/dashboard', filtro);
+      setListaPagamentosResponsePendente(response.data);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 400) {
+          console.log(error.response.data)
+        }
+      }
+    }
+  }
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout;
@@ -79,6 +100,7 @@ const Dashboard = () => {
     const fetchData = () => {
       pagamentosMes();
       dashboard();
+      dashboardPendentes();
     }
 
     fetchData();
@@ -131,11 +153,26 @@ const Dashboard = () => {
 
           }
         </View>
-        {listaPagamentosResponse != null && listaPagamentosResponse?.length > 0 && (
-          <GraficoGastos
-            pagamentos={listaPagamentosResponse}
-          />
-        )}
+        <ScrollView
+          contentContainerStyle={{
+            paddingBottom: 60,
+            minHeight: '100%',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+          }}
+          showsVerticalScrollIndicator={true}
+        >
+          {listaPagamentosResponse != null && listaPagamentosResponse?.length > 0 && (
+            <GraficoGastos
+              pagamentos={listaPagamentosResponse}
+            />
+          )}
+          {listaPagamentosResponsePendente != null && listaPagamentosResponsePendente?.length > 0 && (
+            <GraficoGastos
+              pagamentos={listaPagamentosResponsePendente}
+            />
+          )}
+        </ScrollView>
       </View>
     </View>
   )

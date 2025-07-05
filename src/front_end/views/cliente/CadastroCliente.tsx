@@ -74,6 +74,7 @@ export const CadastroCliente = ({ navigation }: any) => {
         if (error.response?.status === 400) {
           showNotification("Erro", error.response.data?.errors?.Documento[0], "error", true);
         }
+        showNotification("Erro", "Problema no servidor", "error", true);
         return false;
       }
     }
@@ -106,9 +107,9 @@ export const CadastroCliente = ({ navigation }: any) => {
             initialValues={initialValues}
             onSubmit={async (values, { resetForm }) => {
               const foiSalvo = await handleCadastroCliente(values);
-              // if (foiSalvo !== undefined && foiSalvo) {
-              //   resetForm();
-              // }
+              if (foiSalvo !== undefined && foiSalvo) {
+                resetForm();
+              }
             }}
           >
             {({
