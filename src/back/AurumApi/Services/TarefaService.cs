@@ -51,6 +51,7 @@ namespace AurumApi.Services
         {
             var tarefas = await _aurumDataContext.Tarefa
                 .Where(t => t.UsuarioId == usuarioId)
+                .OrderBy(t => t.DataRealizar)
                 .ToListAsync();
             if(tarefas.Count == 0)
             {

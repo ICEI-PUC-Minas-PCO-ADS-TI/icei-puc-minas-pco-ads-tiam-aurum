@@ -52,15 +52,19 @@ namespace AurumApi.Services
 
         private PagamentoResponse MontarRelatorioPagamentos(List<Pagamento> listPagamentos)
         {
-            PagamentoResponse pagamentoResponse = new PagamentoResponse();
-            pagamentoResponse.ValorTotal = 0;
+            // Agrupa por PedidoId para garantir unicidade
+            var pagamentosPorPedido = listPagamentos
+                .GroupBy(p => p.PedidoId)
+                .Select(g => g.First()) // pega apenas um pagamento por pedido
+                .ToList();
 
-            for (int i = 0; i < listPagamentos.Count; i++)
+            var pagamentoResponse = new PagamentoResponse
             {
-                pagamentoResponse.ValorTotal += listPagamentos[i].ValorPagamento;
-                pagamentoResponse.quantidadePagamentos++;
-                if (i < 1) pagamentoResponse.Status = listPagamentos[i].Status;
-            }
+                ValorTotal = pagamentosPorPedido.Sum(p => p.ValorPagamento),
+                quantidadePagamentos = pagamentosPorPedido.Count,
+                Status = pagamentosPorPedido.FirstOrDefault()?.Status
+            };
+
             return pagamentoResponse;
         }
 
@@ -68,12 +72,17 @@ namespace AurumApi.Services
         {
             var listaPagamentos = listPagamentos
                 .GroupBy(p => new { p.DataPagamento.Value.Year, p.DataPagamento.Value.Month, p.Status }) // agrupando por ano/mês e status (se quiser)
-                .Select(g => new PagamentoResponse
+                .Select(g => 
                 {
-                    MesPagamento = new DateTime(g.Key.Year, g.Key.Month, 1), // você pode ajustar esse campo conforme quiser
-                    Status = g.Key.Status,
-                    ValorTotal = g.Sum(p => p.ValorPagamento),
-                    quantidadePagamentos = g.Count()
+                    var pagamentosUnicos = g.DistinctBy(p => p.PedidoId);
+
+                    return new PagamentoResponse
+                    {
+                        MesPagamento = new DateTime(g.Key.Year, g.Key.Month, 1), // você pode ajustar esse campo conforme quiser
+                        Status = g.Key.Status,
+                        ValorTotal = pagamentosUnicos.Sum(p => p.ValorPagamento),
+                        quantidadePagamentos = pagamentosUnicos.Count()
+                    };
                 })
                 .OrderBy(r => r.MesPagamento) // ordena cronologicamente
                 .ToList();
