@@ -98,3 +98,48 @@ CREATE TABLE pagamentos (
 	CONSTRAINT fk_pedido FOREIGN KEY (pedidoId) REFERENCES pedidos(id),
 	CONSTRAINT fk_cliente FOREIGN KEY (clienteId) REFERENCES clientes(id)
 );
+
+-- CLIENTES → USUARIOS
+ALTER TABLE clientes DROP CONSTRAINT fk_usuario;
+ALTER TABLE clientes ADD CONSTRAINT fk_usuario
+    FOREIGN KEY (usuarioId) REFERENCES usuarios(id) ON DELETE CASCADE;
+
+-- ENDERECOSCLIENTES → CLIENTES
+ALTER TABLE enderecoClientes DROP CONSTRAINT fk_cliente;
+ALTER TABLE enderecoClientes ADD CONSTRAINT fk_cliente
+    FOREIGN KEY (clienteId) REFERENCES clientes(id) ON DELETE CASCADE;
+
+-- PEDIDOS → USUARIOS
+ALTER TABLE pedidos DROP CONSTRAINT fk_usuario;
+ALTER TABLE pedidos ADD CONSTRAINT fk_usuario
+    FOREIGN KEY (usuarioId) REFERENCES usuarios(id) ON DELETE CASCADE;
+
+-- PEDIDOS → CLIENTES
+ALTER TABLE pedidos DROP CONSTRAINT fk_cliente;
+ALTER TABLE pedidos ADD CONSTRAINT fk_cliente
+    FOREIGN KEY (clienteId) REFERENCES clientes(id) ON DELETE CASCADE;
+
+-- JOIAS → USUARIOS
+ALTER TABLE joias DROP CONSTRAINT fk_usuario;
+ALTER TABLE joias ADD CONSTRAINT fk_usuario
+    FOREIGN KEY (usuarioId) REFERENCES usuarios(id) ON DELETE CASCADE;
+
+-- JOIASPEDIDOS → PEDIDOS
+ALTER TABLE joiasPedidos DROP CONSTRAINT fk_pedido;
+ALTER TABLE joiasPedidos ADD CONSTRAINT fk_pedido
+    FOREIGN KEY (pedidoId) REFERENCES pedidos(id) ON DELETE CASCADE;
+
+-- PAGAMENTOS → USUARIOS
+ALTER TABLE pagamentos DROP CONSTRAINT fk_usuario;
+ALTER TABLE pagamentos ADD CONSTRAINT fk_usuario
+    FOREIGN KEY (usuarioId) REFERENCES usuarios(id) ON DELETE CASCADE;
+
+-- PAGAMENTOS → PEDIDOS
+ALTER TABLE pagamentos DROP CONSTRAINT fk_pedido;
+ALTER TABLE pagamentos ADD CONSTRAINT fk_pedido
+    FOREIGN KEY (pedidoId) REFERENCES pedidos(id) ON DELETE CASCADE;
+
+-- PAGAMENTOS → CLIENTES
+ALTER TABLE pagamentos DROP CONSTRAINT fk_cliente;
+ALTER TABLE pagamentos ADD CONSTRAINT fk_cliente
+    FOREIGN KEY (clienteId) REFERENCES clientes(id) ON DELETE CASCADE;
